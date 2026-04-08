@@ -22,7 +22,7 @@ const AdminDashboard = () => {
   });
 
   const { data, isLoading } = useOwnerDashboard(dateRange);
-  const dashboardData = data?.data?.data || {};
+  const dashboardData = data?.data || {};
 
   const trips = dashboardData.trips || {};
   const expenses = dashboardData.expenses || {};

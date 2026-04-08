@@ -15,7 +15,7 @@ import { useTrips } from '../../hooks/useTrips';
 
 const AddTrip = () => {
   const navigate = useNavigate();
-  const { createTrip, isLoading } = useTrips();
+  const { createTrip, isCreating } = useTrips();
   const fileInputRef = useRef(null);
   const mapInputRef = useRef(null);
 
@@ -379,10 +379,10 @@ const AddTrip = () => {
               </button>
               <button
                 onClick={handleSubmit}
-                disabled={!canSubmit || isLoading}
+                disabled={!canSubmit || isCreating}
                 className="flex-1 bg-blue-600 text-white py-4 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >
-                {isLoading ? (
+                {isCreating ? (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <>
