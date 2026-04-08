@@ -14,4 +14,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Logging
-LOGGING['loggers']['django']['level'] = 'DEBUG'
+LOGGING['loggers']['django']['level'] = 'INFO'
+LOGGING['loggers']['django.utils.autoreload'] = {
+    'handlers': ['console', 'file'],
+    'level': 'INFO',
+    'propagate': False,
+}
