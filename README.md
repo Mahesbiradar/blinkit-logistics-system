@@ -151,6 +151,13 @@ cd docker
 # Start all services
 docker-compose up -d
 
+# Create default admin users
+docker-compose exec backend python manage.py bootstrap_admin_users
+
+# Host access
+# PostgreSQL: localhost:5433
+# Redis: localhost:6380
+
 # View logs
 docker-compose logs -f
 

@@ -3494,3 +3494,204 @@ WARNING 2026-04-09 03:00:39,934 log Unauthorized: /api/v1/drivers/
 WARNING 2026-04-09 03:00:39,935 basehttp "GET /api/v1/drivers/ HTTP/1.1" 401 87
 WARNING 2026-04-09 03:00:58,216 log Unauthorized: /api/v1/auth/profile/
 WARNING 2026-04-09 03:00:58,216 basehttp "GET /api/v1/auth/profile/ HTTP/1.1" 401 87
+INFO 2026-04-09 03:05:21,920 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-09 03:05:21,980 basehttp "OPTIONS /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-09 HTTP/1.1" 200 0
+INFO 2026-04-09 03:05:22,093 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-09 HTTP/1.1" 200 407
+INFO 2026-04-09 03:05:36,116 basehttp "OPTIONS /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-09 03:05:36,116 basehttp "OPTIONS /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-09 03:05:36,118 basehttp "OPTIONS /api/v1/trips/pending/ HTTP/1.1" 200 0
+WARNING 2026-04-09 03:05:36,169 log Forbidden: /api/v1/trips/my-trips/
+INFO 2026-04-09 03:05:36,170 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 96
+WARNING 2026-04-09 03:05:36,171 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-09 03:05:36,225 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+WARNING 2026-04-09 03:05:37,228 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:05:37,229 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:05:45,310 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:05:45,311 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:05:46,479 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:05:46,483 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-09 03:05:52,049 basehttp "OPTIONS /api/v1/drivers/ HTTP/1.1" 200 0
+INFO 2026-04-09 03:05:52,207 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 38
+INFO 2026-04-09 03:05:59,339 basehttp "OPTIONS /api/v1/vehicles/ HTTP/1.1" 200 0
+INFO 2026-04-09 03:05:59,397 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 39
+INFO 2026-04-09 03:06:01,582 basehttp "OPTIONS /api/v1/expenses/ HTTP/1.1" 200 0
+INFO 2026-04-09 03:06:01,641 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 166
+INFO 2026-04-09 03:06:04,754 basehttp "OPTIONS /api/v1/payments/ HTTP/1.1" 200 0
+INFO 2026-04-09 03:06:04,840 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+WARNING 2026-04-09 03:06:11,200 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:06:11,201 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:06:12,260 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:06:12,261 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:07:07,841 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:07:07,842 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:07:08,924 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:07:08,925 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-09 03:08:07,739 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-09 03:10:59,933 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+WARNING 2026-04-09 03:11:13,018 log Bad Request: /api/v1/auth/otp/verify/
+WARNING 2026-04-09 03:11:13,019 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 400 120
+WARNING 2026-04-09 03:11:23,902 log Bad Request: /api/v1/auth/otp/verify/
+WARNING 2026-04-09 03:11:23,903 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 400 120
+INFO 2026-04-09 03:11:53,597 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+WARNING 2026-04-09 03:12:12,910 log Bad Request: /api/v1/auth/otp/verify/
+WARNING 2026-04-09 03:12:12,911 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 400 120
+WARNING 2026-04-09 03:12:30,538 log Bad Request: /api/v1/auth/otp/verify/
+WARNING 2026-04-09 03:12:30,538 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 400 120
+INFO 2026-04-09 03:14:38,612 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-09 03:14:38,739 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-09 HTTP/1.1" 200 407
+WARNING 2026-04-09 03:14:48,126 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:14:48,127 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-09 03:14:48,206 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-09 03:14:48,238 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 96
+WARNING 2026-04-09 03:14:49,293 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:14:49,294 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-09 03:14:50,279 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 38
+INFO 2026-04-09 03:14:51,660 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 39
+INFO 2026-04-09 03:14:52,896 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 166
+INFO 2026-04-09 03:14:54,432 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+WARNING 2026-04-09 03:15:15,647 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:15:15,647 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:15:16,706 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:15:16,707 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:15:18,442 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:15:18,443 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:15:19,523 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:15:19,524 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:17:21,001 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:17:21,001 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:17:22,069 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:17:22,070 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:18:26,203 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:18:26,204 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:18:27,252 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:18:27,253 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:18:41,389 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:18:41,390 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:18:42,436 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:18:42,437 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-09 03:20:07,031 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-09 03:20:44,445 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-09 03:20:57,310 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322
+INFO 2026-04-09 03:26:25,177 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 899
+INFO 2026-04-09 03:26:25,442 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-09 HTTP/1.1" 200 407
+INFO 2026-04-09 03:26:37,724 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 38
+INFO 2026-04-09 03:26:39,104 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 39
+INFO 2026-04-09 03:26:40,340 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 166
+INFO 2026-04-09 03:26:41,323 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-09 03:28:00,080 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 899
+INFO 2026-04-09 03:28:00,216 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-09 HTTP/1.1" 200 407
+INFO 2026-04-09 03:28:50,533 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-09 03:28:51,466 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 166
+INFO 2026-04-09 03:28:52,287 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 39
+INFO 2026-04-09 03:28:53,135 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 38
+INFO 2026-04-09 03:28:54,127 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 96
+WARNING 2026-04-09 03:28:54,189 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:28:54,189 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-09 03:28:54,247 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+WARNING 2026-04-09 03:28:55,264 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:28:55,264 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:28:57,277 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:28:57,280 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-09 03:28:58,346 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-09 03:28:58,347 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-10 19:34:23,537 autoreload Watching for file changes with StatReloader
+INFO 2026-04-10 19:37:24,050 autoreload Watching for file changes with StatReloader
+INFO 2026-04-10 19:38:05,931 basehttp "OPTIONS /api/v1/auth/otp/send/ HTTP/1.1" 200 0
+INFO 2026-04-10 19:38:06,006 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-10 19:38:53,483 basehttp "OPTIONS /api/v1/auth/otp/verify/ HTTP/1.1" 200 0
+WARNING 2026-04-10 19:38:53,511 log Bad Request: /api/v1/auth/otp/verify/
+WARNING 2026-04-10 19:38:53,513 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 400 52
+WARNING 2026-04-10 19:39:17,977 log Bad Request: /api/v1/auth/otp/verify/
+WARNING 2026-04-10 19:39:17,980 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 400 52
+INFO 2026-04-10 19:39:32,177 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+WARNING 2026-04-10 19:40:03,189 log Bad Request: /api/v1/auth/otp/verify/
+WARNING 2026-04-10 19:40:03,191 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 400 52
+INFO 2026-04-10 19:40:14,001 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322
+INFO 2026-04-10 19:40:51,492 basehttp "OPTIONS /api/v1/auth/driver/register/ HTTP/1.1" 200 0
+WARNING 2026-04-10 19:40:51,498 log Unauthorized: /api/v1/auth/driver/register/
+WARNING 2026-04-10 19:40:51,500 basehttp "POST /api/v1/auth/driver/register/ HTTP/1.1" 401 60
+INFO 2026-04-10 19:41:04,769 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-10 19:41:20,724 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322
+INFO 2026-04-10 19:41:46,532 basehttp "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+WARNING 2026-04-10 19:41:46,557 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-10 19:41:46,559 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+WARNING 2026-04-10 19:42:17,970 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-10 19:42:17,972 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+WARNING 2026-04-10 19:42:46,026 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-10 19:42:46,028 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+WARNING 2026-04-10 19:43:58,909 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-10 19:43:58,912 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+WARNING 2026-04-10 19:45:09,237 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-10 19:45:09,239 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+INFO 2026-04-10 19:50:47,348 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-10 19:50:47,430 basehttp "OPTIONS /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-10 HTTP/1.1" 200 0
+INFO 2026-04-10 19:50:47,515 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-10 HTTP/1.1" 200 407
+INFO 2026-04-10 19:50:56,040 basehttp "OPTIONS /api/v1/drivers/ HTTP/1.1" 200 0
+INFO 2026-04-10 19:50:56,086 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 38
+INFO 2026-04-10 19:51:05,342 basehttp "OPTIONS /api/v1/vehicles/ HTTP/1.1" 200 0
+INFO 2026-04-10 19:51:05,377 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 39
+INFO 2026-04-10 19:51:10,012 basehttp "OPTIONS /api/v1/expenses/ HTTP/1.1" 200 0
+INFO 2026-04-10 19:51:10,087 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 166
+INFO 2026-04-10 19:51:14,748 basehttp "OPTIONS /api/v1/payments/ HTTP/1.1" 200 0
+INFO 2026-04-10 19:51:14,785 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-10 19:51:29,172 basehttp "OPTIONS /api/v1/dashboard/owner/?start_date=2026-04-05&end_date=2026-04-10 HTTP/1.1" 200 0
+INFO 2026-04-10 19:51:29,245 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-05&end_date=2026-04-10 HTTP/1.1" 200 407
+INFO 2026-04-10 19:51:39,717 basehttp "OPTIONS /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-10 19:51:39,756 basehttp "OPTIONS /api/v1/trips/pending/ HTTP/1.1" 200 0
+INFO 2026-04-10 19:51:39,777 basehttp "OPTIONS /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-10 19:51:39,816 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 96
+WARNING 2026-04-10 19:51:39,839 log Forbidden: /api/v1/trips/my-trips/
+INFO 2026-04-10 19:51:39,839 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+WARNING 2026-04-10 19:51:39,845 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-10 19:51:40,925 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-10 19:51:40,927 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-10 19:52:03,624 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 899
+INFO 2026-04-10 19:52:03,755 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-10 HTTP/1.1" 200 407
+INFO 2026-04-10 19:52:12,175 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 38
+INFO 2026-04-10 19:52:18,378 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 39
+INFO 2026-04-10 19:52:23,015 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 166
+INFO 2026-04-10 19:52:26,767 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+WARNING 2026-04-10 19:52:31,413 log Forbidden: /api/v1/trips/my-trips/
+INFO 2026-04-10 19:52:31,425 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 96
+WARNING 2026-04-10 19:52:31,425 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-10 19:52:31,435 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+WARNING 2026-04-10 19:52:32,456 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-10 19:52:32,458 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-10 19:53:53,324 log Bad Request: /api/v1/auth/login/
+WARNING 2026-04-10 19:53:53,327 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 400 136
+WARNING 2026-04-10 19:53:53,336 log Bad Request: /api/v1/auth/login/
+WARNING 2026-04-10 19:53:53,338 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 400 136
+WARNING 2026-04-10 19:54:09,844 log Bad Request: /api/v1/auth/login/
+WARNING 2026-04-10 19:54:09,846 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 400 136
+WARNING 2026-04-10 19:54:09,886 log Bad Request: /api/v1/auth/login/
+WARNING 2026-04-10 19:54:09,888 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 400 136
+INFO 2026-04-10 19:54:29,018 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-10 19:54:29,037 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 899
+INFO 2026-04-11 00:34:01,296 basehttp "OPTIONS /api/v1/auth/otp/send/ HTTP/1.1" 200 0
+INFO 2026-04-11 00:34:01,402 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-11 13:01:30,374 autoreload Watching for file changes with StatReloader
+INFO 2026-04-11 13:01:47,371 autoreload Watching for file changes with StatReloader
+INFO 2026-04-11 13:02:33,557 basehttp "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:33,846 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-11 13:02:33,938 basehttp "OPTIONS /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-11 HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:34,041 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-11 HTTP/1.1" 200 407
+INFO 2026-04-11 13:02:39,950 basehttp "OPTIONS /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:39,965 basehttp "OPTIONS /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:39,975 basehttp "OPTIONS /api/v1/trips/pending/ HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:40,014 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 96
+WARNING 2026-04-11 13:02:40,034 log Forbidden: /api/v1/trips/my-trips/
+INFO 2026-04-11 13:02:40,036 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+WARNING 2026-04-11 13:02:40,038 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-11 13:02:40,709 basehttp "OPTIONS /api/v1/drivers/ HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:40,742 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 38
+INFO 2026-04-11 13:02:42,118 basehttp "OPTIONS /api/v1/vehicles/ HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:42,149 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 39
+INFO 2026-04-11 13:02:43,315 basehttp "OPTIONS /api/v1/expenses/ HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:43,355 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 166
+INFO 2026-04-11 13:02:44,588 basehttp "OPTIONS /api/v1/payments/ HTTP/1.1" 200 0
+INFO 2026-04-11 13:02:44,627 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+WARNING 2026-04-11 13:03:20,828 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-11 13:03:20,829 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+WARNING 2026-04-11 13:03:21,862 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-11 13:03:21,864 basehttp "GET /api/v1/trips/my-trips/?status=&start_date=&end_date= HTTP/1.1" 403 92
+INFO 2026-04-14 21:00:27,017 autoreload Watching for file changes with StatReloader

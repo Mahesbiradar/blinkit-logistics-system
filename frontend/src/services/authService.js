@@ -7,8 +7,13 @@ const authService = {
   },
 
   // Verify OTP
-  verifyOTP: (phone, otp) => {
-    return api.post('/auth/otp/verify/', { phone, otp });
+  verifyOTP: (phoneOrPayload, otp) => {
+    const payload =
+      typeof phoneOrPayload === 'object' && phoneOrPayload !== null
+        ? phoneOrPayload
+        : { phone: phoneOrPayload, otp };
+
+    return api.post('/auth/otp/verify/', payload);
   },
 
   // Driver registration
