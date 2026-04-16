@@ -37,6 +37,13 @@ export const useAuthStore = create(
           user: { ...get().user, ...userData },
         }),
 
+      getHomeRoute: () => {
+        const role = get().user?.role;
+        if (role === 'driver') return '/driver/dashboard';
+        if (role === 'owner' || role === 'coordinator') return '/admin/dashboard';
+        return '/login';
+      },
+
       // Getters
       getAccessToken: () => get().tokens?.access,
       getRefreshToken: () => get().tokens?.refresh,

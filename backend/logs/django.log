@@ -39,3 +39,37 @@ INFO 2026-04-16 22:41:23,626 autoreload /app/apps/accounts/views.py changed, rel
 INFO 2026-04-16 22:41:24,483 autoreload Watching for file changes with StatReloader
 INFO 2026-04-16 22:41:25,696 autoreload Watching for file changes with StatReloader
 INFO 2026-04-16 22:44:59,876 autoreload Watching for file changes with StatReloader
+INFO 2026-04-16 23:11:00,384 autoreload D:\Projects\blinkit-logistics-system\backend\apps\accounts\serializers.py changed, reloading.
+INFO 2026-04-16 23:11:00,929 autoreload /app/apps/accounts/serializers.py changed, reloading.
+INFO 2026-04-16 23:11:01,019 autoreload Watching for file changes with StatReloader
+INFO 2026-04-16 23:11:02,441 autoreload Watching for file changes with StatReloader
+INFO 2026-04-16 23:11:28,049 autoreload /app/apps/accounts/views.py changed, reloading.
+INFO 2026-04-16 23:11:28,299 autoreload D:\Projects\blinkit-logistics-system\backend\apps\accounts\views.py changed, reloading.
+INFO 2026-04-16 23:11:29,192 autoreload Watching for file changes with StatReloader
+INFO 2026-04-16 23:11:30,006 autoreload Watching for file changes with StatReloader
+INFO 2026-04-16 23:11:35,392 autoreload D:\Projects\blinkit-logistics-system\backend\apps\accounts\urls.py changed, reloading.
+INFO 2026-04-16 23:11:36,117 autoreload /app/apps/accounts/urls.py changed, reloading.
+INFO 2026-04-16 23:11:36,770 autoreload Watching for file changes with StatReloader
+INFO 2026-04-16 23:11:38,211 autoreload Watching for file changes with StatReloader
+INFO 2026-04-16 23:11:55,268 basehttp "OPTIONS /api/v1/trips/pending/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:11:55,272 basehttp "OPTIONS /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+WARNING 2026-04-16 23:11:55,286 log Unauthorized: /api/v1/trips/
+WARNING 2026-04-16 23:11:55,289 log Unauthorized: /api/v1/trips/pending/
+WARNING 2026-04-16 23:11:55,290 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 401 55
+WARNING 2026-04-16 23:11:55,292 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 401 55
+INFO 2026-04-16 23:11:55,404 basehttp "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:11:55,404 basehttp "OPTIONS /api/v1/auth/token/refresh/ HTTP/1.1" 200 0
+WARNING 2026-04-16 23:11:55,410 log Unauthorized: /api/v1/auth/token/refresh/
+WARNING 2026-04-16 23:11:55,414 log Unauthorized: /api/v1/auth/token/refresh/
+WARNING 2026-04-16 23:11:55,416 basehttp "POST /api/v1/auth/token/refresh/ HTTP/1.1" 401 43
+WARNING 2026-04-16 23:11:55,417 basehttp "POST /api/v1/auth/token/refresh/ HTTP/1.1" 401 43
+INFO 2026-04-16 23:15:06,877 basehttp "OPTIONS /api/v1/auth/otp/send/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:15:06,907 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-16 23:15:29,123 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-16 23:15:41,654 basehttp "OPTIONS /api/v1/auth/otp/verify/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:15:41,688 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322
+INFO 2026-04-16 23:16:13,078 basehttp "OPTIONS /api/v1/auth/driver/register/ HTTP/1.1" 200 0
+WARNING 2026-04-16 23:16:13,082 log Unauthorized: /api/v1/auth/driver/register/
+WARNING 2026-04-16 23:16:13,084 basehttp "POST /api/v1/auth/driver/register/ HTTP/1.1" 401 60
+INFO 2026-04-16 23:16:20,365 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-16 23:16:30,289 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322

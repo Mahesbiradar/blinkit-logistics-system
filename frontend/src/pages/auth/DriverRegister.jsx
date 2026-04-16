@@ -15,7 +15,7 @@ const DriverRegister = () => {
   });
 
   useEffect(() => {
-    const tempToken = localStorage.getItem('temp_token');
+    const tempToken = sessionStorage.getItem('temp_token');
     if (!tempToken) {
       navigate('/login', { replace: true });
     }
@@ -41,7 +41,7 @@ const DriverRegister = () => {
       return;
     }
 
-    const tempToken = localStorage.getItem('temp_token');
+    const tempToken = sessionStorage.getItem('temp_token');
     if (!tempToken) {
       toast.error('Registration session expired. Please request OTP again.');
       navigate('/login', { replace: true });

@@ -12,10 +12,17 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.common.permissions import IsOwner
 from .models import User, OTPCode
 from .serializers import (
-    SendOTPSerializer, VerifyOTPSerializer, LoginSerializer,
-    DriverRegistrationSerializer, UserSerializer
+    CoordinatorCreateSerializer,
+    DriverRegistrationSerializer,
+    ForgotPasswordRequestSerializer,
+    LoginSerializer,
+    ResetPasswordSerializer,
+    SendOTPSerializer,
+    UserSerializer,
+    VerifyOTPSerializer,
 )
 
 
@@ -87,6 +94,7 @@ class SendOTPView(APIView):
         OTPCode.objects.create(
             phone=phone,
             otp_code=otp_code,
+            purpose='login',
             expires_at=expires_at
         )
         
@@ -124,6 +132,7 @@ class VerifyOTPView(APIView):
             otp_record = OTPCode.objects.filter(
                 phone=phone,
                 otp_code=otp,
+                purpose='login',
                 is_used=False,
                 expires_at__gt=timezone.now()
             ).latest('created_at')
@@ -350,6 +359,124 @@ class LoginView(APIView):
                 'tokens': tokens
             }
         })
+
+
+class ForgotPasswordRequestView(APIView):
+    """Send password reset OTP for owner/coordinator accounts"""
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = ForgotPasswordRequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({
+                'success': False,
+                'message': 'Invalid input',
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        phone = serializer.validated_data['phone']
+        otp_code = generate_otp()
+        expires_at = timezone.now() + timedelta(minutes=settings.OTP_EXPIRY_MINUTES)
+
+        OTPCode.objects.create(
+            phone=phone,
+            otp_code=otp_code,
+            purpose='password_reset',
+            expires_at=expires_at
+        )
+
+        return Response({
+            'success': True,
+            'message': 'Password reset OTP sent successfully',
+            'data': {
+                'phone': phone,
+                'expires_in': settings.OTP_EXPIRY_MINUTES * 60,
+                'otp': otp_code
+            }
+        })
+
+
+class ResetPasswordView(APIView):
+    """Reset password with OTP"""
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = ResetPasswordSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({
+                'success': False,
+                'message': 'Invalid input',
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        phone = serializer.validated_data['phone']
+        otp = serializer.validated_data['otp']
+        new_password = serializer.validated_data['new_password']
+
+        try:
+            otp_record = OTPCode.objects.filter(
+                phone=phone,
+                otp_code=otp,
+                purpose='password_reset',
+                is_used=False,
+                expires_at__gt=timezone.now()
+            ).latest('created_at')
+        except OTPCode.DoesNotExist:
+            return Response({
+                'success': False,
+                'message': 'Invalid or expired OTP'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(phone=phone, role__in=['owner', 'coordinator'], is_active=True)
+        except User.DoesNotExist:
+            return Response({
+                'success': False,
+                'message': 'User not found'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        user.set_password(new_password)
+        user.save(update_fields=['password', 'updated_at'])
+        otp_record.mark_used()
+
+        return Response({
+            'success': True,
+            'message': 'Password reset successful'
+        })
+
+
+class CoordinatorCreateView(APIView):
+    """Create coordinator account"""
+    permission_classes = [IsOwner]
+
+    def post(self, request):
+        serializer = CoordinatorCreateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({
+                'success': False,
+                'message': 'Invalid input',
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        data = serializer.validated_data
+        coordinator = User.objects.create_user(
+            phone=data['phone'],
+            first_name=data['first_name'],
+            last_name=data.get('last_name', ''),
+            email=data['email'],
+            role='coordinator',
+            password=data['password'],
+            is_staff=True,
+            is_active=True,
+        )
+
+        return Response({
+            'success': True,
+            'message': 'Coordinator created successfully',
+            'data': {
+                'user': UserSerializer(coordinator).data
+            }
+        }, status=status.HTTP_201_CREATED)
 
 
 class TokenRefreshView(APIView):

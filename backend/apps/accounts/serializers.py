@@ -66,6 +66,75 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, write_only=True)
 
 
+class ForgotPasswordRequestSerializer(serializers.Serializer):
+    """Request password reset OTP"""
+
+    phone = serializers.CharField(max_length=15, required=True)
+
+    def validate_phone(self, value):
+        phone = ''.join(filter(str.isdigit, value))
+        if len(phone) != 10:
+            raise serializers.ValidationError("Phone number must be 10 digits")
+
+        user = User.objects.filter(phone=phone, role__in=['owner', 'coordinator'], is_active=True).first()
+        if not user:
+            raise serializers.ValidationError("No active admin account found for this phone number")
+        return phone
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    """Reset password using OTP"""
+
+    phone = serializers.CharField(max_length=15, required=True)
+    otp = serializers.CharField(max_length=6, required=True)
+    new_password = serializers.CharField(min_length=8, write_only=True, required=True)
+
+    def validate_phone(self, value):
+        phone = ''.join(filter(str.isdigit, value))
+        if len(phone) != 10:
+            raise serializers.ValidationError("Phone number must be 10 digits")
+        return phone
+
+    def validate_otp(self, value):
+        if len(value) != 6 or not value.isdigit():
+            raise serializers.ValidationError("OTP must be 6 digits")
+        return value
+
+    def validate_new_password(self, value):
+        if len(value) < 8:
+            raise serializers.ValidationError("Password must be at least 8 characters")
+        return value
+
+
+class CoordinatorCreateSerializer(serializers.Serializer):
+    """Create coordinator serializer"""
+
+    first_name = serializers.CharField(max_length=100, required=True)
+    last_name = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    email = serializers.EmailField(required=True)
+    phone = serializers.CharField(max_length=15, required=True)
+    password = serializers.CharField(min_length=8, write_only=True, required=True)
+
+    def validate_phone(self, value):
+        phone = ''.join(filter(str.isdigit, value))
+        if len(phone) != 10:
+            raise serializers.ValidationError("Phone number must be 10 digits")
+        if User.objects.filter(phone=phone).exists():
+            raise serializers.ValidationError("Phone number already registered")
+        return phone
+
+    def validate_email(self, value):
+        normalized = value.lower().strip()
+        if User.objects.filter(email__iexact=normalized).exists():
+            raise serializers.ValidationError("Email already registered")
+        return normalized
+
+    def validate_password(self, value):
+        if len(value) < 8:
+            raise serializers.ValidationError("Password must be at least 8 characters")
+        return value
+
+
 class DriverRegistrationSerializer(serializers.Serializer):
     """Serializer for driver registration"""
     first_name = serializers.CharField(max_length=100, required=True)
