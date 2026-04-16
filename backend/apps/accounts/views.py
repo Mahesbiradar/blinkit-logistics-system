@@ -6,6 +6,7 @@ import jwt
 from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.auth import authenticate
+from django.utils import timezone
 from rest_framework import status, generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -82,7 +83,7 @@ class SendOTPView(APIView):
         otp_code = generate_otp()
         
         # Save OTP
-        expires_at = datetime.utcnow() + timedelta(minutes=settings.OTP_EXPIRY_MINUTES)
+        expires_at = timezone.now() + timedelta(minutes=settings.OTP_EXPIRY_MINUTES)
         OTPCode.objects.create(
             phone=phone,
             otp_code=otp_code,
@@ -124,7 +125,7 @@ class VerifyOTPView(APIView):
                 phone=phone,
                 otp_code=otp,
                 is_used=False,
-                expires_at__gt=datetime.utcnow()
+                expires_at__gt=timezone.now()
             ).latest('created_at')
         except OTPCode.DoesNotExist:
             return Response({
@@ -243,6 +244,12 @@ class DriverRegisterView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
         
         data = serializer.validated_data
+
+        if User.objects.filter(phone=phone).exists():
+            return Response({
+                'success': False,
+                'message': 'Driver already registered'
+            }, status=status.HTTP_400_BAD_REQUEST)
         
         # Get vehicle
         try:
