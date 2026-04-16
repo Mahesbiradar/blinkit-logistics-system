@@ -11,10 +11,12 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { useAuthStore } from '../../store/authStore';
 
 const DriverLayout = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { user, driverProfile } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -88,7 +90,9 @@ const DriverLayout = () => {
               </div>
               <div>
                 <span className="font-bold text-lg block">JJR Logistics</span>
-                <span className="text-xs text-gray-500">Driver Portal</span>
+                <span className="text-xs text-gray-500">
+                  {user?.first_name || 'Driver'} | {driverProfile?.primary_vehicle?.vehicle_number || 'No vehicle'}
+                </span>
               </div>
             </div>
           </div>

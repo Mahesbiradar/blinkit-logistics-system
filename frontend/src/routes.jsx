@@ -101,11 +101,14 @@ export const router = createBrowserRouter([
       </DriverRoute>
     ),
     children: [
+      { index: true, element: <Navigate to="dashboard" replace /> },
       { path: 'dashboard', element: <DriverDashboard /> },
       { path: 'add-trip', element: <AddTrip /> },
+      { path: 'trips/new', element: <AddTrip /> },
       { path: 'my-trips', element: <MyTrips /> },
+      { path: 'trips', element: <MyTrips /> },
       { path: 'my-expenses', element: <MyExpenses /> },
-      { path: '', element: <Navigate to="dashboard" replace /> },
+      { path: 'expenses', element: <MyExpenses /> },
     ],
   },
   {

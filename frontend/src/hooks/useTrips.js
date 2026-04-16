@@ -2,31 +2,22 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import tripService from '../services/tripService';
 
-// Hook for fetching trips
+const extractTrips = (response) => response?.data?.data?.trips || [];
+const extractSummary = (response) => response?.data?.data?.summary || {};
+
 export const useTrips = (params = {}) => {
   const queryClient = useQueryClient();
 
-  // Get all trips (admin/coordinator)
   const tripsQuery = useQuery({
     queryKey: ['trips', params],
     queryFn: () => tripService.getTrips(params),
-    enabled: !params.myTrips, // Only fetch if not fetching my trips
   });
 
-  // Get my trips (driver)
-  const myTripsQuery = useQuery({
-    queryKey: ['myTrips', params],
-    queryFn: () => tripService.getMyTrips(params),
-    enabled: params.myTrips,
-  });
-
-  // Get pending trips
   const pendingTripsQuery = useQuery({
     queryKey: ['pendingTrips'],
     queryFn: () => tripService.getPendingTrips(),
   });
 
-  // Create trip mutation
   const createTripMutation = useMutation({
     mutationFn: tripService.createTrip,
     onSuccess: () => {
@@ -40,7 +31,6 @@ export const useTrips = (params = {}) => {
     },
   });
 
-  // Approve trip mutation
   const approveTripMutation = useMutation({
     mutationFn: ({ tripId, remarks }) => tripService.approveTrip(tripId, remarks),
     onSuccess: () => {
@@ -53,7 +43,6 @@ export const useTrips = (params = {}) => {
     },
   });
 
-  // Reject trip mutation
   const rejectTripMutation = useMutation({
     mutationFn: ({ tripId, reason }) => tripService.rejectTrip(tripId, reason),
     onSuccess: () => {
@@ -67,33 +56,58 @@ export const useTrips = (params = {}) => {
   });
 
   return {
-    // Queries
-    trips: tripsQuery.data?.data?.data?.trips || [],
-    myTrips: myTripsQuery.data?.data?.data?.trips || [],
-    pendingTrips: pendingTripsQuery.data?.data?.data?.trips || [],
-    summary: myTripsQuery.data?.data?.data?.summary || {},
-    
-    // Loading states
-    isLoading: tripsQuery.isLoading || myTripsQuery.isLoading,
+    trips: extractTrips(tripsQuery.data),
+    pendingTrips: extractTrips(pendingTripsQuery.data),
+    summary: extractSummary(tripsQuery.data),
     isPendingLoading: pendingTripsQuery.isLoading,
-    
-    // Mutations
+    isLoading: tripsQuery.isLoading,
     createTrip: createTripMutation.mutate,
     approveTrip: approveTripMutation.mutate,
     rejectTrip: rejectTripMutation.mutate,
-    
-    // Mutation loading states
     isCreating: createTripMutation.isLoading,
     isApproving: approveTripMutation.isLoading,
     isRejecting: rejectTripMutation.isLoading,
-    
-    // Refetch
     refetch: tripsQuery.refetch,
     refetchPending: pendingTripsQuery.refetch,
   };
 };
 
-// Hook for trip stats
+export const useMyTrips = (params = {}) => {
+  const myTripsQuery = useQuery({
+    queryKey: ['myTrips', params],
+    queryFn: () => tripService.getMyTrips(params),
+  });
+
+  return {
+    myTrips: extractTrips(myTripsQuery.data),
+    summary: extractSummary(myTripsQuery.data),
+    isLoading: myTripsQuery.isLoading,
+    refetch: myTripsQuery.refetch,
+  };
+};
+
+export const useCreateTrip = () => {
+  const queryClient = useQueryClient();
+
+  const createTripMutation = useMutation({
+    mutationFn: tripService.createTrip,
+    onSuccess: () => {
+      toast.success('Trip created successfully!');
+      queryClient.invalidateQueries({ queryKey: ['myTrips'] });
+      queryClient.invalidateQueries({ queryKey: ['driverDashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['tripStats'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to create trip');
+    },
+  });
+
+  return {
+    createTrip: createTripMutation.mutate,
+    isCreating: createTripMutation.isLoading,
+  };
+};
+
 export const useTripStats = (params = {}) => {
   return useQuery({
     queryKey: ['tripStats', params],
