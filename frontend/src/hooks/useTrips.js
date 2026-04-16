@@ -61,6 +61,8 @@ export const useTrips = (params = {}) => {
     summary: extractSummary(tripsQuery.data),
     isPendingLoading: pendingTripsQuery.isLoading,
     isLoading: tripsQuery.isLoading,
+    isError: tripsQuery.isError,
+    error: tripsQuery.error,
     createTrip: createTripMutation.mutate,
     approveTrip: approveTripMutation.mutate,
     rejectTrip: rejectTripMutation.mutate,
