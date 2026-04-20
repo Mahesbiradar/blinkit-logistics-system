@@ -46,6 +46,7 @@ LOCAL_APPS = [
     'apps.expenses',
     'apps.payments',
     'apps.dashboard',
+    'apps.reports',
     'apps.common',
 ]
 

@@ -1,11 +1,12 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { 
-  Home, 
-  MapPin, 
-  Users, 
-  Truck, 
+import {
+  Home,
+  MapPin,
+  Users,
+  Truck,
   Wallet,
   CreditCard,
+  BarChart2,
   LogOut,
   Menu,
   X,
@@ -27,6 +28,7 @@ const AdminLayout = () => {
     { path: '/admin/vehicles', label: 'Vehicles', icon: Truck },
     { path: '/admin/expenses', label: 'Expenses', icon: Wallet },
     { path: '/admin/payments', label: 'Payments', icon: CreditCard },
+    { path: '/admin/reports', label: 'Reports', icon: BarChart2 },
   ];
 
   const handleLogout = () => {
