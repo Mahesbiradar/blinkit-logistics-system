@@ -6,17 +6,44 @@ from django.db import models
 from django.utils import timezone
 
 
+class Store(models.Model):
+    """Master list of Blinkit stores / delivery destinations"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=200, unique=True)
+    code = models.CharField(max_length=20, blank=True)
+    area = models.CharField(max_length=100, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'stores'
+        ordering = ['name']
+        verbose_name = 'Store'
+        verbose_name_plural = 'Stores'
+
+    def __str__(self):
+        return self.name
+
+
 class Trip(models.Model):
     """
     Trip Model
     Supports up to 2 trips per day (Trip 1 and Trip 2)
     Total KM is auto-calculated: (one_way_km_1 * 2) + (one_way_km_2 * 2)
     """
-    
+
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
+    ]
+
+    CATEGORY_CHOICES = [
+        ('regular', 'Regular'),
+        ('adhoc', 'Adhoc'),
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -34,6 +61,16 @@ class Trip(models.Model):
     
     trip_date = models.DateField()
     warehouse = models.CharField(max_length=50, default='B3 WH')
+    trip_category = models.CharField(
+        max_length=20, choices=CATEGORY_CHOICES, default='regular'
+    )
+    created_by = models.ForeignKey(
+        'accounts.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_trips',
+    )
     
     # Trip 1 Details
     dispatch_time_1 = models.TimeField(null=True, blank=True)

@@ -19,6 +19,7 @@ class Expense(models.Model):
         ('allowance', 'Allowance'),
         ('maintenance', 'Maintenance'),
         ('other', 'Other'),
+        ('company_management', 'Company / Management'),
     ]
     
     PAYMENT_MODE_CHOICES = [
@@ -36,11 +37,15 @@ class Expense(models.Model):
     driver = models.ForeignKey(
         'drivers.Driver',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name='expenses'
     )
     vehicle = models.ForeignKey(
         'vehicles.Vehicle',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name='expenses'
     )
     trip = models.ForeignKey(
@@ -67,6 +72,9 @@ class Expense(models.Model):
         blank=True
     )
     
+    # Toll is always paid by owner (Blinkit reimburses) — never deducted from driver/vendor
+    is_blinkit_reimbursable = models.BooleanField(default=False)
+
     # Advance tracking - marks if this advance has been deducted from payment
     is_deducted = models.BooleanField(default=False)
     deducted_at = models.DateTimeField(null=True, blank=True)

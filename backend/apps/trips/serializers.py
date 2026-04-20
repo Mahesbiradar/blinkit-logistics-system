@@ -6,7 +6,16 @@ from rest_framework import serializers
 
 from apps.drivers.models import Driver
 from apps.vehicles.models import Vehicle
-from .models import Trip
+from .models import Store, Trip
+
+
+class StoreSerializer(serializers.ModelSerializer):
+    """Store master serializer"""
+
+    class Meta:
+        model = Store
+        fields = ['id', 'name', 'code', 'area', 'is_active', 'created_at']
+        read_only_fields = ['id', 'created_at']
 
 
 class TripSerializer(serializers.ModelSerializer):
@@ -29,7 +38,7 @@ class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
         fields = [
-            'id', 'trip_date', 'warehouse',
+            'id', 'trip_date', 'warehouse', 'trip_category',
             'driver', 'driver_id', 'driver_name', 'driver_phone',
             'vehicle', 'vehicle_id', 'vehicle_number',
             'dispatch_time_1', 'store_name_1', 'one_way_km_1',
@@ -139,7 +148,7 @@ class TripCreateSerializer(serializers.ModelSerializer):
         model = Trip
         fields = [
             'driver_id', 'vehicle_id',
-            'trip_date', 'warehouse',
+            'trip_date', 'warehouse', 'trip_category',
             'dispatch_time_1', 'store_name_1', 'one_way_km_1',
             'dispatch_time_2', 'store_name_2', 'one_way_km_2',
             'gate_pass_image', 'map_screenshot', 'remarks'

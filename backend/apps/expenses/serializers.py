@@ -14,11 +14,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
     """Expense Serializer"""
 
     driver = serializers.SerializerMethodField()
-    driver_id = serializers.UUIDField(source='driver.id', read_only=True)
-    driver_name = serializers.CharField(source='driver.user.get_full_name', read_only=True)
     vehicle = serializers.SerializerMethodField()
-    vehicle_id = serializers.UUIDField(source='vehicle.id', read_only=True)
-    vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
     trip_id = serializers.UUIDField(source='trip.id', read_only=True, allow_null=True)
     expense_type_display = serializers.CharField(source='get_expense_type_display', read_only=True)
     payment_mode_display = serializers.CharField(source='get_payment_mode_display', read_only=True)
@@ -27,11 +23,11 @@ class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
         fields = [
-            'id', 'driver', 'driver_id', 'driver_name',
-            'vehicle', 'vehicle_id', 'vehicle_number',
-            'trip', 'trip_id', 'expense_type', 'expense_type_display',
+            'id', 'driver', 'vehicle',
+            'trip_id', 'expense_type', 'expense_type_display',
             'amount', 'expense_date', 'description',
             'receipt_image_url', 'payment_mode', 'payment_mode_display',
+            'is_blinkit_reimbursable',
             'is_deducted', 'deducted_at', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'is_deducted', 'deducted_at', 'created_at', 'updated_at']
@@ -45,6 +41,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
         return file_field.url
 
     def get_driver(self, obj):
+        if not obj.driver:
+            return None
         return {
             'id': str(obj.driver.id),
             'name': obj.driver.user.get_full_name(),
@@ -52,6 +50,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
         }
 
     def get_vehicle(self, obj):
+        if not obj.vehicle:
+            return None
         return {
             'id': str(obj.vehicle.id),
             'vehicle_number': obj.vehicle.vehicle_number,
@@ -91,7 +91,7 @@ class ExpenseWriteSerializer(serializers.ModelSerializer):
         fields = [
             'driver_id', 'vehicle_id', 'trip_id', 'expense_type',
             'amount', 'expense_date', 'description',
-            'receipt_image', 'payment_mode'
+            'receipt_image', 'payment_mode', 'is_blinkit_reimbursable'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -123,10 +123,20 @@ class ExpenseWriteSerializer(serializers.ModelSerializer):
         if not user or not user.is_authenticated:
             raise serializers.ValidationError("Authentication required")
 
+        expense_type = data.get('expense_type', '')
+        is_company_expense = expense_type == 'company_management'
+
+        # Auto-set toll reimbursable flag
+        if expense_type == 'toll':
+            data['is_blinkit_reimbursable'] = True
+
         if user.is_driver_role():
             if not hasattr(user, 'driver_profile'):
                 raise serializers.ValidationError("Driver profile not found")
-
+            if is_company_expense:
+                raise serializers.ValidationError(
+                    "Drivers cannot create company/management expenses"
+                )
             driver = user.driver_profile
             if vehicle is None:
                 vehicle = driver.get_primary_vehicle()
@@ -135,25 +145,24 @@ class ExpenseWriteSerializer(serializers.ModelSerializer):
                     'vehicle_id': 'No vehicle assigned to driver'
                 })
             has_assignment = driver.vehicle_mappings.filter(
-                vehicle=vehicle,
-                unassigned_at__isnull=True,
+                vehicle=vehicle, unassigned_at__isnull=True,
             ).exists()
             if not has_assignment:
                 raise serializers.ValidationError({
                     'vehicle_id': 'Vehicle is not assigned to this driver'
                 })
         elif user.is_owner() or user.is_coordinator():
+            if is_company_expense:
+                # Company/management expenses don't need driver or vehicle
+                data['driver'] = None
+                data['vehicle'] = None
+                return data
             if driver is None:
-                raise serializers.ValidationError({
-                    'driver_id': 'Driver is required'
-                })
+                raise serializers.ValidationError({'driver_id': 'Driver is required'})
             if vehicle is None:
-                raise serializers.ValidationError({
-                    'vehicle_id': 'Vehicle is required'
-                })
+                raise serializers.ValidationError({'vehicle_id': 'Vehicle is required'})
             has_assignment = driver.vehicle_mappings.filter(
-                vehicle=vehicle,
-                unassigned_at__isnull=True,
+                vehicle=vehicle, unassigned_at__isnull=True,
             ).exists()
             if not has_assignment:
                 raise serializers.ValidationError({
@@ -180,8 +189,8 @@ class ExpenseWriteSerializer(serializers.ModelSerializer):
 class ExpenseListSerializer(serializers.ModelSerializer):
     """Expense List Serializer (minimal fields)"""
 
-    driver_name = serializers.CharField(source='driver.user.get_full_name', read_only=True)
-    vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
+    driver_name = serializers.SerializerMethodField()
+    vehicle_number = serializers.SerializerMethodField()
     expense_type_display = serializers.CharField(source='get_expense_type_display', read_only=True)
 
     class Meta:
@@ -189,8 +198,14 @@ class ExpenseListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'driver_name', 'vehicle_number',
             'expense_type', 'expense_type_display',
-            'amount', 'expense_date', 'is_deducted'
+            'amount', 'expense_date', 'is_deducted', 'is_blinkit_reimbursable'
         ]
+
+    def get_driver_name(self, obj):
+        return obj.driver.user.get_full_name() if obj.driver else '—'
+
+    def get_vehicle_number(self, obj):
+        return obj.vehicle.vehicle_number if obj.vehicle else '—'
 
 
 class ExpenseSummarySerializer(serializers.Serializer):
@@ -207,7 +222,7 @@ class ExpenseFilterSerializer(serializers.Serializer):
     driver_id = serializers.UUIDField(required=False)
     vehicle_id = serializers.UUIDField(required=False)
     expense_type = serializers.ChoiceField(
-        choices=['fuel', 'toll', 'advance', 'allowance', 'maintenance', 'other'],
+        choices=['fuel', 'toll', 'advance', 'allowance', 'maintenance', 'other', 'company_management'],
         required=False
     )
     start_date = serializers.DateField(required=False)

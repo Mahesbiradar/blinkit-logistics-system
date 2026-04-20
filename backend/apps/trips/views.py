@@ -8,9 +8,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 
-from apps.common.permissions import IsDriver, IsOwnerOrCoordinator
-from .models import Trip
+from apps.common.permissions import IsDriver, IsOwner, IsOwnerOrCoordinator
+from .models import Store, Trip
 from .serializers import (
+    StoreSerializer,
     TripApprovalSerializer,
     TripCreateSerializer,
     TripRejectionSerializer,
@@ -76,7 +77,7 @@ class TripListCreateView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
-        trip = serializer.save()
+        trip = serializer.save(created_by=request.user)
 
         response_serializer = TripSerializer(trip, context={'request': request})
         return Response({
@@ -342,3 +343,68 @@ class TripStatsView(APIView):
                 'rejected_trips': stats['rejected_trips'] or 0
             }
         })
+
+
+class StoreListCreateView(APIView):
+    """List all active stores (searchable) and allow owner/coordinator to create new ones"""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        queryset = Store.objects.filter(is_active=True)
+        search = request.query_params.get('q', '').strip()
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        serializer = StoreSerializer(queryset[:50], many=True)
+        return Response({'success': True, 'data': serializer.data})
+
+    def post(self, request):
+        if not (request.user.is_owner() or request.user.is_coordinator()):
+            return Response(
+                {'success': False, 'message': 'Permission denied'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        serializer = StoreSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                {'success': False, 'message': 'Invalid data', 'errors': serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        store = serializer.save()
+        return Response(
+            {'success': True, 'message': 'Store created', 'data': StoreSerializer(store).data},
+            status=status.HTTP_201_CREATED
+        )
+
+
+class StoreDetailView(APIView):
+    """Get / update / deactivate a store (owner/coordinator only for write)"""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return Store.objects.get(pk=pk)
+        except Store.DoesNotExist:
+            return None
+
+    def get(self, request, pk):
+        store = self.get_object(pk)
+        if not store:
+            return Response({'success': False, 'message': 'Store not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'success': True, 'data': StoreSerializer(store).data})
+
+    def patch(self, request, pk):
+        if not (request.user.is_owner() or request.user.is_coordinator()):
+            return Response({'success': False, 'message': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
+        store = self.get_object(pk)
+        if not store:
+            return Response({'success': False, 'message': 'Store not found'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = StoreSerializer(store, data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(
+                {'success': False, 'message': 'Invalid data', 'errors': serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        store = serializer.save()
+        return Response({'success': True, 'data': StoreSerializer(store).data})

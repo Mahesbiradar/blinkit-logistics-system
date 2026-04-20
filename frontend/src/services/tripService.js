@@ -68,6 +68,17 @@ const tripService = {
   getTripStats: (params = {}) => {
     return api.get('/trips/stats/', { params });
   },
+
+  // Store master
+  searchStores: (q = '') => {
+    return api.get('/trips/stores/', { params: { q } });
+  },
+  createStore: (data) => {
+    return api.post('/trips/stores/', data);
+  },
+  updateStore: (storeId, data) => {
+    return api.patch(`/trips/stores/${storeId}/`, data);
+  },
 };
 
 export default tripService;

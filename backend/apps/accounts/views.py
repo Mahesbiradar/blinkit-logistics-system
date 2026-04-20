@@ -446,29 +446,45 @@ class ResetPasswordView(APIView):
 
 
 class CoordinatorCreateView(APIView):
-    """Create coordinator account"""
+    """List and create coordinator accounts (Owner only)"""
     permission_classes = [IsOwner]
 
+    def get(self, request):
+        coordinators = User.objects.filter(
+            role='coordinator', is_active=True
+        ).order_by('first_name')
+        return Response({
+            'success': True,
+            'data': UserSerializer(coordinators, many=True).data
+        })
+
     def post(self, request):
+        from django.db import IntegrityError
+
         serializer = CoordinatorCreateSerializer(data=request.data)
         if not serializer.is_valid():
             return Response({
                 'success': False,
-                'message': 'Invalid input',
+                'message': 'Please fix the errors below',
                 'errors': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
 
         data = serializer.validated_data
-        coordinator = User.objects.create_user(
-            phone=data['phone'],
-            first_name=data['first_name'],
-            last_name=data.get('last_name', ''),
-            email=data['email'],
-            role='coordinator',
-            password=data['password'],
-            is_staff=True,
-            is_active=True,
-        )
+        try:
+            coordinator = User.objects.create_user(
+                phone=data['phone'],
+                first_name=data['first_name'],
+                last_name=data.get('last_name', ''),
+                email=data['email'],
+                role='coordinator',
+                password=data['password'],
+                is_active=True,
+            )
+        except IntegrityError:
+            return Response({
+                'success': False,
+                'message': 'Phone or email already registered',
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({
             'success': True,

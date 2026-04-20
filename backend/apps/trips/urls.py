@@ -12,4 +12,6 @@ urlpatterns = [
     path('my-trips/', views.MyTripsView.as_view(), name='my-trips'),
     path('pending/', views.PendingTripsView.as_view(), name='pending-trips'),
     path('stats/', views.TripStatsView.as_view(), name='trip-stats'),
+    path('stores/', views.StoreListCreateView.as_view(), name='store-list-create'),
+    path('stores/<uuid:pk>/', views.StoreDetailView.as_view(), name='store-detail'),
 ]

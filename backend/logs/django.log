@@ -73,3 +73,169 @@ WARNING 2026-04-16 23:16:13,082 log Unauthorized: /api/v1/auth/driver/register/
 WARNING 2026-04-16 23:16:13,084 basehttp "POST /api/v1/auth/driver/register/ HTTP/1.1" 401 60
 INFO 2026-04-16 23:16:20,365 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
 INFO 2026-04-16 23:16:30,289 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322
+WARNING 2026-04-16 23:34:20,416 log Not Found: /
+WARNING 2026-04-16 23:34:20,417 basehttp "GET / HTTP/1.1" 404 3117
+WARNING 2026-04-16 23:34:21,792 log Not Found: /favicon.ico
+WARNING 2026-04-16 23:34:21,793 basehttp "GET /favicon.ico HTTP/1.1" 404 3168
+INFO 2026-04-16 23:37:03,227 basehttp "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:03,431 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-16 23:37:03,513 basehttp "OPTIONS /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-16 HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:03,601 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-16 HTTP/1.1" 200 407
+INFO 2026-04-16 23:37:05,308 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-16 23:37:05,310 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-16 23:37:07,632 basehttp "OPTIONS /api/v1/drivers/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:07,632 basehttp "OPTIONS /api/v1/vehicles/?is_active=true HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:07,644 basehttp "OPTIONS /api/v1/vehicles/vendors/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:07,663 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 58
+INFO 2026-04-16 23:37:07,666 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 57
+INFO 2026-04-16 23:37:07,667 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-16 23:37:12,013 basehttp "OPTIONS /api/v1/drivers/?is_active=true HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:12,013 basehttp "OPTIONS /api/v1/vehicles/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:12,036 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 58
+INFO 2026-04-16 23:37:12,037 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 57
+INFO 2026-04-16 23:37:25,514 basehttp "OPTIONS /api/v1/expenses/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:37:25,557 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 185
+INFO 2026-04-16 23:38:27,314 basehttp "OPTIONS /api/v1/payments/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:38:27,340 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-16 23:43:12,742 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 57
+INFO 2026-04-16 23:43:12,744 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 58
+INFO 2026-04-16 23:43:12,745 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-16 23:43:20,731 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 58
+INFO 2026-04-16 23:43:20,743 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 57
+INFO 2026-04-16 23:43:25,492 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 185
+INFO 2026-04-16 23:44:22,689 basehttp "POST /api/v1/vehicles/ HTTP/1.1" 201 550
+INFO 2026-04-16 23:44:22,721 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 543
+INFO 2026-04-16 23:44:42,584 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 543
+INFO 2026-04-16 23:45:07,442 basehttp "POST /api/v1/drivers/ HTTP/1.1" 201 866
+INFO 2026-04-16 23:45:07,478 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 859
+INFO 2026-04-16 23:45:17,133 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-16 23:45:18,762 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-16 HTTP/1.1" 200 407
+INFO 2026-04-16 23:45:51,461 basehttp "POST /api/v1/expenses/ HTTP/1.1" 201 829
+INFO 2026-04-16 23:45:51,496 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 406
+INFO 2026-04-16 23:46:06,048 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-16 HTTP/1.1" 200 413
+INFO 2026-04-16 23:46:13,046 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-16 23:46:13,046 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-16 23:46:41,083 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 899
+INFO 2026-04-16 23:46:41,138 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-16 HTTP/1.1" 200 413
+INFO 2026-04-16 23:46:46,256 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-16 23:46:46,267 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-16 23:46:48,587 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-16 23:46:48,613 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-16 23:46:48,616 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 859
+INFO 2026-04-16 23:46:54,921 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-16 23:47:06,166 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-16 23:47:14,969 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 1023
+INFO 2026-04-16 23:47:15,002 basehttp "OPTIONS /api/v1/dashboard/driver/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:47:15,084 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 336
+INFO 2026-04-16 23:47:27,344 basehttp "OPTIONS /api/v1/trips/my-trips/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:47:27,371 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 200 116
+INFO 2026-04-16 23:47:29,914 basehttp "OPTIONS /api/v1/expenses/my-expenses/ HTTP/1.1" 200 0
+INFO 2026-04-16 23:47:29,949 basehttp "GET /api/v1/expenses/my-expenses/ HTTP/1.1" 200 881
+INFO 2026-04-16 23:49:25,746 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 336
+INFO 2026-04-16 23:52:05,070 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-16 23:52:05,134 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-16 HTTP/1.1" 200 413
+INFO 2026-04-16 23:52:09,091 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-16 23:52:09,108 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 859
+INFO 2026-04-16 23:52:09,112 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-16 23:52:40,914 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-16 23:52:42,118 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 406
+INFO 2026-04-16 23:52:42,127 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-16 23:52:47,722 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 645
+INFO 2026-04-16 23:53:01,254 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-16 23:53:01,259 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-16 23:53:36,462 basehttp "OPTIONS /api/v1/auth/coordinators/ HTTP/1.1" 200 0
+WARNING 2026-04-16 23:53:36,480 log Bad Request: /api/v1/auth/coordinators/
+WARNING 2026-04-16 23:53:36,481 basehttp "POST /api/v1/auth/coordinators/ HTTP/1.1" 400 157
+WARNING 2026-04-16 23:53:48,994 log Bad Request: /api/v1/auth/coordinators/
+WARNING 2026-04-16 23:53:48,995 basehttp "POST /api/v1/auth/coordinators/ HTTP/1.1" 400 157
+WARNING 2026-04-16 23:54:00,509 log Bad Request: /api/v1/auth/coordinators/
+WARNING 2026-04-16 23:54:00,511 basehttp "POST /api/v1/auth/coordinators/ HTTP/1.1" 400 157
+WARNING 2026-04-16 23:54:18,934 log Bad Request: /api/v1/auth/coordinators/
+WARNING 2026-04-16 23:54:18,935 basehttp "POST /api/v1/auth/coordinators/ HTTP/1.1" 400 97
+WARNING 2026-04-16 23:54:33,344 log Bad Request: /api/v1/auth/coordinators/
+WARNING 2026-04-16 23:54:33,346 basehttp "POST /api/v1/auth/coordinators/ HTTP/1.1" 400 114
+INFO 2026-04-21 00:39:01,287 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 00:39:42,068 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 01:14:20,233 basehttp "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:20,850 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-21 01:14:20,987 basehttp "OPTIONS /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:21,178 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 413
+INFO 2026-04-21 01:14:23,856 basehttp "OPTIONS /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:23,870 basehttp "OPTIONS /api/v1/trips/pending/ HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:23,920 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-21 01:14:23,920 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 01:14:25,853 basehttp "OPTIONS /api/v1/vehicles/?is_active=true HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:25,853 basehttp "OPTIONS /api/v1/drivers/ HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:25,860 basehttp "OPTIONS /api/v1/vehicles/vendors/ HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:25,911 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 01:14:25,982 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-21 01:14:25,988 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 859
+INFO 2026-04-21 01:14:28,894 basehttp "OPTIONS /api/v1/vehicles/ HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:28,895 basehttp "OPTIONS /api/v1/drivers/?is_active=true HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:28,984 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 645
+INFO 2026-04-21 01:14:28,990 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 01:14:32,547 basehttp "OPTIONS /api/v1/expenses/ HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:32,615 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 406
+INFO 2026-04-21 01:14:35,066 basehttp "OPTIONS /api/v1/payments/ HTTP/1.1" 200 0
+INFO 2026-04-21 01:14:35,107 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-21 01:21:11,886 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 413
+INFO 2026-04-21 01:21:21,731 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-21 01:21:21,737 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 01:21:23,947 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 01:21:23,977 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 645
+INFO 2026-04-21 01:21:23,994 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 01:32:23,953 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 01:32:23,971 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 406
+INFO 2026-04-21 01:32:23,990 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-21 01:32:23,998 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 01:32:24,608 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-21 01:32:28,857 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 645
+INFO 2026-04-21 01:32:29,372 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 859
+INFO 2026-04-21 01:32:29,869 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 01:32:29,869 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-21 01:54:47,087 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 413
+INFO 2026-04-21 01:54:49,888 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 01:54:49,939 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 859
+INFO 2026-04-21 01:54:49,947 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-21 01:54:50,720 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 645
+INFO 2026-04-21 01:54:50,722 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 01:54:51,718 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 406
+INFO 2026-04-21 01:54:52,518 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-21 02:10:31,228 autoreload /app/apps/trips/models.py changed, reloading.
+INFO 2026-04-21 02:10:33,198 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:10:41,681 autoreload /app/apps/trips/models.py changed, reloading.
+INFO 2026-04-21 02:10:43,247 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:10:48,382 autoreload /app/apps/expenses/models.py changed, reloading.
+INFO 2026-04-21 02:10:49,917 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:10:54,000 autoreload /app/apps/expenses/models.py changed, reloading.
+INFO 2026-04-21 02:10:55,381 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:11:00,580 autoreload /app/apps/expenses/models.py changed, reloading.
+INFO 2026-04-21 02:11:01,993 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:11:13,141 autoreload /app/apps/payments/models.py changed, reloading.
+INFO 2026-04-21 02:11:14,823 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:11:23,558 autoreload /app/apps/accounts/views.py changed, reloading.
+INFO 2026-04-21 02:11:25,042 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:11:55,654 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 02:11:57,231 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:12:08,096 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 02:12:09,866 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:12:15,069 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 02:12:16,850 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:12:28,677 autoreload /app/apps/expenses/serializers.py changed, reloading.
+INFO 2026-04-21 02:12:30,964 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:12:34,342 autoreload /app/apps/expenses/serializers.py changed, reloading.
+INFO 2026-04-21 02:12:36,516 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:12:48,116 autoreload /app/apps/expenses/serializers.py changed, reloading.
+INFO 2026-04-21 02:12:50,217 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:12:56,903 autoreload /app/apps/expenses/serializers.py changed, reloading.
+INFO 2026-04-21 02:12:58,445 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:13:01,897 autoreload /app/apps/expenses/serializers.py changed, reloading.
+INFO 2026-04-21 02:13:03,514 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:13:13,679 autoreload /app/apps/trips/views.py changed, reloading.
+INFO 2026-04-21 02:13:15,288 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:13:19,506 autoreload /app/apps/trips/views.py changed, reloading.
+INFO 2026-04-21 02:13:21,179 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:13:31,272 autoreload /app/apps/trips/views.py changed, reloading.
+INFO 2026-04-21 02:13:33,045 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 02:13:38,087 autoreload /app/apps/trips/urls.py changed, reloading.
+INFO 2026-04-21 02:13:39,830 autoreload Watching for file changes with StatReloader

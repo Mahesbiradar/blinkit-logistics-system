@@ -268,23 +268,39 @@ class Payment(models.Model):
         total_fuel = expenses.filter(
             expense_type='fuel'
         ).aggregate(total=models.Sum('amount'))['total'] or 0
-        
+
         total_advance = expenses.filter(
             expense_type='advance',
             is_deducted=False
         ).aggregate(total=models.Sum('amount'))['total'] or 0
-        
+
         total_toll = expenses.filter(
             expense_type='toll'
         ).aggregate(total=models.Sum('amount'))['total'] or 0
-        
-        # Calculate
+
+        total_allowance = expenses.filter(
+            expense_type='allowance'
+        ).aggregate(total=models.Sum('amount'))['total'] or 0
+
+        total_maintenance = expenses.filter(
+            expense_type='maintenance'
+        ).aggregate(total=models.Sum('amount'))['total'] or 0
+
+        total_other = expenses.filter(
+            expense_type='other'
+        ).aggregate(total=models.Sum('amount'))['total'] or 0
+
+        # Vendor settlement: (KM × Rate) - all expenses except toll
+        # Toll is borne by owner (Blinkit reimburses separately)
         km_rate = vehicle.km_rate
         km_amount = total_km * km_rate
         gross_amount = km_amount
-        total_deductions = total_fuel + total_advance
+        total_deductions = (
+            total_fuel + total_advance + total_allowance +
+            total_maintenance + total_other
+        )
         final_amount = gross_amount - total_deductions
-        
+
         return {
             'vendor': vendor,
             'vehicle': vehicle,
@@ -297,6 +313,8 @@ class Payment(models.Model):
             'total_fuel_expenses': total_fuel,
             'total_advance': total_advance,
             'total_toll_expenses': total_toll,
+            'total_allowance': total_allowance,
+            'other_deductions': total_maintenance + total_other,
             'gross_amount': gross_amount,
             'total_deductions': total_deductions,
             'final_amount': final_amount,
