@@ -54,6 +54,11 @@ const tripService = {
     return api.patch(`/trips/${tripId}/`, data);
   },
 
+  // Delete trip
+  deleteTrip: (tripId) => {
+    return api.delete(`/trips/${tripId}/`);
+  },
+
   // Approve trip
   approveTrip: (tripId, remarks = '') => {
     return api.post(`/trips/${tripId}/approve/`, { remarks });

@@ -24,7 +24,6 @@ const AdminLayout = () => {
   const navItems = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: Home },
     { path: '/admin/trips', label: 'Trips', icon: MapPin },
-    { path: '/admin/drivers', label: 'Drivers', icon: Users },
     { path: '/admin/vehicles', label: 'Vehicles', icon: Truck },
     { path: '/admin/expenses', label: 'Expenses', icon: Wallet },
     { path: '/admin/payments', label: 'Payments', icon: CreditCard },

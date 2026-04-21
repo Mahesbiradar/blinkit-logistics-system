@@ -92,11 +92,11 @@ const AdminDashboard = () => {
       onClick: () => navigate('/admin/trips'),
     },
     {
-      title: 'Manage Drivers',
-      description: 'View driver performance',
-      icon: Users,
+      title: 'Manage Vehicles',
+      description: 'Vehicles & driver assignments',
+      icon: Truck,
       color: 'bg-green-600',
-      onClick: () => navigate('/admin/drivers'),
+      onClick: () => navigate('/admin/vehicles'),
     },
     {
       title: 'Manage Vehicles',

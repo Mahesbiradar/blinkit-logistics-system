@@ -16,7 +16,6 @@ import MyExpenses from './pages/driver/MyExpenses';
 
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TripsManagement from './pages/admin/TripsManagement';
-import DriversManagement from './pages/admin/DriversManagement';
 import VehiclesManagement from './pages/admin/VehiclesManagement';
 import ExpensesManagement from './pages/admin/ExpensesManagement';
 import PaymentsManagement from './pages/admin/PaymentsManagement';
@@ -122,7 +121,6 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="dashboard" replace /> },
       { path: 'dashboard', element: <AdminDashboard /> },
       { path: 'trips', element: <TripsManagement /> },
-      { path: 'drivers', element: <DriversManagement /> },
       { path: 'vehicles', element: <VehiclesManagement /> },
       { path: 'expenses', element: <ExpensesManagement /> },
       { path: 'payments', element: <PaymentsManagement /> },

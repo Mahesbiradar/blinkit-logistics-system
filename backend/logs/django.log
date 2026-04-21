@@ -2103,3 +2103,19 @@ INFO 2026-04-21 10:27:16,668 basehttp "GET /api/v1/vehicles/?is_active=true HTTP
 INFO 2026-04-21 10:27:16,675 basehttp "GET /api/v1/drivers/ HTTP/1.1" 200 859
 INFO 2026-04-21 10:27:48,268 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
 INFO 2026-04-21 10:27:49,898 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+INFO 2026-04-21 10:51:45,844 autoreload /app/apps/vehicles/views.py changed, reloading.
+INFO 2026-04-21 10:51:49,130 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 10:51:57,459 autoreload /app/apps/vehicles/urls.py changed, reloading.
+INFO 2026-04-21 10:52:00,326 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 10:52:06,464 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 10:52:06,505 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
+INFO 2026-04-21 10:52:06,512 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-21 10:52:06,521 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 10:57:10,522 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 10:57:10,585 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
+INFO 2026-04-21 10:57:10,585 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 10:57:10,589 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-21 10:59:05,482 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 10:59:05,509 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
+INFO 2026-04-21 10:59:05,520 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 10:59:05,522 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645

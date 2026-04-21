@@ -14,11 +14,11 @@ const expenseService = {
     });
 
     return api.post('/expenses/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
+  updateExpense: (expenseId, data) => api.patch(`/expenses/${expenseId}/`, data),
+  deleteExpense: (expenseId) => api.delete(`/expenses/${expenseId}/`),
 };
 
 export default expenseService;

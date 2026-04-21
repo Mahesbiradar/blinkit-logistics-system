@@ -55,6 +55,30 @@ export const useTrips = (params = {}) => {
     },
   });
 
+  const updateTripMutation = useMutation({
+    mutationFn: ({ tripId, data }) => tripService.updateTrip(tripId, data),
+    onSuccess: () => {
+      toast.success('Trip updated');
+      queryClient.invalidateQueries({ queryKey: ['trips'] });
+      queryClient.invalidateQueries({ queryKey: ['pendingTrips'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to update trip');
+    },
+  });
+
+  const deleteTripMutation = useMutation({
+    mutationFn: (tripId) => tripService.deleteTrip(tripId),
+    onSuccess: () => {
+      toast.success('Trip deleted');
+      queryClient.invalidateQueries({ queryKey: ['trips'] });
+      queryClient.invalidateQueries({ queryKey: ['pendingTrips'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to delete trip');
+    },
+  });
+
   return {
     trips: extractTrips(tripsQuery.data),
     pendingTrips: extractTrips(pendingTripsQuery.data),
@@ -66,9 +90,13 @@ export const useTrips = (params = {}) => {
     createTrip: createTripMutation.mutate,
     approveTrip: approveTripMutation.mutate,
     rejectTrip: rejectTripMutation.mutate,
+    updateTrip: updateTripMutation.mutate,
+    deleteTrip: deleteTripMutation.mutate,
     isCreating: createTripMutation.isLoading,
     isApproving: approveTripMutation.isLoading,
     isRejecting: rejectTripMutation.isLoading,
+    isUpdating: updateTripMutation.isLoading,
+    isDeleting: deleteTripMutation.isLoading,
     refetch: tripsQuery.refetch,
     refetchPending: pendingTripsQuery.refetch,
   };

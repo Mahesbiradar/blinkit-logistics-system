@@ -13,6 +13,7 @@ import {
 import toast from 'react-hot-toast';
 import { useCreateTrip } from '../../hooks/useTrips';
 import { useAuthStore } from '../../store/authStore';
+
 import tripService from '../../services/tripService';
 
 // ---------- Store search dropdown ----------
@@ -129,7 +130,7 @@ const emptyForm = {
   trip_date: new Date().toISOString().split('T')[0],
   trip_category: 'regular',
   gate_pass_image: null,
-  map_screenshot: null,
+  map_image: null,
   gate_pass_preview: null,
   map_preview: null,
   store_name_1: '',
@@ -143,7 +144,7 @@ const emptyForm = {
 
 const AddTrip = () => {
   const navigate = useNavigate();
-  const { driverProfile } = useAuthStore();
+  const { driverProfile, isDriver } = useAuthStore();
   const { createTrip, isCreating } = useCreateTrip();
   const fileInputRef = useRef(null);
   const mapInputRef = useRef(null);
@@ -195,7 +196,7 @@ const AddTrip = () => {
       trip_date: formData.trip_date,
       trip_category: formData.trip_category,
       gate_pass_image: formData.gate_pass_image,
-      map_screenshot: formData.map_screenshot,
+      map_screenshot: formData.map_image,
       store_name_1: formData.store_name_1.trim(),
       one_way_km_1: parseFloat(formData.one_way_km_1),
       dispatch_time_1: formData.dispatch_time_1 || undefined,
@@ -212,7 +213,7 @@ const AddTrip = () => {
     });
   };
 
-  const canProceedToStep2 = Boolean(formData.gate_pass_image && formData.map_screenshot);
+  const canProceedToStep2 = Boolean(formData.gate_pass_image && formData.map_image);
   const canSubmit = Boolean(formData.store_name_1.trim() && formData.one_way_km_1);
 
   return (
@@ -274,7 +275,7 @@ const AddTrip = () => {
                   className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 >
                   <option value="regular">Regular</option>
-                  <option value="adhoc">Adhoc</option>
+                  {!isDriver() && <option value="adhoc">Adhoc</option>}
                 </select>
               </div>
             </div>
@@ -368,7 +369,7 @@ const AddTrip = () => {
               <ul className="mt-3 space-y-3 text-sm text-gray-100">
                 {[
                   { done: !!formData.gate_pass_image, label: 'Gate pass photo uploaded' },
-                  { done: !!formData.map_screenshot, label: 'Google Maps screenshot uploaded' },
+                  { done: !!formData.map_image, label: 'Google Maps screenshot uploaded' },
                   { done: false, label: 'Step 2 — enter store & KM' },
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
