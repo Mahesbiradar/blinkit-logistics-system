@@ -192,13 +192,16 @@ class ExpenseListSerializer(serializers.ModelSerializer):
     driver_name = serializers.SerializerMethodField()
     vehicle_number = serializers.SerializerMethodField()
     expense_type_display = serializers.CharField(source='get_expense_type_display', read_only=True)
+    payment_mode_display = serializers.CharField(source='get_payment_mode_display', read_only=True)
 
     class Meta:
         model = Expense
         fields = [
             'id', 'driver_name', 'vehicle_number',
             'expense_type', 'expense_type_display',
-            'amount', 'expense_date', 'is_deducted', 'is_blinkit_reimbursable'
+            'amount', 'expense_date', 'description',
+            'payment_mode', 'payment_mode_display',
+            'is_deducted', 'is_blinkit_reimbursable'
         ]
 
     def get_driver_name(self, obj):

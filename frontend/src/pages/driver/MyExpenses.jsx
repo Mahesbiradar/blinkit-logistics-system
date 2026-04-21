@@ -105,7 +105,7 @@ const MyExpenses = () => {
                     </span>
                     <span className="inline-flex items-center gap-2">
                       <Truck className="h-4 w-4" />
-                      {expense.vehicle_number}
+                      {expense.vehicle?.vehicle_number || expense.vehicle_number || '—'}
                     </span>
                     <span className="inline-flex items-center gap-2">
                       <Receipt className="h-4 w-4" />

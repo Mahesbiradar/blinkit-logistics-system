@@ -41,10 +41,10 @@ const ExpensesManagement = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const isCompany = form.expense_type === 'company_management';
     createExpense(
       {
-        driver_id: form.driver_id,
-        vehicle_id: form.vehicle_id,
+        ...(isCompany ? {} : { driver_id: form.driver_id, vehicle_id: form.vehicle_id }),
         trip_id: form.trip_id || undefined,
         expense_type: form.expense_type,
         amount: form.amount,
@@ -162,6 +162,7 @@ const ExpensesManagement = () => {
                 <option value="allowance">Allowance</option>
                 <option value="maintenance">Maintenance</option>
                 <option value="other">Other</option>
+                <option value="company_management">Company / Management</option>
               </select>
             </label>
             <label className="block">
