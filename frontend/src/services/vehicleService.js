@@ -10,6 +10,7 @@ const vehicleService = {
   updateDriverLogin: (vehicleId, data) => api.patch(`/vehicles/${vehicleId}/driver-login/`, data),
   deleteVehicle: (vehicleId) => api.delete(`/vehicles/${vehicleId}/`),
   getVendors: () => api.get('/vehicles/vendors/'),
+  createVendor: (data) => api.post('/vehicles/vendors/', data),
 };
 
 export default vehicleService;

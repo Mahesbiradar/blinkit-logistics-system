@@ -13,7 +13,7 @@ const initialOwnerForm = {
 
 const initialVendorForm = {
   vehicle_number: '', vehicle_type: 'pickup', owner_type: 'vendor',
-  vendor: '', km_rate: '',
+  vendor_name: '', vendor_phone: '', km_rate: '',
 };
 
 const fieldClass = 'w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
@@ -46,6 +46,7 @@ const AddVehicleForm = ({ vendors, onSave, isSaving, onCancel }) => {
           phone: form.driver_phone.trim(),
           password: form.driver_password,
         } : null,
+        vendor: null,
       });
     } else {
       onSave({
@@ -53,11 +54,11 @@ const AddVehicleForm = ({ vendors, onSave, isSaving, onCancel }) => {
           vehicle_number: form.vehicle_number.trim().toUpperCase(),
           vehicle_type: form.vehicle_type,
           owner_type: 'vendor',
-          vendor: form.vendor,
           km_rate: Number(form.km_rate) || 0,
           base_salary: 0,
         },
         driver: null,
+        vendor: { name: form.vendor_name.trim(), phone: form.vendor_phone.trim() },
       });
     }
   };
@@ -108,11 +109,12 @@ const AddVehicleForm = ({ vendors, onSave, isSaving, onCancel }) => {
         ) : (
           <>
             <label className="block">
-              <span className="mb-2 block text-sm font-medium text-gray-700">Vendor</span>
-              <select required value={form.vendor} onChange={(e) => set('vendor', e.target.value)} className={fieldClass}>
-                <option value="">Select vendor</option>
-                {vendors.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
-              </select>
+              <span className="mb-2 block text-sm font-medium text-gray-700">Vendor name</span>
+              <input required value={form.vendor_name} onChange={(e) => set('vendor_name', e.target.value)} className={fieldClass} placeholder="e.g. Ravi Transports" />
+            </label>
+            <label className="block">
+              <span className="mb-2 block text-sm font-medium text-gray-700">Vendor phone</span>
+              <input required value={form.vendor_phone} onChange={(e) => set('vendor_phone', e.target.value.replace(/\D/g, '').slice(0, 10))} className={fieldClass} placeholder="10-digit number" />
             </label>
             <label className="block">
               <span className="mb-2 block text-sm font-medium text-gray-700">Rate per KM (Rs.)</span>
@@ -254,13 +256,11 @@ const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
                 </label>
               ) : (
                 <>
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-gray-700">Vendor</span>
-                    <select value={vForm.vendor} onChange={(e) => setV('vendor', e.target.value)} className={fieldClass}>
-                      <option value="">Select vendor</option>
-                      {vendors.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
-                    </select>
-                  </label>
+                  {vehicle.vendor_details?.name && (
+                    <div className="rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                      <span className="font-medium">Vendor:</span> {vehicle.vendor_details.name}
+                    </div>
+                  )}
                   <label className="block">
                     <span className="mb-2 block text-sm font-medium text-gray-700">Rate per KM (Rs.)</span>
                     <input type="number" min="0" step="0.5" value={vForm.km_rate} onChange={(e) => setV('km_rate', e.target.value)} className={fieldClass} />
@@ -394,20 +394,29 @@ const VehiclesManagement = () => {
     vendor: vehicles.filter((v) => v.owner_type === 'vendor').length,
   };
 
-  const handleCreateVehicle = ({ vehicle, driver }, callbacks) => {
-    hooks.createVehicle(vehicle, {
-      onSuccess: (res) => {
-        const vehicleId = res?.data?.data?.id;
-        if (driver && vehicleId) {
-          hooks.createDriver({ vehicleId, data: driver }, {
-            onSuccess: () => { setShowForm(false); },
-          });
-        } else {
-          setShowForm(false);
-        }
-        callbacks?.onSuccess?.();
-      },
-    });
+  const handleCreateVehicle = async ({ vehicle, driver, vendor }) => {
+    try {
+      let vehiclePayload = vehicle;
+      if (vehicle.owner_type === 'vendor' && vendor) {
+        const vendorRes = await hooks.createVendorAsync(vendor);
+        const vendorId = vendorRes?.data?.data?.id;
+        vehiclePayload = { ...vehicle, vendor: vendorId };
+      }
+      hooks.createVehicle(vehiclePayload, {
+        onSuccess: (res) => {
+          const vehicleId = res?.data?.data?.id;
+          if (driver && vehicleId) {
+            hooks.createDriver({ vehicleId, data: driver }, {
+              onSuccess: () => setShowForm(false),
+            });
+          } else {
+            setShowForm(false);
+          }
+        },
+      });
+    } catch {
+      // error toasted in hook
+    }
   };
 
   const handleDelete = (id) => {

@@ -150,6 +150,7 @@ const AddTrip = () => {
   const mapInputRef = useRef(null);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState(emptyForm);
+  const [showStore2, setShowStore2] = useState(false);
 
   const handleImageSelect = (type, file) => {
     if (!file) return;
@@ -399,14 +400,14 @@ const AddTrip = () => {
               Enter one-way KM from the Google Maps screenshot — round-trip is calculated automatically.
             </div>
 
-            {/* Trip 1 */}
+            {/* Store 1 */}
             <div className="rounded-2xl border border-gray-200 p-5">
               <div className="mb-4 flex items-center gap-2">
                 <div className="rounded-lg bg-blue-100 p-2 text-blue-600">
                   <Navigation className="h-4 w-4" />
                 </div>
                 <div>
-                  <h2 className="font-semibold text-gray-900">Trip 1</h2>
+                  <h2 className="font-semibold text-gray-900">Store 1</h2>
                   <p className="text-xs text-gray-500">Required</p>
                 </div>
               </div>
@@ -437,7 +438,7 @@ const AddTrip = () => {
                     )}
                   </div>
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">Dispatch Time</label>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Dispatch Time <span className="text-gray-400 font-normal">(optional)</span></label>
                     <input
                       type="time"
                       value={formData.dispatch_time_1}
@@ -449,54 +450,73 @@ const AddTrip = () => {
               </div>
             </div>
 
-            {/* Trip 2 */}
-            <div className="rounded-2xl border border-gray-200 p-5">
-              <div className="mb-4 flex items-center gap-2">
-                <div className="rounded-lg bg-emerald-100 p-2 text-emerald-600">
-                  <Navigation className="h-4 w-4" />
-                </div>
-                <div>
-                  <h2 className="font-semibold text-gray-900">Trip 2</h2>
-                  <p className="text-xs text-gray-500">Optional</p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">Store Name</label>
-                  <StoreSearch
-                    value={formData.store_name_2}
-                    onChange={(v) => setFormData((c) => ({ ...c, store_name_2: v }))}
-                    placeholder="Search e.g. Sobha Oasis"
-                  />
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">One-way KM</label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.1"
-                      value={formData.one_way_km_2}
-                      onChange={(e) => setFormData((c) => ({ ...c, one_way_km_2: e.target.value }))}
-                      placeholder="e.g. 14"
-                      className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                    />
-                    {formData.one_way_km_2 && (
-                      <p className="mt-1 text-xs text-gray-500">Round trip: {(parseFloat(formData.one_way_km_2) * 2).toFixed(1)} km</p>
-                    )}
+            {/* Store 2 — shown only when added */}
+            {showStore2 ? (
+              <div className="rounded-2xl border border-emerald-200 p-5">
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="rounded-lg bg-emerald-100 p-2 text-emerald-600">
+                      <Navigation className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h2 className="font-semibold text-gray-900">Store 2</h2>
+                      <p className="text-xs text-gray-500">Optional</p>
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => { setShowStore2(false); setFormData((c) => ({ ...c, store_name_2: '', one_way_km_2: '', dispatch_time_2: '' })); }}
+                    className="rounded-lg px-3 py-1 text-xs font-medium text-red-500 hover:bg-red-50"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <div className="space-y-4">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700">Dispatch Time</label>
-                    <input
-                      type="time"
-                      value={formData.dispatch_time_2}
-                      onChange={(e) => setFormData((c) => ({ ...c, dispatch_time_2: e.target.value }))}
-                      className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Store Name</label>
+                    <StoreSearch
+                      value={formData.store_name_2}
+                      onChange={(v) => setFormData((c) => ({ ...c, store_name_2: v }))}
+                      placeholder="Search e.g. Sobha Oasis"
                     />
                   </div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">One-way KM</label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value={formData.one_way_km_2}
+                        onChange={(e) => setFormData((c) => ({ ...c, one_way_km_2: e.target.value }))}
+                        placeholder="e.g. 14"
+                        className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                      />
+                      {formData.one_way_km_2 && (
+                        <p className="mt-1 text-xs text-gray-500">Round trip: {(parseFloat(formData.one_way_km_2) * 2).toFixed(1)} km</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">Dispatch Time <span className="text-gray-400 font-normal">(optional)</span></label>
+                      <input
+                        type="time"
+                        value={formData.dispatch_time_2}
+                        onChange={(e) => setFormData((c) => ({ ...c, dispatch_time_2: e.target.value }))}
+                        className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowStore2(true)}
+                className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-emerald-200 py-4 text-sm font-semibold text-emerald-700 hover:border-emerald-400 hover:bg-emerald-50 transition"
+              >
+                + Add 2nd store
+              </button>
+            )}
 
             {/* Remarks */}
             <div>
@@ -531,17 +551,19 @@ const AddTrip = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Trip 1</span>
+                  <span>Store 1</span>
                   <span className="font-medium text-gray-900 text-right max-w-[55%] truncate">
                     {formData.store_name_1 || '—'}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Trip 2</span>
-                  <span className="font-medium text-gray-900 text-right max-w-[55%] truncate">
-                    {formData.store_name_2 || 'Not added'}
-                  </span>
-                </div>
+                {showStore2 && (
+                  <div className="flex justify-between">
+                    <span>Store 2</span>
+                    <span className="font-medium text-gray-900 text-right max-w-[55%] truncate">
+                      {formData.store_name_2 || 'Not filled'}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -220,24 +220,25 @@ class TripCreateSerializer(serializers.ModelSerializer):
                     'vehicle_id': 'Vehicle is not assigned to this driver'
                 })
         elif user.is_owner() or user.is_coordinator():
-            if driver is None:
-                raise serializers.ValidationError({
-                    'driver_id': 'Driver is required'
-                })
+            if vehicle is None and driver is None:
+                raise serializers.ValidationError({'vehicle_id': 'Vehicle is required'})
             if vehicle is None:
                 vehicle = driver.get_primary_vehicle()
-            if vehicle is None:
-                raise serializers.ValidationError({
-                    'vehicle_id': 'Vehicle is required'
-                })
-            has_assignment = driver.vehicle_mappings.filter(
-                vehicle=vehicle,
-                unassigned_at__isnull=True,
-            ).exists()
-            if not has_assignment:
-                raise serializers.ValidationError({
-                    'vehicle_id': 'Vehicle is not assigned to the selected driver'
-                })
+                if vehicle is None:
+                    raise serializers.ValidationError({'vehicle_id': 'No vehicle assigned to this driver'})
+            if driver is None:
+                driver = vehicle.get_primary_driver()
+                if driver is None:
+                    raise serializers.ValidationError({'vehicle_id': 'No driver assigned to this vehicle'})
+            else:
+                has_assignment = driver.vehicle_mappings.filter(
+                    vehicle=vehicle,
+                    unassigned_at__isnull=True,
+                ).exists()
+                if not has_assignment:
+                    raise serializers.ValidationError({
+                        'vehicle_id': 'Vehicle is not assigned to the selected driver'
+                    })
         else:
             raise serializers.ValidationError("You do not have permission to create trips")
 

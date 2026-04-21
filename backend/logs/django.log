@@ -2119,3 +2119,125 @@ INFO 2026-04-21 10:59:05,482 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 2
 INFO 2026-04-21 10:59:05,509 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
 INFO 2026-04-21 10:59:05,520 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
 INFO 2026-04-21 10:59:05,522 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-21 11:00:19,171 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:00:19,206 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
+INFO 2026-04-21 11:00:19,211 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 645
+INFO 2026-04-21 11:00:19,222 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 11:00:30,140 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 438
+INFO 2026-04-21 11:00:50,186 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-21 11:00:50,189 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 11:00:52,339 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 645
+INFO 2026-04-21 11:03:55,094 basehttp "OPTIONS /api/v1/vehicles/006644bb-b5a0-4a47-8c23-4a1c7b00cb24/ HTTP/1.1" 200 0
+INFO 2026-04-21 11:03:55,164 basehttp "PATCH /api/v1/vehicles/006644bb-b5a0-4a47-8c23-4a1c7b00cb24/ HTTP/1.1" 200 655
+INFO 2026-04-21 11:03:55,277 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 648
+INFO 2026-04-21 11:06:53,368 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:06:53,393 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
+INFO 2026-04-21 11:06:53,403 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 11:06:53,403 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 11:09:31,840 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 39
+ERROR 2026-04-21 11:10:05,249 log Internal Server Error: /api/v1/payments/calculate/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/response.py", line 74, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/common/renderers.py", line 15, in render
+    return super().render(data, accepted_media_type, renderer_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/renderers.py", line 97, in render
+    ret = json.dumps(
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/utils/encoders.py", line 70, in default
+    return super().default(obj)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Driver is not JSON serializable
+ERROR 2026-04-21 11:10:05,260 basehttp "POST /api/v1/payments/calculate/ HTTP/1.1" 500 115581
+INFO 2026-04-21 11:10:10,345 basehttp "POST /api/v1/payments/ HTTP/1.1" 201 781
+INFO 2026-04-21 11:10:10,387 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 204
+INFO 2026-04-21 11:10:28,771 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 648
+INFO 2026-04-21 11:10:54,124 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 55
+INFO 2026-04-21 11:10:54,129 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 11:11:07,259 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 11:11:27,572 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 11:11:36,452 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 1023
+INFO 2026-04-21 11:11:36,563 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 336
+INFO 2026-04-21 11:12:26,388 basehttp "OPTIONS /api/v1/trips/stores/?q=t HTTP/1.1" 200 0
+INFO 2026-04-21 11:12:26,418 basehttp "GET /api/v1/trips/stores/?q=t HTTP/1.1" 200 4732
+INFO 2026-04-21 11:12:27,174 basehttp "OPTIONS /api/v1/trips/stores/?q=tu HTTP/1.1" 200 0
+INFO 2026-04-21 11:12:27,203 basehttp "GET /api/v1/trips/stores/?q=tu HTTP/1.1" 200 373
+INFO 2026-04-21 11:12:34,188 basehttp "OPTIONS /api/v1/trips/stores/?q=es HTTP/1.1" 200 0
+INFO 2026-04-21 11:12:34,216 basehttp "GET /api/v1/trips/stores/?q=es HTTP/1.1" 200 8872
+INFO 2026-04-21 11:12:36,224 basehttp "OPTIONS /api/v1/trips/stores/?q=es- HTTP/1.1" 200 0
+INFO 2026-04-21 11:12:36,296 basehttp "GET /api/v1/trips/stores/?q=es- HTTP/1.1" 200 8872
+INFO 2026-04-21 11:12:37,605 basehttp "OPTIONS /api/v1/trips/stores/?q=es-15 HTTP/1.1" 200 0
+INFO 2026-04-21 11:12:37,642 basehttp "GET /api/v1/trips/stores/?q=es-15 HTTP/1.1" 200 389
+INFO 2026-04-21 11:12:37,991 basehttp "OPTIONS /api/v1/trips/stores/?q=es-158 HTTP/1.1" 200 0
+INFO 2026-04-21 11:12:38,016 basehttp "GET /api/v1/trips/stores/?q=es-158 HTTP/1.1" 200 205
+INFO 2026-04-21 11:13:01,975 basehttp "GET /api/v1/trips/stores/?q=t HTTP/1.1" 200 4732
+INFO 2026-04-21 11:13:02,294 basehttp "GET /api/v1/trips/stores/?q=tu HTTP/1.1" 200 373
+INFO 2026-04-21 11:13:20,391 basehttp "OPTIONS /api/v1/trips/stores/?q=wh HTTP/1.1" 200 0
+INFO 2026-04-21 11:13:20,415 basehttp "GET /api/v1/trips/stores/?q=wh HTTP/1.1" 200 637
+INFO 2026-04-21 11:13:21,762 basehttp "OPTIONS /api/v1/trips/stores/?q=whi HTTP/1.1" 200 0
+INFO 2026-04-21 11:13:21,791 basehttp "GET /api/v1/trips/stores/?q=whi HTTP/1.1" 200 637
+INFO 2026-04-21 11:13:22,092 basehttp "OPTIONS /api/v1/trips/stores/?q=whit HTTP/1.1" 200 0
+INFO 2026-04-21 11:13:22,124 basehttp "GET /api/v1/trips/stores/?q=whit HTTP/1.1" 200 637
+INFO 2026-04-21 11:20:44,232 basehttp "OPTIONS /api/v1/trips/ HTTP/1.1" 200 0
+INFO 2026-04-21 11:20:44,508 basehttp "POST /api/v1/trips/ HTTP/1.1" 201 1445
+INFO 2026-04-21 11:20:44,601 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 200 1501
+INFO 2026-04-21 11:20:56,856 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 529
+INFO 2026-04-21 11:21:22,297 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-21 11:21:22,415 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 444
+INFO 2026-04-21 11:21:28,764 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:21:28,765 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1438
+INFO 2026-04-21 11:21:28,765 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:21:28,801 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 11:21:28,802 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 11:21:33,930 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM.jpeg HTTP/1.1" 200 138988
+INFO 2026-04-21 11:21:33,947 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM.jpeg HTTP/1.1" 200 59431
+INFO 2026-04-21 11:27:00,736 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:27:00,749 basehttp "GET /api/v1/expenses/ HTTP/1.1" 200 541
+INFO 2026-04-21 11:27:00,769 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 11:27:00,769 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 11:27:07,770 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 648
+INFO 2026-04-21 11:27:13,924 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1438
+INFO 2026-04-21 11:27:13,929 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:36:49,158 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 11:36:51,989 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 11:36:54,489 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1438
+INFO 2026-04-21 11:36:54,489 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:36:54,490 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:36:54,520 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 11:36:54,524 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 11:37:11,439 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:37:11,456 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:37:11,479 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1438
+INFO 2026-04-21 11:37:11,493 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 11:37:11,503 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 11:37:19,494 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 648
+INFO 2026-04-21 11:39:51,540 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:39:51,541 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1438
+INFO 2026-04-21 11:39:51,543 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:39:51,577 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 11:39:51,585 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859

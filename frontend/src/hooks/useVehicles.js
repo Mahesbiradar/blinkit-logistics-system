@@ -72,6 +72,16 @@ export const useVehicles = (params = {}) => {
     },
   });
 
+  const createVendorMutation = useMutation({
+    mutationFn: (data) => vehicleService.createVendor(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['vendors'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to create vendor');
+    },
+  });
+
   const deleteVehicleMutation = useMutation({
     mutationFn: (vehicleId) => vehicleService.deleteVehicle(vehicleId),
     onSuccess: () => {
@@ -101,6 +111,8 @@ export const useVehicles = (params = {}) => {
     isCreatingDriver: createDriverMutation.isLoading,
     updateDriverLogin: updateDriverLoginMutation.mutate,
     isUpdatingDriverLogin: updateDriverLoginMutation.isLoading,
+    createVendorAsync: createVendorMutation.mutateAsync,
+    isCreatingVendor: createVendorMutation.isLoading,
     deleteVehicle: deleteVehicleMutation.mutate,
     isDeleting: deleteVehicleMutation.isLoading,
   };
