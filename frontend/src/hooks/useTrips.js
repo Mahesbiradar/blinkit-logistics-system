@@ -103,9 +103,34 @@ export const useTrips = (params = {}) => {
 };
 
 export const useMyTrips = (params = {}) => {
+  const queryClient = useQueryClient();
+
   const myTripsQuery = useQuery({
     queryKey: ['myTrips', params],
     queryFn: () => tripService.getMyTrips(params),
+  });
+
+  const updateTripMutation = useMutation({
+    mutationFn: ({ tripId, data }) => tripService.updateTrip(tripId, data),
+    onSuccess: () => {
+      toast.success('Trip updated');
+      queryClient.invalidateQueries({ queryKey: ['myTrips'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to update trip');
+    },
+  });
+
+  const deleteTripMutation = useMutation({
+    mutationFn: (tripId) => tripService.deleteTrip(tripId),
+    onSuccess: () => {
+      toast.success('Trip deleted');
+      queryClient.invalidateQueries({ queryKey: ['myTrips'] });
+      queryClient.invalidateQueries({ queryKey: ['driverDashboard'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to delete trip');
+    },
   });
 
   return {
@@ -113,6 +138,10 @@ export const useMyTrips = (params = {}) => {
     summary: extractSummary(myTripsQuery.data),
     isLoading: myTripsQuery.isLoading,
     refetch: myTripsQuery.refetch,
+    updateTrip: updateTripMutation.mutate,
+    isUpdating: updateTripMutation.isLoading,
+    deleteTrip: deleteTripMutation.mutate,
+    isDeleting: deleteTripMutation.isLoading,
   };
 };
 

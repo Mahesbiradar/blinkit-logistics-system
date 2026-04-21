@@ -32,6 +32,8 @@ class TripSerializer(serializers.ModelSerializer):
     approved_by_name = serializers.CharField(source='approved_by.get_full_name', read_only=True)
     gate_pass_image_url = serializers.SerializerMethodField()
     map_screenshot_url = serializers.SerializerMethodField()
+    gate_pass_image_2_url = serializers.SerializerMethodField()
+    map_screenshot_2_url = serializers.SerializerMethodField()
     trip_1 = serializers.SerializerMethodField()
     trip_2 = serializers.SerializerMethodField()
 
@@ -45,6 +47,7 @@ class TripSerializer(serializers.ModelSerializer):
             'dispatch_time_2', 'store_name_2', 'one_way_km_2',
             'trip_1', 'trip_2', 'total_km',
             'gate_pass_image_url', 'map_screenshot_url',
+            'gate_pass_image_2_url', 'map_screenshot_2_url',
             'status', 'approved_by', 'approved_by_name',
             'approved_at', 'rejection_reason', 'remarks',
             'created_at', 'updated_at'
@@ -90,6 +93,12 @@ class TripSerializer(serializers.ModelSerializer):
 
     def get_map_screenshot_url(self, obj):
         return self._build_absolute_uri(obj.map_screenshot)
+
+    def get_gate_pass_image_2_url(self, obj):
+        return self._build_absolute_uri(obj.gate_pass_image_2)
+
+    def get_map_screenshot_2_url(self, obj):
+        return self._build_absolute_uri(obj.map_screenshot_2)
 
     def get_trip_1(self, obj):
         if obj.has_trip1():
@@ -143,6 +152,8 @@ class TripCreateSerializer(serializers.ModelSerializer):
     )
     gate_pass_image = serializers.ImageField(required=False, allow_null=True)
     map_screenshot = serializers.ImageField(required=False, allow_null=True)
+    gate_pass_image_2 = serializers.ImageField(required=False, allow_null=True)
+    map_screenshot_2 = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Trip
@@ -151,7 +162,9 @@ class TripCreateSerializer(serializers.ModelSerializer):
             'trip_date', 'warehouse', 'trip_category',
             'dispatch_time_1', 'store_name_1', 'one_way_km_1',
             'dispatch_time_2', 'store_name_2', 'one_way_km_2',
-            'gate_pass_image', 'map_screenshot', 'remarks'
+            'gate_pass_image', 'map_screenshot',
+            'gate_pass_image_2', 'map_screenshot_2',
+            'remarks'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -252,15 +265,18 @@ class TripUpdateSerializer(serializers.ModelSerializer):
 
     gate_pass_image = serializers.ImageField(required=False, allow_null=True)
     map_screenshot = serializers.ImageField(required=False, allow_null=True)
+    gate_pass_image_2 = serializers.ImageField(required=False, allow_null=True)
+    map_screenshot_2 = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Trip
         fields = [
-            'trip_date', 'warehouse',
+            'trip_date', 'trip_category', 'warehouse',
             'dispatch_time_1', 'dispatch_time_2',
             'store_name_1', 'store_name_2',
             'one_way_km_1', 'one_way_km_2',
             'gate_pass_image', 'map_screenshot',
+            'gate_pass_image_2', 'map_screenshot_2',
             'remarks'
         ]
 

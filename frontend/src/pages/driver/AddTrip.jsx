@@ -133,6 +133,10 @@ const emptyForm = {
   map_image: null,
   gate_pass_preview: null,
   map_preview: null,
+  gate_pass_image_2: null,
+  map_image_2: null,
+  gate_pass_preview_2: null,
+  map_preview_2: null,
   store_name_1: '',
   one_way_km_1: '',
   dispatch_time_1: '',
@@ -148,6 +152,8 @@ const AddTrip = () => {
   const { createTrip, isCreating } = useCreateTrip();
   const fileInputRef = useRef(null);
   const mapInputRef = useRef(null);
+  const fileInput2Ref = useRef(null);
+  const mapInput2Ref = useRef(null);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState(emptyForm);
   const [showStore2, setShowStore2] = useState(false);
@@ -160,10 +166,13 @@ const AddTrip = () => {
     }
     const reader = new FileReader();
     reader.onload = (e) => {
+      // type examples: 'gate_pass', 'map', 'gate_pass_2', 'map_2'
+      const imageKey = type.endsWith('_2') ? `${type.replace('_2', '')}_image_2` : `${type}_image`;
+      const previewKey = type.endsWith('_2') ? `${type.replace('_2', '')}_preview_2` : `${type}_preview`;
       setFormData((cur) => ({
         ...cur,
-        [`${type}_image`]: file,
-        [`${type}_preview`]: e.target?.result,
+        [imageKey]: file,
+        [previewKey]: e.target?.result,
       }));
     };
     reader.readAsDataURL(file);
@@ -177,15 +186,19 @@ const AddTrip = () => {
 
   const validateStep2 = () => {
     if (!formData.store_name_1.trim() || !formData.one_way_km_1) {
-      toast.error('Trip 1 store and KM are required');
+      toast.error('Store 1 name and KM are required');
       return false;
     }
-    if (formData.store_name_2.trim() && !formData.one_way_km_2) {
-      toast.error('Trip 2 KM is required when store is provided');
+    if (showStore2 && formData.store_name_2.trim() && !formData.one_way_km_2) {
+      toast.error('Store 2 KM is required when store name is provided');
       return false;
     }
-    if (formData.one_way_km_2 && !formData.store_name_2.trim()) {
-      toast.error('Trip 2 store is required when KM is provided');
+    if (showStore2 && formData.store_name_2.trim() && !formData.gate_pass_image_2) {
+      toast.error('Gate pass photo for Store 2 is required');
+      return false;
+    }
+    if (showStore2 && formData.store_name_2.trim() && !formData.map_image_2) {
+      toast.error('Map screenshot for Store 2 is required');
       return false;
     }
     return true;
@@ -201,14 +214,19 @@ const AddTrip = () => {
       store_name_1: formData.store_name_1.trim(),
       one_way_km_1: parseFloat(formData.one_way_km_1),
       dispatch_time_1: formData.dispatch_time_1 || undefined,
-      store_name_2: formData.store_name_2.trim() || undefined,
-      one_way_km_2: formData.one_way_km_2 ? parseFloat(formData.one_way_km_2) : undefined,
-      dispatch_time_2: formData.dispatch_time_2 || undefined,
       remarks: formData.remarks.trim(),
     };
+    if (showStore2 && formData.store_name_2.trim()) {
+      payload.store_name_2 = formData.store_name_2.trim();
+      payload.one_way_km_2 = parseFloat(formData.one_way_km_2);
+      payload.dispatch_time_2 = formData.dispatch_time_2 || undefined;
+      payload.gate_pass_image_2 = formData.gate_pass_image_2 || undefined;
+      payload.map_screenshot_2 = formData.map_image_2 || undefined;
+    }
     createTrip(payload, {
       onSuccess: () => {
         setFormData(emptyForm);
+        setShowStore2(false);
         navigate('/driver/my-trips');
       },
     });
@@ -505,6 +523,42 @@ const AddTrip = () => {
                         className="w-full rounded-2xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                       />
                     </div>
+                  </div>
+                </div>
+
+                {/* Store 2 images */}
+                <div className="mt-4 border-t border-emerald-100 pt-4 grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Gate Pass 2 <span className="text-red-500">*</span></label>
+                    <input ref={fileInput2Ref} type="file" accept="image/*" capture="environment"
+                      onChange={(e) => handleImageSelect('gate_pass_2', e.target.files?.[0])} className="hidden" />
+                    {formData.gate_pass_preview_2 ? (
+                      <div className="relative overflow-hidden rounded-2xl border border-gray-200">
+                        <img src={formData.gate_pass_preview_2} alt="Gate pass 2" className="h-32 w-full object-cover" />
+                        <button type="button" onClick={() => fileInput2Ref.current?.click()} className="absolute bottom-2 right-2 rounded-lg bg-white px-2 py-1 text-xs font-medium shadow">Change</button>
+                      </div>
+                    ) : (
+                      <button type="button" onClick={() => fileInput2Ref.current?.click()}
+                        className="flex h-32 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-400 text-sm font-medium">
+                        <Camera className="h-5 w-5" />Capture gate pass
+                      </button>
+                    )}
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Map Screenshot 2 <span className="text-red-500">*</span></label>
+                    <input ref={mapInput2Ref} type="file" accept="image/*"
+                      onChange={(e) => handleImageSelect('map_2', e.target.files?.[0])} className="hidden" />
+                    {formData.map_preview_2 ? (
+                      <div className="relative overflow-hidden rounded-2xl border border-gray-200">
+                        <img src={formData.map_preview_2} alt="Map 2" className="h-32 w-full object-cover" />
+                        <button type="button" onClick={() => mapInput2Ref.current?.click()} className="absolute bottom-2 right-2 rounded-lg bg-white px-2 py-1 text-xs font-medium shadow">Change</button>
+                      </div>
+                    ) : (
+                      <button type="button" onClick={() => mapInput2Ref.current?.click()}
+                        className="flex h-32 w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-400 text-sm font-medium">
+                        <MapPin className="h-5 w-5" />Upload route screenshot
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

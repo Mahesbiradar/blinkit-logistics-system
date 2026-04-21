@@ -79,6 +79,10 @@ class TripListCreateView(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         trip = serializer.save(created_by=request.user)
 
+        # Trips created by admin/coordinator are auto-approved
+        if request.user.is_owner() or request.user.is_coordinator():
+            trip.approve(request.user)
+
         response_serializer = TripSerializer(trip, context={'request': request})
         return Response({
             'success': True,
@@ -117,7 +121,12 @@ class TripDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        if not (request.user.is_owner() or request.user.is_coordinator()):
+        if request.user.is_driver_role():
+            if not (hasattr(request.user, 'driver_profile') and instance.driver_id == request.user.driver_profile.id):
+                raise PermissionDenied("You can only edit your own trips")
+            if instance.status != 'pending':
+                raise PermissionDenied("You can only edit pending trips")
+        elif not (request.user.is_owner() or request.user.is_coordinator()):
             raise PermissionDenied("You do not have permission to update this trip")
 
         partial = kwargs.pop('partial', False)
@@ -139,7 +148,12 @@ class TripDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if not (request.user.is_owner() or request.user.is_coordinator()):
+        if request.user.is_driver_role():
+            if not (hasattr(request.user, 'driver_profile') and instance.driver_id == request.user.driver_profile.id):
+                raise PermissionDenied("You can only delete your own trips")
+            if instance.status != 'pending':
+                raise PermissionDenied("You can only delete pending trips")
+        elif not (request.user.is_owner() or request.user.is_coordinator()):
             raise PermissionDenied("You do not have permission to delete this trip")
 
         instance.delete()

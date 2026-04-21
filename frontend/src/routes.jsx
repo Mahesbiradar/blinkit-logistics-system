@@ -17,6 +17,7 @@ import MyExpenses from './pages/driver/MyExpenses';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import TripsManagement from './pages/admin/TripsManagement';
 import VehiclesManagement from './pages/admin/VehiclesManagement';
+import VehicleDetail from './pages/admin/VehicleDetail';
 import ExpensesManagement from './pages/admin/ExpensesManagement';
 import PaymentsManagement from './pages/admin/PaymentsManagement';
 import ReportsManagement from './pages/admin/ReportsManagement';
@@ -122,6 +123,7 @@ export const router = createBrowserRouter([
       { path: 'dashboard', element: <AdminDashboard /> },
       { path: 'trips', element: <TripsManagement /> },
       { path: 'vehicles', element: <VehiclesManagement /> },
+      { path: 'vehicles/:id', element: <VehicleDetail /> },
       { path: 'expenses', element: <ExpensesManagement /> },
       { path: 'payments', element: <PaymentsManagement /> },
       { path: 'reports', element: <ReportsManagement /> },

@@ -91,6 +91,8 @@ const emptyTripForm = {
   remarks: '',
   gate_pass_image: null,
   map_screenshot: null,
+  gate_pass_image_2: null,
+  map_screenshot_2: null,
 };
 
 const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
@@ -114,6 +116,8 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
   const [showStore2, setShowStore2] = useState(isEdit && Boolean(trip?.trip_2));
   const gatePassRef = useRef(null);
   const mapRef = useRef(null);
+  const gatePass2Ref = useRef(null);
+  const map2Ref = useRef(null);
 
   const set = (f, v) => setForm((c) => ({ ...c, [f]: v }));
 
@@ -147,6 +151,8 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
       payload.vehicle_id = form.vehicle_id;
       if (form.gate_pass_image) payload.gate_pass_image = form.gate_pass_image;
       if (form.map_screenshot) payload.map_screenshot = form.map_screenshot;
+      if (showStore2 && form.gate_pass_image_2) payload.gate_pass_image_2 = form.gate_pass_image_2;
+      if (showStore2 && form.map_screenshot_2) payload.map_screenshot_2 = form.map_screenshot_2;
     }
     onSave(payload);
   };
@@ -245,26 +251,50 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
 
           {/* Images — create only, optional */}
           {!isEdit && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">Gate Pass Photo <span className="text-gray-400 font-normal">(optional)</span></label>
-                <input ref={gatePassRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile('gate_pass_image', e.target.files?.[0])} />
-                <button type="button" onClick={() => gatePassRef.current?.click()}
-                  className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 text-sm font-medium transition ${form.gate_pass_image ? 'border-blue-400 bg-blue-50 text-blue-700' : 'border-gray-300 text-gray-500 hover:border-blue-300 hover:bg-blue-50'}`}>
-                  <Image className="h-4 w-4" />
-                  {form.gate_pass_image ? form.gate_pass_image.name : 'Upload gate pass'}
-                </button>
+            <>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">Gate Pass 1 <span className="text-gray-400 font-normal">(optional)</span></label>
+                  <input ref={gatePassRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile('gate_pass_image', e.target.files?.[0])} />
+                  <button type="button" onClick={() => gatePassRef.current?.click()}
+                    className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 text-sm font-medium transition ${form.gate_pass_image ? 'border-blue-400 bg-blue-50 text-blue-700' : 'border-gray-300 text-gray-500 hover:border-blue-300 hover:bg-blue-50'}`}>
+                    <Image className="h-4 w-4" />
+                    {form.gate_pass_image ? form.gate_pass_image.name : 'Upload gate pass'}
+                  </button>
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-gray-700">Map Screenshot 1 <span className="text-gray-400 font-normal">(optional)</span></label>
+                  <input ref={mapRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile('map_screenshot', e.target.files?.[0])} />
+                  <button type="button" onClick={() => mapRef.current?.click()}
+                    className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 text-sm font-medium transition ${form.map_screenshot ? 'border-emerald-400 bg-emerald-50 text-emerald-700' : 'border-gray-300 text-gray-500 hover:border-emerald-300 hover:bg-emerald-50'}`}>
+                    <Image className="h-4 w-4" />
+                    {form.map_screenshot ? form.map_screenshot.name : 'Upload map screenshot'}
+                  </button>
+                </div>
               </div>
-              <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">Map Screenshot <span className="text-gray-400 font-normal">(optional)</span></label>
-                <input ref={mapRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile('map_screenshot', e.target.files?.[0])} />
-                <button type="button" onClick={() => mapRef.current?.click()}
-                  className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 text-sm font-medium transition ${form.map_screenshot ? 'border-emerald-400 bg-emerald-50 text-emerald-700' : 'border-gray-300 text-gray-500 hover:border-emerald-300 hover:bg-emerald-50'}`}>
-                  <Image className="h-4 w-4" />
-                  {form.map_screenshot ? form.map_screenshot.name : 'Upload map screenshot'}
-                </button>
-              </div>
-            </div>
+              {showStore2 && (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Gate Pass 2 <span className="text-gray-400 font-normal">(optional)</span></label>
+                    <input ref={gatePass2Ref} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile('gate_pass_image_2', e.target.files?.[0])} />
+                    <button type="button" onClick={() => gatePass2Ref.current?.click()}
+                      className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 text-sm font-medium transition ${form.gate_pass_image_2 ? 'border-blue-400 bg-blue-50 text-blue-700' : 'border-gray-300 text-gray-500 hover:border-blue-300 hover:bg-blue-50'}`}>
+                      <Image className="h-4 w-4" />
+                      {form.gate_pass_image_2 ? form.gate_pass_image_2.name : 'Upload gate pass 2'}
+                    </button>
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">Map Screenshot 2 <span className="text-gray-400 font-normal">(optional)</span></label>
+                    <input ref={map2Ref} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile('map_screenshot_2', e.target.files?.[0])} />
+                    <button type="button" onClick={() => map2Ref.current?.click()}
+                      className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed py-3 text-sm font-medium transition ${form.map_screenshot_2 ? 'border-emerald-400 bg-emerald-50 text-emerald-700' : 'border-gray-300 text-gray-500 hover:border-emerald-300 hover:bg-emerald-50'}`}>
+                      <Image className="h-4 w-4" />
+                      {form.map_screenshot_2 ? form.map_screenshot_2.name : 'Upload map screenshot 2'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           <div className="flex justify-end gap-3 pt-2">
@@ -281,7 +311,7 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
 
 // ─── Trip Details modal ───────────────────────────────────────────────────────
 
-const TripDetailModal = ({ trip, onClose, onApprove, onReject, isApproving, isRejecting }) => {
+const TripDetailModal = ({ trip, onClose, onEdit, onApprove, onReject, isApproving, isRejecting }) => {
   const [remarks, setRemarks] = useState(trip.remarks || 'Approved');
   const [rejectReason, setRejectReason] = useState('');
   const [rejecting, setRejecting] = useState(false);
@@ -301,32 +331,62 @@ const TripDetailModal = ({ trip, onClose, onApprove, onReject, isApproving, isRe
       <div className="my-8 w-full max-w-xl rounded-2xl bg-white shadow-xl">
         <div className="flex items-center justify-between border-b p-5">
           <h2 className="text-xl font-bold text-gray-900">Trip Details</h2>
-          <button onClick={onClose} className="rounded-lg p-2 hover:bg-gray-100"><XCircle className="h-5 w-5" /></button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onEdit}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-semibold text-indigo-700 hover:bg-indigo-100 transition"
+              title="Edit this trip"
+            >
+              <Pencil className="h-3.5 w-3.5" />
+              Edit
+            </button>
+            <button onClick={onClose} className="rounded-lg p-2 hover:bg-gray-100"><XCircle className="h-5 w-5" /></button>
+          </div>
         </div>
         <div className="space-y-4 p-5">
 
           {/* Images — clickable for full view */}
-          {(trip.gate_pass_image_url || trip.map_screenshot_url) && (
-            <div className="grid grid-cols-2 gap-4">
-              {trip.gate_pass_image_url && (
+          {(trip.gate_pass_image_url || trip.map_screenshot_url || trip.gate_pass_image_2_url || trip.map_screenshot_2_url) && (
+            <div className="space-y-3">
+              {(trip.gate_pass_image_url || trip.map_screenshot_url) && (
                 <div>
-                  <p className="mb-2 text-xs text-gray-500 uppercase">Gate Pass</p>
-                  <div className="group relative cursor-pointer overflow-hidden rounded-xl" onClick={() => setLightbox(trip.gate_pass_image_url)}>
-                    <img src={trip.gate_pass_image_url} alt="Gate Pass" className="h-36 w-full object-cover transition group-hover:scale-105" />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/30">
-                      <Eye className="h-6 w-6 text-white opacity-0 transition group-hover:opacity-100" />
-                    </div>
+                  <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Store 1 Photos</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { url: trip.gate_pass_image_url, label: 'Gate Pass' },
+                      { url: trip.map_screenshot_url, label: 'Map' },
+                    ].filter(i => i.url).map(({ url, label }) => (
+                      <div key={label}>
+                        <p className="mb-1 text-xs text-gray-400">{label}</p>
+                        <div className="group relative cursor-pointer overflow-hidden rounded-xl" onClick={() => setLightbox(url)}>
+                          <img src={url} alt={label} className="h-32 w-full object-cover transition group-hover:scale-105" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/30">
+                            <Eye className="h-5 w-5 text-white opacity-0 transition group-hover:opacity-100" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
-              {trip.map_screenshot_url && (
+              {(trip.gate_pass_image_2_url || trip.map_screenshot_2_url) && (
                 <div>
-                  <p className="mb-2 text-xs text-gray-500 uppercase">Map</p>
-                  <div className="group relative cursor-pointer overflow-hidden rounded-xl" onClick={() => setLightbox(trip.map_screenshot_url)}>
-                    <img src={trip.map_screenshot_url} alt="Map" className="h-36 w-full object-cover transition group-hover:scale-105" />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/30">
-                      <Eye className="h-6 w-6 text-white opacity-0 transition group-hover:opacity-100" />
-                    </div>
+                  <p className="mb-2 text-xs font-semibold uppercase text-gray-500">Store 2 Photos</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { url: trip.gate_pass_image_2_url, label: 'Gate Pass 2' },
+                      { url: trip.map_screenshot_2_url, label: 'Map 2' },
+                    ].filter(i => i.url).map(({ url, label }) => (
+                      <div key={label}>
+                        <p className="mb-1 text-xs text-gray-400">{label}</p>
+                        <div className="group relative cursor-pointer overflow-hidden rounded-xl" onClick={() => setLightbox(url)}>
+                          <img src={url} alt={label} className="h-32 w-full object-cover transition group-hover:scale-105" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/30">
+                            <Eye className="h-5 w-5 text-white opacity-0 transition group-hover:opacity-100" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -476,6 +536,7 @@ const TripsManagement = () => {
         <TripDetailModal
           trip={viewTrip}
           onClose={() => setViewTrip(null)}
+          onEdit={() => { setEditTrip(viewTrip); setViewTrip(null); }}
           onApprove={handleApprove}
           onReject={handleReject}
           isApproving={isApproving && actionTripId === viewTrip.id}

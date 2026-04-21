@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Edit2, PlusCircle, Trash2, Truck, User, Wallet } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Edit2, PlusCircle, Truck, User, Wallet } from 'lucide-react';
 import { useDrivers } from '../../hooks/useDrivers';
 import { useVehicles } from '../../hooks/useVehicles';
 
@@ -14,6 +15,7 @@ const initialOwnerForm = {
 const initialVendorForm = {
   vehicle_number: '', vehicle_type: 'pickup', owner_type: 'vendor',
   vendor_name: '', vendor_phone: '', km_rate: '',
+  driver_first_name: '', driver_last_name: '', driver_phone: '', driver_password: '',
 };
 
 const fieldClass = 'w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
@@ -57,7 +59,12 @@ const AddVehicleForm = ({ vendors, onSave, isSaving, onCancel }) => {
           km_rate: Number(form.km_rate) || 0,
           base_salary: 0,
         },
-        driver: null,
+        driver: form.driver_first_name ? {
+          first_name: form.driver_first_name.trim(),
+          last_name: form.driver_last_name.trim(),
+          phone: form.driver_phone.trim(),
+          password: form.driver_password,
+        } : null,
         vendor: { name: form.vendor_name.trim(), phone: form.vendor_phone.trim() },
       });
     }
@@ -124,29 +131,27 @@ const AddVehicleForm = ({ vendors, onSave, isSaving, onCancel }) => {
         )}
       </div>
 
-      {ownerType === 'owner' && (
-        <div className="mt-6">
-          <div className="mb-3 text-sm font-semibold text-gray-700">Driver login details (optional — can be added later)</div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-gray-700">First name</span>
-              <input value={form.driver_first_name} onChange={(e) => set('driver_first_name', e.target.value)} className={fieldClass} placeholder="Akash" />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-gray-700">Last name</span>
-              <input value={form.driver_last_name} onChange={(e) => set('driver_last_name', e.target.value)} className={fieldClass} placeholder="Kumar" />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-gray-700">Phone (login)</span>
-              <input value={form.driver_phone} onChange={(e) => set('driver_phone', e.target.value.replace(/\D/g, '').slice(0, 10))} className={fieldClass} placeholder="9876543210" />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-gray-700">Password</span>
-              <input type="password" value={form.driver_password} onChange={(e) => set('driver_password', e.target.value)} className={fieldClass} placeholder="Min 6 chars" />
-            </label>
-          </div>
+      <div className="mt-6">
+        <div className="mb-3 text-sm font-semibold text-gray-700">Driver login details (optional — can be added later)</div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">First name</span>
+            <input value={form.driver_first_name} onChange={(e) => set('driver_first_name', e.target.value)} className={fieldClass} placeholder="Akash" />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">Last name</span>
+            <input value={form.driver_last_name} onChange={(e) => set('driver_last_name', e.target.value)} className={fieldClass} placeholder="Kumar" />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">Phone (login)</span>
+            <input value={form.driver_phone} onChange={(e) => set('driver_phone', e.target.value.replace(/\D/g, '').slice(0, 10))} className={fieldClass} placeholder="9876543210" />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">Password</span>
+            <input type="password" value={form.driver_password} onChange={(e) => set('driver_password', e.target.value)} className={fieldClass} placeholder="Min 6 chars" />
+          </label>
         </div>
-      )}
+      </div>
 
       <div className="mt-6 flex gap-3">
         <button type="button" onClick={onCancel} className="rounded-xl bg-gray-100 px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
@@ -160,7 +165,7 @@ const AddVehicleForm = ({ vendors, onSave, isSaving, onCancel }) => {
 
 // ─── Settings Modal ──────────────────────────────────────────────────────────
 
-const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
+const SettingsModal = ({ vehicle, vendors, drivers, onClose, onDelete, hooks }) => {
   const [tab, setTab] = useState('vehicle');
   const [vForm, setVForm] = useState({
     vehicle_number: vehicle.vehicle_number,
@@ -169,10 +174,16 @@ const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
     km_rate: vehicle.km_rate || '',
     vendor: vehicle.vendor || '',
   });
-  const [dForm, setDForm] = useState({ first_name: '', last_name: '', phone: '', password: '' });
   const [assignDriverId, setAssignDriverId] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const isOwner = vehicle.owner_type === 'owner';
   const primaryDriver = (vehicle.assigned_drivers || []).find((d) => d.is_primary);
+  const [dForm, setDForm] = useState({
+    first_name: primaryDriver?.name?.split(' ')[0] || '',
+    last_name: primaryDriver?.name?.split(' ').slice(1).join(' ') || '',
+    phone: '',
+    password: '',
+  });
 
   const setV = (f, v) => setVForm((c) => ({ ...c, [f]: v }));
   const setD = (f, v) => setDForm((c) => ({ ...c, [f]: v }));
@@ -221,7 +232,7 @@ const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
 
         {/* Tabs */}
         <div className="flex border-b border-gray-100">
-          {['vehicle', ...(isOwner ? ['driver'] : [])].map((t) => (
+          {['vehicle', 'driver'].map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -234,46 +245,91 @@ const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
 
         <div className="p-5">
           {tab === 'vehicle' && (
-            <form onSubmit={handleSaveVehicle} className="space-y-4">
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-gray-700">Vehicle number</span>
-                <input required value={vForm.vehicle_number} onChange={(e) => setV('vehicle_number', e.target.value.toUpperCase())} className={fieldClass} />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-gray-700">Vehicle type</span>
-                <select value={vForm.vehicle_type} onChange={(e) => setV('vehicle_type', e.target.value)} className={fieldClass}>
-                  <option value="pickup">Pickup</option>
-                  <option value="truck">Truck</option>
-                  <option value="van">Van</option>
-                  <option value="bike">Bike</option>
-                  <option value="other">Other</option>
-                </select>
-              </label>
-              {isOwner ? (
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium text-gray-700">Monthly salary (Rs.)</span>
-                  <input type="number" min="0" value={vForm.base_salary} onChange={(e) => setV('base_salary', e.target.value)} className={fieldClass} />
-                </label>
-              ) : (
-                <>
-                  {vehicle.vendor_details?.name && (
-                    <div className="rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">
-                      <span className="font-medium">Vendor:</span> {vehicle.vendor_details.name}
-                    </div>
-                  )}
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium text-gray-700">Rate per KM (Rs.)</span>
-                    <input type="number" min="0" step="0.5" value={vForm.km_rate} onChange={(e) => setV('km_rate', e.target.value)} className={fieldClass} />
-                  </label>
-                </>
-              )}
-              <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={onClose} className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
-                <button type="submit" disabled={hooks.isUpdating} className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-gray-300">
-                  {hooks.isUpdating ? 'Saving…' : 'Save Changes'}
-                </button>
+            confirmDelete ? (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                  This will permanently delete <strong>{vehicle.vehicle_number}</strong>. Trips and expenses linked to it will remain.
+                </div>
+                <div className="flex gap-3">
+                  <button type="button" onClick={() => setConfirmDelete(false)} className="flex-1 rounded-xl bg-gray-100 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
+                  <button
+                    type="button"
+                    disabled={hooks.isDeleting}
+                    onClick={() => onDelete(vehicle.id)}
+                    className="flex-1 rounded-xl bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:bg-gray-300"
+                  >
+                    {hooks.isDeleting ? 'Deleting…' : 'Yes, Delete'}
+                  </button>
+                </div>
               </div>
-            </form>
+            ) : (
+              <form onSubmit={handleSaveVehicle} className="space-y-4">
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-gray-700">Vehicle number</span>
+                  <input required value={vForm.vehicle_number} onChange={(e) => setV('vehicle_number', e.target.value.toUpperCase())} className={fieldClass} />
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-gray-700">Vehicle type</span>
+                  <select value={vForm.vehicle_type} onChange={(e) => setV('vehicle_type', e.target.value)} className={fieldClass}>
+                    <option value="pickup">Pickup</option>
+                    <option value="truck">Truck</option>
+                    <option value="van">Van</option>
+                    <option value="bike">Bike</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+                {isOwner ? (
+                  <label className="block">
+                    <span className="mb-2 block text-sm font-medium text-gray-700">Monthly salary (Rs.)</span>
+                    <input type="number" min="0" value={vForm.base_salary} onChange={(e) => setV('base_salary', e.target.value)} className={fieldClass} />
+                  </label>
+                ) : (
+                  <>
+                    {vehicle.vendor_details?.name && (
+                      <div className="rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                        <span className="font-medium">Vendor:</span> {vehicle.vendor_details.name}
+                      </div>
+                    )}
+                    <label className="block">
+                      <span className="mb-2 block text-sm font-medium text-gray-700">Rate per KM (Rs.)</span>
+                      <input type="number" min="0" step="0.5" value={vForm.km_rate} onChange={(e) => setV('km_rate', e.target.value)} className={fieldClass} />
+                    </label>
+                  </>
+                )}
+
+                {/* Active / Inactive toggle */}
+                <div className="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3">
+                  <div>
+                    <div className="text-sm font-medium text-gray-700">Vehicle status</div>
+                    <div className="text-xs text-gray-500">Inactive vehicles won't appear in trip creation</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => hooks.updateVehicle({ vehicleId: vehicle.id, data: { is_active: !vehicle.is_active } })}
+                    disabled={hooks.isUpdating}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors disabled:opacity-50 ${vehicle.is_active ? 'bg-green-500' : 'bg-gray-300'}`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${vehicle.is_active ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
+                  <button
+                    type="button"
+                    onClick={() => setConfirmDelete(true)}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100 transition"
+                  >
+                    Delete Vehicle
+                  </button>
+                  <div className="flex gap-3">
+                    <button type="button" onClick={onClose} className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
+                    <button type="submit" disabled={hooks.isUpdating} className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-gray-300">
+                      {hooks.isUpdating ? 'Saving…' : 'Save Changes'}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )
           )}
 
           {tab === 'driver' && (
@@ -281,14 +337,14 @@ const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
               {primaryDriver ? (
                 <>
                   <div className="rounded-xl bg-blue-50 p-4 text-sm text-blue-800">
-                    Current driver: <strong>{primaryDriver.name}</strong> · {primaryDriver.phone || 'Phone not shown'}
+                    Current driver: <strong>{primaryDriver.name}</strong> · {primaryDriver.phone || 'Phone not set'}
                   </div>
                   <form onSubmit={handleSaveDriverLogin} className="space-y-3">
                     <div className="text-sm font-semibold text-gray-700">Update driver login details</div>
                     <div className="grid gap-3 sm:grid-cols-2">
                       <label className="block">
                         <span className="mb-1 block text-xs font-medium text-gray-600">First name</span>
-                        <input value={dForm.first_name} onChange={(e) => setD('first_name', e.target.value)} className={fieldClass} placeholder={primaryDriver.name?.split(' ')[0]} />
+                        <input value={dForm.first_name} onChange={(e) => setD('first_name', e.target.value)} className={fieldClass} />
                       </label>
                       <label className="block">
                         <span className="mb-1 block text-xs font-medium text-gray-600">Last name</span>
@@ -296,7 +352,7 @@ const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
                       </label>
                       <label className="block">
                         <span className="mb-1 block text-xs font-medium text-gray-600">New phone</span>
-                        <input value={dForm.phone} onChange={(e) => setD('phone', e.target.value.replace(/\D/g, '').slice(0, 10))} className={fieldClass} placeholder="Leave blank to keep" />
+                        <input value={dForm.phone} onChange={(e) => setD('phone', e.target.value.replace(/\D/g, '').slice(0, 10))} className={fieldClass} placeholder={primaryDriver.phone || 'Leave blank to keep'} />
                       </label>
                       <label className="block">
                         <span className="mb-1 block text-xs font-medium text-gray-600">New password</span>
@@ -380,9 +436,9 @@ const SettingsModal = ({ vehicle, vendors, drivers, onClose, hooks }) => {
 // ─── Main page ───────────────────────────────────────────────────────────────
 
 const VehiclesManagement = () => {
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [settingsVehicle, setSettingsVehicle] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const hooks = useVehicles();
   const { vehicles, vendors, isLoading, isError, error, refetch } = hooks;
@@ -419,10 +475,6 @@ const VehiclesManagement = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    hooks.deleteVehicle(id, { onSuccess: () => setConfirmDelete(null) });
-  };
-
   if (isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
@@ -450,24 +502,9 @@ const VehiclesManagement = () => {
           vendors={vendors}
           drivers={drivers}
           onClose={() => setSettingsVehicle(null)}
+          onDelete={(id) => hooks.deleteVehicle(id, { onSuccess: () => setSettingsVehicle(null) })}
           hooks={hooks}
         />
-      )}
-
-      {/* Delete confirm */}
-      {confirmDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl">
-            <h3 className="text-lg font-semibold text-gray-900">Delete vehicle?</h3>
-            <p className="mt-2 text-sm text-gray-500">This will permanently remove <strong>{confirmDelete.vehicle_number}</strong>. Trips and expenses linked to this vehicle will remain.</p>
-            <div className="mt-5 flex gap-3">
-              <button onClick={() => setConfirmDelete(null)} className="flex-1 rounded-xl bg-gray-100 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
-              <button onClick={() => handleDelete(confirmDelete.id)} disabled={hooks.isDeleting} className="flex-1 rounded-xl bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:bg-gray-300">
-                {hooks.isDeleting ? 'Deleting…' : 'Delete'}
-              </button>
-            </div>
-          </div>
-        </div>
       )}
 
       <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
@@ -520,9 +557,9 @@ const VehiclesManagement = () => {
             const primaryDriver = (vehicle.assigned_drivers || []).find((d) => d.is_primary);
 
             return (
-              <div key={vehicle.id} className={`rounded-2xl border bg-white p-5 shadow-sm ${isOwner ? 'border-blue-100' : 'border-purple-100'}`}>
+              <div key={vehicle.id} className={`rounded-2xl border bg-white p-5 shadow-sm transition ${isOwner ? 'border-blue-100' : 'border-purple-100'}`}>
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="flex-1">
+                  <div className="flex-1 cursor-pointer" onClick={() => navigate(`/admin/vehicles/${vehicle.id}`)}>
                     <div className="flex flex-wrap items-center gap-3">
                       <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${isOwner ? 'bg-blue-50 text-blue-600' : 'bg-purple-50 text-purple-600'}`}>
                         <Truck className="h-5 w-5" />
@@ -544,13 +581,19 @@ const VehiclesManagement = () => {
                       <div className="rounded-xl bg-gray-50 p-3">
                         <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-gray-500">
                           <User className="h-3.5 w-3.5" />
-                          {isOwner ? 'Driver' : 'Vendor'}
+                          {isOwner ? 'Driver' : 'Vendor / Driver'}
                         </div>
                         <div className="mt-1 text-sm font-medium text-gray-900">
                           {isOwner
                             ? primaryDriver?.name || <span className="text-gray-400 italic">No driver assigned</span>
                             : vehicle.vendor_details?.name || '—'}
                         </div>
+                        {!isOwner && primaryDriver?.name && (
+                          <div className="mt-0.5 text-xs text-gray-500">Driver: {primaryDriver.name} · {primaryDriver.phone}</div>
+                        )}
+                        {!isOwner && !primaryDriver && (
+                          <div className="mt-0.5 text-xs text-amber-600 italic">No driver login yet</div>
+                        )}
                         {isOwner && primaryDriver?.phone && (
                           <div className="text-xs text-gray-500">{primaryDriver.phone}</div>
                         )}
@@ -574,18 +617,17 @@ const VehiclesManagement = () => {
                   {/* Action buttons */}
                   <div className="flex flex-col gap-2 lg:items-end">
                     <button
-                      onClick={() => setSettingsVehicle(vehicle)}
+                      onClick={(e) => { e.stopPropagation(); navigate(`/admin/vehicles/${vehicle.id}`); }}
+                      className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
+                    >
+                      View Details
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setSettingsVehicle(vehicle); }}
                       className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
                     >
                       <Edit2 className="h-4 w-4" />
                       Settings
-                    </button>
-                    <button
-                      onClick={() => setConfirmDelete(vehicle)}
-                      className="inline-flex items-center gap-2 rounded-xl border border-red-100 bg-white px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      Delete
                     </button>
                   </div>
                 </div>

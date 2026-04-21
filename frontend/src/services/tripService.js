@@ -24,33 +24,38 @@ const tripService = {
   // Create trip
   createTrip: (data) => {
     const formData = new FormData();
-    
-    // Add text fields
+    const imageFields = ['gate_pass_image', 'map_screenshot', 'gate_pass_image_2', 'map_screenshot_2'];
+
     Object.keys(data).forEach((key) => {
-      if (key !== 'gate_pass_image' && key !== 'map_screenshot') {
+      if (!imageFields.includes(key)) {
         if (data[key] !== null && data[key] !== undefined) {
           formData.append(key, data[key]);
         }
       }
     });
 
-    // Add files
-    if (data.gate_pass_image) {
-      formData.append('gate_pass_image', data.gate_pass_image);
-    }
-    if (data.map_screenshot) {
-      formData.append('map_screenshot', data.map_screenshot);
-    }
-
-    return api.post('/trips/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    imageFields.forEach((key) => {
+      if (data[key]) formData.append(key, data[key]);
     });
+
+    return api.post('/trips/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
   },
 
   // Update trip
   updateTrip: (tripId, data) => {
+    const imageFields = ['gate_pass_image', 'map_screenshot', 'gate_pass_image_2', 'map_screenshot_2'];
+    const hasImages = imageFields.some((k) => data[k] instanceof File);
+
+    if (hasImages) {
+      const formData = new FormData();
+      Object.keys(data).forEach((key) => {
+        if (!imageFields.includes(key)) {
+          if (data[key] !== null && data[key] !== undefined) formData.append(key, data[key]);
+        }
+      });
+      imageFields.forEach((key) => { if (data[key]) formData.append(key, data[key]); });
+      return api.patch(`/trips/${tripId}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+    }
     return api.patch(`/trips/${tripId}/`, data);
   },
 

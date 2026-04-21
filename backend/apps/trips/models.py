@@ -85,17 +85,13 @@ class Trip(models.Model):
     # Total KM is calculated automatically
     total_km = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     
-    # Images
-    gate_pass_image = models.ImageField(
-        upload_to='trips/gate_pass/%Y/%m/',
-        null=True,
-        blank=True
-    )
-    map_screenshot = models.ImageField(
-        upload_to='trips/maps/%Y/%m/',
-        null=True,
-        blank=True
-    )
+    # Images — Store 1
+    gate_pass_image = models.ImageField(upload_to='trips/gate_pass/%Y/%m/', null=True, blank=True)
+    map_screenshot = models.ImageField(upload_to='trips/maps/%Y/%m/', null=True, blank=True)
+
+    # Images — Store 2 (optional, used when a second store is added)
+    gate_pass_image_2 = models.ImageField(upload_to='trips/gate_pass/%Y/%m/', null=True, blank=True)
+    map_screenshot_2 = models.ImageField(upload_to='trips/maps/%Y/%m/', null=True, blank=True)
     
     # Status Workflow
     status = models.CharField(

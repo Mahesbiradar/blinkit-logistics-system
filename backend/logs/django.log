@@ -2241,3 +2241,2243 @@ INFO 2026-04-21 11:39:51,541 basehttp "GET /api/v1/trips/?status=&start_date=&en
 INFO 2026-04-21 11:39:51,543 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
 INFO 2026-04-21 11:39:51,577 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
 INFO 2026-04-21 11:39:51,585 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 11:43:14,282 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:43:14,299 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1438
+INFO 2026-04-21 11:43:14,299 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:43:14,325 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 11:43:38,579 basehttp "GET /api/v1/trips/stores/?q=es HTTP/1.1" 200 8872
+INFO 2026-04-21 11:43:40,702 basehttp "GET /api/v1/trips/stores/?q=es- HTTP/1.1" 200 8872
+INFO 2026-04-21 11:43:41,104 basehttp "OPTIONS /api/v1/trips/stores/?q=es-7 HTTP/1.1" 200 0
+INFO 2026-04-21 11:43:41,129 basehttp "GET /api/v1/trips/stores/?q=es-7 HTTP/1.1" 200 363
+INFO 2026-04-21 11:43:56,097 basehttp "OPTIONS /api/v1/trips/stores/?q=white HTTP/1.1" 200 0
+INFO 2026-04-21 11:43:56,123 basehttp "GET /api/v1/trips/stores/?q=white HTTP/1.1" 200 637
+INFO 2026-04-21 11:44:20,818 basehttp "OPTIONS /api/v1/trips/stores/?q=Whi HTTP/1.1" 200 0
+INFO 2026-04-21 11:44:20,841 basehttp "GET /api/v1/trips/stores/?q=Whi HTTP/1.1" 200 637
+INFO 2026-04-21 11:45:11,651 basehttp "POST /api/v1/trips/ HTTP/1.1" 201 1497
+INFO 2026-04-21 11:45:11,698 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 2874
+INFO 2026-04-21 11:46:00,081 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM_LtsGM1h.jpeg HTTP/1.1" 200 59431
+INFO 2026-04-21 11:46:00,082 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM_QWcmQBT.jpeg HTTP/1.1" 200 138988
+INFO 2026-04-21 11:46:44,836 basehttp "OPTIONS /api/v1/trips/aa29f904-cf9e-4307-b24d-65091b5c9346/approve/ HTTP/1.1" 200 0
+INFO 2026-04-21 11:46:44,871 basehttp "POST /api/v1/trips/aa29f904-cf9e-4307-b24d-65091b5c9346/approve/ HTTP/1.1" 200 268
+INFO 2026-04-21 11:46:44,952 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 2986
+INFO 2026-04-21 11:46:44,955 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:46:47,070 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 685
+INFO 2026-04-21 11:46:58,437 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM_LtsGM1h.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 11:46:58,437 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM_QWcmQBT.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 11:47:14,884 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 649
+INFO 2026-04-21 11:47:14,890 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 860
+INFO 2026-04-21 11:48:07,831 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 11:48:25,675 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 11:48:33,990 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 1023
+INFO 2026-04-21 11:48:34,091 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 736
+INFO 2026-04-21 11:48:53,838 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 200 3049
+INFO 2026-04-21 11:49:23,128 basehttp "OPTIONS /api/v1/trips/my-trips/?status=approved HTTP/1.1" 200 0
+INFO 2026-04-21 11:49:23,169 basehttp "GET /api/v1/trips/my-trips/?status=approved HTTP/1.1" 200 1664
+INFO 2026-04-21 11:49:28,187 basehttp "OPTIONS /api/v1/trips/my-trips/?status=pending HTTP/1.1" 200 0
+INFO 2026-04-21 11:49:28,228 basehttp "GET /api/v1/trips/my-trips/?status=pending HTTP/1.1" 200 1501
+INFO 2026-04-21 11:49:30,992 basehttp "OPTIONS /api/v1/trips/my-trips/?status=rejected HTTP/1.1" 200 0
+INFO 2026-04-21 11:49:31,034 basehttp "GET /api/v1/trips/my-trips/?status=rejected HTTP/1.1" 200 116
+INFO 2026-04-21 11:50:10,224 basehttp "OPTIONS /api/v1/trips/stores/?q=nag HTTP/1.1" 200 0
+INFO 2026-04-21 11:50:10,251 basehttp "GET /api/v1/trips/stores/?q=nag HTTP/1.1" 200 1285
+INFO 2026-04-21 11:50:25,883 basehttp "OPTIONS /api/v1/trips/stores/?q=heb HTTP/1.1" 200 0
+INFO 2026-04-21 11:50:25,909 basehttp "GET /api/v1/trips/stores/?q=heb HTTP/1.1" 200 393
+INFO 2026-04-21 11:54:10,667 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 736
+INFO 2026-04-21 11:54:19,836 basehttp "GET /api/v1/expenses/my-expenses/ HTTP/1.1" 200 747
+WARNING 2026-04-21 11:54:53,638 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-21 11:54:53,640 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+WARNING 2026-04-21 11:55:07,800 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-21 11:55:07,803 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+INFO 2026-04-21 11:55:29,049 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-21 11:55:29,149 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 685
+INFO 2026-04-21 11:55:45,524 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 11:55:45,524 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 2986
+INFO 2026-04-21 11:55:45,535 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:55:45,551 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 649
+INFO 2026-04-21 11:56:00,233 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 11:56:00,236 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 11:57:23,883 basehttp "OPTIONS /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 0
+INFO 2026-04-21 11:57:23,930 basehttp "PATCH /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 1445
+INFO 2026-04-21 11:57:23,939 basehttp "OPTIONS /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-21 11:57:23,945 basehttp "OPTIONS /api/v1/trips/pending/ HTTP/1.1" 200 0
+INFO 2026-04-21 11:57:23,986 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1429
+INFO 2026-04-21 11:57:24,023 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 2986
+INFO 2026-04-21 11:57:48,694 basehttp "PATCH /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 1452
+INFO 2026-04-21 11:57:48,735 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 2993
+INFO 2026-04-21 11:57:48,736 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1436
+INFO 2026-04-21 11:58:17,402 basehttp "PATCH /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 1452
+INFO 2026-04-21 11:58:17,455 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 2993
+INFO 2026-04-21 11:58:17,455 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1436
+INFO 2026-04-21 11:58:51,614 basehttp "OPTIONS /api/v1/trips/aa29f904-cf9e-4307-b24d-65091b5c9346/ HTTP/1.1" 200 0
+INFO 2026-04-21 11:58:51,655 basehttp "PATCH /api/v1/trips/aa29f904-cf9e-4307-b24d-65091b5c9346/ HTTP/1.1" 200 1609
+INFO 2026-04-21 11:58:51,703 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 2993
+INFO 2026-04-21 11:58:51,703 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1436
+INFO 2026-04-21 11:58:53,960 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM_LtsGM1h.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 11:58:53,961 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM_QWcmQBT.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 12:00:41,912 basehttp "DELETE /api/v1/trips/aa29f904-cf9e-4307-b24d-65091b5c9346/ HTTP/1.1" 200 54
+INFO 2026-04-21 12:00:41,961 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1436
+INFO 2026-04-21 12:00:41,966 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1445
+INFO 2026-04-21 12:00:53,287 basehttp "OPTIONS /api/v1/auth/otp/send/ HTTP/1.1" 200 0
+INFO 2026-04-21 12:00:53,315 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 12:01:03,354 basehttp "OPTIONS /api/v1/auth/otp/verify/ HTTP/1.1" 200 0
+INFO 2026-04-21 12:01:03,401 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 1023
+INFO 2026-04-21 12:01:03,488 basehttp "OPTIONS /api/v1/dashboard/driver/ HTTP/1.1" 200 0
+INFO 2026-04-21 12:01:03,545 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 529
+INFO 2026-04-21 12:01:06,751 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 200 1508
+INFO 2026-04-21 12:04:36,880 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 529
+INFO 2026-04-21 12:04:41,998 basehttp "OPTIONS /api/v1/expenses/my-expenses/ HTTP/1.1" 200 0
+INFO 2026-04-21 12:04:42,038 basehttp "GET /api/v1/expenses/my-expenses/ HTTP/1.1" 200 747
+INFO 2026-04-21 12:13:14,208 autoreload /app/apps/trips/models.py changed, reloading.
+INFO 2026-04-21 12:13:15,934 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:15:07,422 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 12:15:08,734 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:15:15,606 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 12:15:16,949 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:15:25,031 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 12:15:26,392 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:15:35,237 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-21 12:15:36,646 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:15:46,830 autoreload /app/apps/trips/views.py changed, reloading.
+INFO 2026-04-21 12:15:48,195 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:15:57,370 autoreload /app/apps/trips/views.py changed, reloading.
+INFO 2026-04-21 12:15:58,625 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:16:05,403 autoreload /app/apps/trips/views.py changed, reloading.
+INFO 2026-04-21 12:16:06,796 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 12:21:14,916 basehttp "OPTIONS /api/v1/trips/my-trips/ HTTP/1.1" 200 0
+ERROR 2026-04-21 12:21:15,463 log Internal Server Error: /api/v1/trips/my-trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 279, in get
+    total_km = sum(trip.total_km for trip in queryset)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 12:21:15,503 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 500 180126
+ERROR 2026-04-21 12:21:16,598 log Internal Server Error: /api/v1/trips/my-trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 279, in get
+    total_km = sum(trip.total_km for trip in queryset)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 12:21:16,607 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 500 180126
+INFO 2026-04-21 12:21:17,461 basehttp "OPTIONS /api/v1/dashboard/driver/ HTTP/1.1" 200 0
+ERROR 2026-04-21 12:21:17,602 log Internal Server Error: /api/v1/dashboard/driver/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/dashboard/views.py", line 233, in get
+    recent_trips_data = [
+                        ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 12:21:17,611 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 500 163275
+ERROR 2026-04-21 12:21:18,418 log Internal Server Error: /api/v1/trips/my-trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 279, in get
+    total_km = sum(trip.total_km for trip in queryset)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 12:21:18,428 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 500 180126
+ERROR 2026-04-21 12:21:19,499 log Internal Server Error: /api/v1/trips/my-trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 279, in get
+    total_km = sum(trip.total_km for trip in queryset)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 12:21:19,506 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 500 180126
+INFO 2026-04-21 16:00:43,352 autoreload Watching for file changes with StatReloader
+INFO 2026-04-21 16:01:00,441 basehttp "OPTIONS /api/v1/dashboard/driver/ HTTP/1.1" 200 0
+ERROR 2026-04-21 16:01:00,644 log Internal Server Error: /api/v1/dashboard/driver/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/dashboard/views.py", line 233, in get
+    recent_trips_data = [
+                        ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:00,656 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 500 163260
+ERROR 2026-04-21 16:01:01,736 log Internal Server Error: /api/v1/dashboard/driver/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/dashboard/views.py", line 233, in get
+    recent_trips_data = [
+                        ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:01,743 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 500 163260
+INFO 2026-04-21 16:01:14,556 basehttp "OPTIONS /api/v1/trips/my-trips/ HTTP/1.1" 200 0
+ERROR 2026-04-21 16:01:14,719 log Internal Server Error: /api/v1/trips/my-trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 279, in get
+    total_km = sum(trip.total_km for trip in queryset)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:14,728 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 500 180111
+ERROR 2026-04-21 16:01:15,826 log Internal Server Error: /api/v1/trips/my-trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 279, in get
+    total_km = sum(trip.total_km for trip in queryset)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:15,834 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 500 180111
+INFO 2026-04-21 16:01:18,314 basehttp "OPTIONS /api/v1/expenses/my-expenses/ HTTP/1.1" 200 0
+ERROR 2026-04-21 16:01:18,671 log Internal Server Error: /api/v1/expenses/my-expenses/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/expenses/views.py", line 205, in get
+    'expenses': serializer.data,
+                ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:18,684 basehttp "GET /api/v1/expenses/my-expenses/ HTTP/1.1" 500 197631
+ERROR 2026-04-21 16:01:19,811 log Internal Server Error: /api/v1/expenses/my-expenses/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/expenses/views.py", line 205, in get
+    'expenses': serializer.data,
+                ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:19,821 basehttp "GET /api/v1/expenses/my-expenses/ HTTP/1.1" 500 197631
+ERROR 2026-04-21 16:01:24,341 log Internal Server Error: /api/v1/dashboard/driver/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/dashboard/views.py", line 233, in get
+    recent_trips_data = [
+                        ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:24,349 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 500 163260
+ERROR 2026-04-21 16:01:25,446 log Internal Server Error: /api/v1/dashboard/driver/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/dashboard/views.py", line 233, in get
+    recent_trips_data = [
+                        ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:01:25,456 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 500 163260
+INFO 2026-04-21 16:01:52,123 basehttp "OPTIONS /api/v1/trips/stores/?q=whi HTTP/1.1" 200 0
+INFO 2026-04-21 16:01:52,206 basehttp "GET /api/v1/trips/stores/?q=whi HTTP/1.1" 200 637
+INFO 2026-04-21 16:02:11,524 basehttp "OPTIONS /api/v1/trips/stores/?q=wh HTTP/1.1" 200 0
+INFO 2026-04-21 16:02:11,553 basehttp "GET /api/v1/trips/stores/?q=wh HTTP/1.1" 200 637
+INFO 2026-04-21 16:02:44,708 basehttp "OPTIONS /api/v1/trips/ HTTP/1.1" 200 0
+ERROR 2026-04-21 16:02:44,966 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "gate_pass_image_2" of relation "trips" does not exist
+LINE 1: ... "total_km", "gate_pass_image", "map_screenshot", "gate_pass...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 246, in post
+    return self.create(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 80, in create
+    trip = serializer.save(created_by=request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 210, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 1011, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/app/apps/trips/models.py", line 139, in save
+    super().save(*args, **kwargs)
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1823, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column "gate_pass_image_2" of relation "trips" does not exist
+LINE 1: ... "total_km", "gate_pass_image", "map_screenshot", "gate_pass...
+                                                             ^
+
+ERROR 2026-04-21 16:02:44,981 basehttp "POST /api/v1/trips/ HTTP/1.1" 500 234558
+ERROR 2026-04-21 16:03:00,306 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "gate_pass_image_2" of relation "trips" does not exist
+LINE 1: ... "total_km", "gate_pass_image", "map_screenshot", "gate_pass...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 246, in post
+    return self.create(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 80, in create
+    trip = serializer.save(created_by=request.user)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 210, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 1011, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/app/apps/trips/models.py", line 139, in save
+    super().save(*args, **kwargs)
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1823, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column "gate_pass_image_2" of relation "trips" does not exist
+LINE 1: ... "total_km", "gate_pass_image", "map_screenshot", "gate_pass...
+                                                             ^
+
+ERROR 2026-04-21 16:03:00,318 basehttp "POST /api/v1/trips/ HTTP/1.1" 500 234544
+INFO 2026-04-21 16:03:59,766 basehttp "OPTIONS /api/v1/auth/login/ HTTP/1.1" 200 0
+WARNING 2026-04-21 16:04:00,066 log Unauthorized: /api/v1/auth/login/
+WARNING 2026-04-21 16:04:00,068 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 401 49
+INFO 2026-04-21 16:04:12,513 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-21 16:04:12,570 basehttp "OPTIONS /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 0
+INFO 2026-04-21 16:04:12,655 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 444
+INFO 2026-04-21 16:04:19,479 basehttp "OPTIONS /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 0
+INFO 2026-04-21 16:04:19,490 basehttp "OPTIONS /api/v1/trips/pending/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:04:19,490 basehttp "OPTIONS /api/v1/vehicles/vendors/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:04:19,491 basehttp "OPTIONS /api/v1/vehicles/?is_active=true HTTP/1.1" 200 0
+INFO 2026-04-21 16:04:19,529 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 16:04:19,569 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+ERROR 2026-04-21 16:04:19,666 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:19,667 log Internal Server Error: /api/v1/trips/pending/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 311, in get
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:19,676 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 500 197367
+ERROR 2026-04-21 16:04:19,682 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 500 191934
+ERROR 2026-04-21 16:04:20,833 log Internal Server Error: /api/v1/trips/pending/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 311, in get
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:20,845 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:20,850 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 500 191934
+ERROR 2026-04-21 16:04:20,856 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 500 197367
+ERROR 2026-04-21 16:04:22,754 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:22,761 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 500 197367
+ERROR 2026-04-21 16:04:23,895 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:23,904 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 500 197367
+INFO 2026-04-21 16:04:45,854 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 16:04:45,918 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+ERROR 2026-04-21 16:04:46,069 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:46,071 log Internal Server Error: /api/v1/trips/pending/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 311, in get
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:46,078 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 500 197367
+ERROR 2026-04-21 16:04:46,082 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 500 191934
+ERROR 2026-04-21 16:04:47,419 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:47,445 log Internal Server Error: /api/v1/trips/pending/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 311, in get
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.gate_pass_image_2 does not exist
+LINE 1: ...ips"."gate_pass_image", "trips"."map_screenshot", "trips"."g...
+                                                             ^
+HINT:  Perhaps you meant to reference the column "trips.gate_pass_image".
+
+ERROR 2026-04-21 16:04:47,448 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 500 197367
+ERROR 2026-04-21 16:04:47,452 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 500 191934
+INFO 2026-04-21 16:12:42,368 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 16:12:42,368 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1502
+INFO 2026-04-21 16:12:42,373 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1493
+INFO 2026-04-21 16:12:42,391 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 16:13:20,416 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 16:13:20,416 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 16:14:05,618 basehttp "OPTIONS /api/v1/auth/otp/send/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:14:05,644 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 16:14:16,813 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 16:14:25,490 basehttp "OPTIONS /api/v1/auth/otp/verify/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:14:25,542 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 1023
+INFO 2026-04-21 16:14:25,674 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 529
+INFO 2026-04-21 16:14:47,273 basehttp "GET /api/v1/trips/stores/?q=wh HTTP/1.1" 200 637
+INFO 2026-04-21 16:15:07,583 basehttp "OPTIONS /api/v1/trips/stores/?q=whit HTTP/1.1" 200 0
+INFO 2026-04-21 16:15:07,621 basehttp "GET /api/v1/trips/stores/?q=whit HTTP/1.1" 200 637
+INFO 2026-04-21 16:15:31,697 basehttp "POST /api/v1/trips/ HTTP/1.1" 201 1748
+INFO 2026-04-21 16:15:31,777 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 200 3252
+INFO 2026-04-21 16:16:36,400 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-21 16:16:36,480 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 444
+INFO 2026-04-21 16:16:40,591 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3189
+INFO 2026-04-21 16:16:40,595 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 3180
+INFO 2026-04-21 16:16:40,595 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 16:16:40,620 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 648
+INFO 2026-04-21 16:16:48,345 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM_DsVyIyv.jpeg HTTP/1.1" 200 59431
+INFO 2026-04-21 16:16:48,347 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM_8DgjbDW.jpeg HTTP/1.1" 200 138988
+INFO 2026-04-21 16:16:48,348 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM_eYJToIf.jpeg HTTP/1.1" 200 59431
+INFO 2026-04-21 16:16:48,360 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM_D7gtwNL.jpeg HTTP/1.1" 200 138988
+INFO 2026-04-21 16:17:22,244 basehttp "OPTIONS /api/v1/trips/771fa682-4e99-4541-8dff-5c2876c94a76/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:17:22,288 basehttp "PATCH /api/v1/trips/771fa682-4e99-4541-8dff-5c2876c94a76/ HTTP/1.1" 200 1748
+INFO 2026-04-21 16:17:22,336 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3189
+INFO 2026-04-21 16:17:22,337 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 3180
+INFO 2026-04-21 16:17:38,822 basehttp "PATCH /api/v1/trips/771fa682-4e99-4541-8dff-5c2876c94a76/ HTTP/1.1" 200 1747
+INFO 2026-04-21 16:17:38,870 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3188
+INFO 2026-04-21 16:17:38,870 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 3179
+INFO 2026-04-21 16:17:45,666 basehttp "OPTIONS /api/v1/trips/771fa682-4e99-4541-8dff-5c2876c94a76/approve/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:17:45,723 basehttp "POST /api/v1/trips/771fa682-4e99-4541-8dff-5c2876c94a76/approve/ HTTP/1.1" 200 268
+INFO 2026-04-21 16:17:45,887 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1493
+INFO 2026-04-21 16:17:45,909 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3308
+INFO 2026-04-21 16:17:57,303 basehttp "OPTIONS /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:17:57,344 basehttp "PATCH /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 1508
+INFO 2026-04-21 16:17:57,388 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3307
+INFO 2026-04-21 16:17:57,389 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 1492
+INFO 2026-04-21 16:18:21,300 basehttp "OPTIONS /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/reject/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:18:21,325 basehttp "POST /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/reject/ HTTP/1.1" 200 266
+INFO 2026-04-21 16:18:21,411 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3431
+INFO 2026-04-21 16:18:21,413 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 16:18:36,591 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 16:18:47,299 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 16:18:53,435 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 1023
+INFO 2026-04-21 16:18:53,525 basehttp "GET /api/v1/dashboard/driver/ HTTP/1.1" 200 736
+INFO 2026-04-21 16:19:03,489 basehttp "GET /api/v1/trips/my-trips/ HTTP/1.1" 200 3494
+INFO 2026-04-21 16:20:08,966 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-21 16:20:09,065 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 685
+INFO 2026-04-21 16:20:14,116 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 57
+INFO 2026-04-21 16:20:14,126 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3431
+INFO 2026-04-21 16:20:14,135 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 16:20:14,147 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 649
+INFO 2026-04-21 16:20:20,094 basehttp "PATCH /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 1632
+INFO 2026-04-21 16:20:20,134 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 3431
+INFO 2026-04-21 16:20:20,135 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 16:20:26,843 basehttp "DELETE /api/v1/trips/4d24ef6b-a8fd-477e-b910-33244afc5584/ HTTP/1.1" 200 54
+INFO 2026-04-21 16:20:26,882 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 1860
+INFO 2026-04-21 16:20:26,882 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-21 16:20:31,894 basehttp "OPTIONS /api/v1/drivers/?page_size=200 HTTP/1.1" 200 0
+INFO 2026-04-21 16:20:31,895 basehttp "OPTIONS /api/v1/vehicles/?page_size=200 HTTP/1.1" 200 0
+INFO 2026-04-21 16:20:31,947 basehttp "GET /api/v1/vehicles/?page_size=200 HTTP/1.1" 200 649
+INFO 2026-04-21 16:20:31,951 basehttp "GET /api/v1/drivers/?page_size=200 HTTP/1.1" 200 860
+INFO 2026-04-21 16:20:41,566 basehttp "OPTIONS /api/v1/reports/monthly-mis/?year=2026&month=4 HTTP/1.1" 200 0
+ERROR 2026-04-21 16:20:41,608 log Internal Server Error: /api/v1/reports/monthly-mis/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/reports/views.py", line 41, in get
+    import openpyxl
+ModuleNotFoundError: No module named 'openpyxl'
+ERROR 2026-04-21 16:20:41,617 basehttp "GET /api/v1/reports/monthly-mis/?year=2026&month=4 HTTP/1.1" 500 95974
+INFO 2026-04-21 16:20:43,412 basehttp "OPTIONS /api/v1/payments/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:20:43,413 basehttp "OPTIONS /api/v1/drivers/?is_active=true HTTP/1.1" 200 0
+INFO 2026-04-21 16:20:43,463 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 860
+INFO 2026-04-21 16:20:43,485 basehttp "GET /api/v1/payments/ HTTP/1.1" 200 204
+INFO 2026-04-21 16:20:44,017 basehttp "OPTIONS /api/v1/vehicles/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:20:44,072 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 649
+INFO 2026-04-21 16:22:04,402 basehttp "OPTIONS /api/v1/trips/?status=&start_date=2026-04-20&end_date= HTTP/1.1" 200 0
+INFO 2026-04-21 16:22:04,439 basehttp "GET /api/v1/trips/?status=&start_date=2026-04-20&end_date= HTTP/1.1" 200 1860
+INFO 2026-04-21 16:22:08,261 basehttp "OPTIONS /api/v1/trips/?status=&start_date=2026-04-20&end_date=2026-04-20 HTTP/1.1" 200 0
+INFO 2026-04-21 16:22:08,294 basehttp "GET /api/v1/trips/?status=&start_date=2026-04-20&end_date=2026-04-20 HTTP/1.1" 200 55
+INFO 2026-04-21 16:22:17,678 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM_DsVyIyv.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 16:22:17,678 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_12.49.43_AM_eYJToIf.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 16:22:17,679 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM_8DgjbDW.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 16:22:17,681 basehttp "GET /media/trips/maps/2026/04/WhatsApp_Image_2026-04-21_at_12.49.50_AM_D7gtwNL.jpeg HTTP/1.1" 304 0
+INFO 2026-04-21 16:23:51,126 basehttp "POST /api/v1/vehicles/vendors/ HTTP/1.1" 201 355
+INFO 2026-04-21 16:23:51,177 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-21 16:23:51,198 basehttp "POST /api/v1/vehicles/ HTTP/1.1" 201 667
+INFO 2026-04-21 16:23:51,304 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1252
+INFO 2026-04-21 16:24:13,138 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 16:24:20,751 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 16:24:36,398 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322
+INFO 2026-04-21 16:24:54,727 basehttp "OPTIONS /api/v1/auth/driver/register/ HTTP/1.1" 200 0
+WARNING 2026-04-21 16:24:54,732 log Unauthorized: /api/v1/auth/driver/register/
+WARNING 2026-04-21 16:24:54,734 basehttp "POST /api/v1/auth/driver/register/ HTTP/1.1" 401 60
+INFO 2026-04-21 16:25:03,849 basehttp "POST /api/v1/auth/otp/send/ HTTP/1.1" 200 112
+INFO 2026-04-21 16:25:13,323 basehttp "POST /api/v1/auth/otp/verify/ HTTP/1.1" 200 322
+INFO 2026-04-21 16:25:32,062 basehttp "POST /api/v1/auth/login/ HTTP/1.1" 200 858
+INFO 2026-04-21 16:25:32,205 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-21 HTTP/1.1" 200 684
+INFO 2026-04-21 16:25:42,468 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-21 16:25:42,481 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1252
+INFO 2026-04-21 16:25:42,483 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 860
+INFO 2026-04-21 16:26:39,866 basehttp "OPTIONS /api/v1/vehicles/006644bb-b5a0-4a47-8c23-4a1c7b00cb24/driver-login/ HTTP/1.1" 200 0
+INFO 2026-04-21 16:26:39,911 basehttp "PATCH /api/v1/vehicles/006644bb-b5a0-4a47-8c23-4a1c7b00cb24/driver-login/ HTTP/1.1" 200 101
+INFO 2026-04-21 16:26:40,023 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1251
+WARNING 2026-04-21 16:29:34,158 log Unauthorized: /api/v1/trips/
+WARNING 2026-04-21 16:29:34,160 log Unauthorized: /api/v1/trips/
+WARNING 2026-04-21 16:29:34,162 log Unauthorized: /api/v1/trips/ae92bb01-fc23-42ad-9d3a-98df46228dca/
+WARNING 2026-04-21 16:29:34,164 log Unauthorized: /api/v1/trips/ae92bb01-fc23-42ad-9d3a-98df46228dca/
+WARNING 2026-04-21 16:29:34,165 log Unauthorized: /api/v1/trips/ae92bb01-fc23-42ad-9d3a-98df46228dca/
+WARNING 2026-04-21 16:29:34,167 log Unauthorized: /api/v1/trips/my-trips/
+WARNING 2026-04-21 16:29:34,168 log Unauthorized: /api/v1/trips/pending/
+WARNING 2026-04-21 16:29:34,171 log Unauthorized: /api/v1/trips/stats/
+WARNING 2026-04-21 16:29:35,185 log Forbidden: /api/v1/trips/my-trips/
+WARNING 2026-04-21 16:29:35,190 log Unauthorized: /api/v1/trips/my-trips/
+WARNING 2026-04-21 16:29:35,918 log Forbidden: /api/v1/trips/pending/
+WARNING 2026-04-21 16:29:36,712 log Forbidden: /api/v1/trips/stores/
+WARNING 2026-04-21 16:29:36,745 log Not Found: /api/v1/trips/stores/ccb9f212-c25d-4c60-b5d1-51481833af8a/
+WARNING 2026-04-21 16:29:37,479 log Bad Request: /api/v1/trips/7b2b58f2-0815-40c1-8f2e-c088b90106f1/approve/
+WARNING 2026-04-21 16:29:37,490 log Not Found: /api/v1/trips/38890444-8af5-4a2b-9022-8ec411a9786c/approve/
+WARNING 2026-04-21 16:29:37,523 log Forbidden: /api/v1/trips/dd581be5-c816-4a68-ab61-cb669f9b6a32/approve/
+WARNING 2026-04-21 16:29:37,552 log Bad Request: /api/v1/trips/fd475c78-3ab1-4204-86c0-b1fe8fd3cd41/reject/
+WARNING 2026-04-21 16:29:37,561 log Bad Request: /api/v1/trips/e79546ee-c542-41b0-842f-c2dc6d339fcf/reject/
+WARNING 2026-04-21 16:29:38,300 log Forbidden: /api/v1/trips/87c7cb39-36e2-430c-845d-ce54a35b1972/
+WARNING 2026-04-21 16:29:38,483 log Forbidden: /api/v1/trips/430d9350-edf5-4a91-a9a4-66b8227594eb/
+WARNING 2026-04-21 16:29:38,695 log Forbidden: /api/v1/trips/987c3415-0ab0-4bc1-9dd7-47399998718b/
+WARNING 2026-04-21 16:29:38,719 log Forbidden: /api/v1/trips/e773cd31-6fb4-45e3-9cfd-24a19ae32e9b/
+WARNING 2026-04-21 16:29:38,923 log Forbidden: /api/v1/trips/77289994-0309-41b9-ba70-6b630839aba6/
+WARNING 2026-04-21 16:29:38,938 log Forbidden: /api/v1/trips/572d0cb0-b66f-4b51-be56-9acdc80045d9/
+WARNING 2026-04-21 16:29:38,980 log Not Found: /api/v1/trips/060508a0-83cd-497e-b17f-1acdd1fc8b54/
+WARNING 2026-04-21 16:29:40,556 log Bad Request: /api/v1/trips/
+WARNING 2026-04-21 16:29:40,611 log Bad Request: /api/v1/trips/
+WARNING 2026-04-21 16:29:40,625 log Bad Request: /api/v1/trips/
+WARNING 2026-04-21 16:29:40,643 log Bad Request: /api/v1/trips/
+WARNING 2026-04-21 16:29:40,654 log Bad Request: /api/v1/trips/
+WARNING 2026-04-21 16:29:40,679 log Forbidden: /api/v1/trips/
+WARNING 2026-04-21 16:29:40,709 log Bad Request: /api/v1/trips/
+WARNING 2026-04-21 16:29:40,759 log Unauthorized: /api/v1/trips/
+WARNING 2026-04-21 16:29:43,097 log Forbidden: /api/v1/trips/stats/
+INFO 2026-04-21 16:32:56,290 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-21 16:32:56,337 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 859
+INFO 2026-04-21 16:32:56,346 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1251
