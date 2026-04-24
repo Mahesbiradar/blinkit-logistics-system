@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import { PlusCircle, Truck, User } from 'lucide-react';
 import { useVehicles } from '../../hooks/useVehicles';
+import tripService from '../../services/tripService';
 
 const fieldClass = 'w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
 
@@ -121,6 +123,31 @@ const VehiclesManagement = () => {
   const hooks = useVehicles();
   const { vehicles, isLoading, isError, error, refetch } = hooks;
 
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+  const monthEnd = now.toISOString().split('T')[0];
+  const monthLabel = now.toLocaleString('default', { month: 'long' });
+
+  const { data: monthTripsRes } = useQuery(
+    ['vehicleMonthStats', monthStart, monthEnd],
+    () => tripService.getTrips({ start_date: monthStart, end_date: monthEnd }),
+    { staleTime: 2 * 60 * 1000 }
+  );
+
+  const vehicleStats = useMemo(() => {
+    const rawTrips = monthTripsRes?.data?.data?.trips || [];
+    const acc = {};
+    rawTrips.forEach((t) => {
+      const vid = t.vehicle_id;
+      if (!acc[vid]) acc[vid] = { trips: 0, km: 0, daysSet: new Set() };
+      acc[vid].trips++;
+      acc[vid].km += parseFloat(t.total_km || 0);
+      acc[vid].daysSet.add(t.trip_date);
+    });
+    Object.values(acc).forEach((s) => { s.days = s.daysSet.size; });
+    return acc;
+  }, [monthTripsRes]);
+
   const stats = {
     total: vehicles.length,
     owner: vehicles.filter((v) => v.owner_type === 'owner').length,
@@ -232,24 +259,51 @@ const VehiclesManagement = () => {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap">
                     <div className="rounded-xl bg-gray-50 px-4 py-2 text-sm">
                       <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-gray-500">
                         <User className="h-3.5 w-3.5" />
-                        {isOwner ? 'Driver' : 'Vendor / Driver'}
+                        Driver
                       </div>
-                      <div className="mt-0.5 font-medium text-gray-900">
-                        {isOwner
-                          ? primaryDriver?.name || <span className="text-gray-400 italic text-xs">No driver</span>
-                          : vehicle.vendor_details?.name || '—'}
-                      </div>
-                      {!isOwner && primaryDriver?.name && (
-                        <div className="text-xs text-gray-500">Driver: {primaryDriver.name}</div>
+                      {primaryDriver ? (
+                        <>
+                          <div className="mt-0.5 font-medium text-gray-900">{primaryDriver.name}</div>
+                          {primaryDriver.phone && (
+                            <div className="text-xs text-gray-500">{primaryDriver.phone}</div>
+                          )}
+                        </>
+                      ) : (
+                        <div className="mt-0.5 text-xs text-amber-600 italic">No driver assigned</div>
                       )}
-                      {isOwner && !primaryDriver && (
-                        <div className="text-xs text-amber-600 italic">No driver assigned</div>
+                      {!isOwner && vehicle.vendor_details?.name && (
+                        <div className="text-xs text-gray-400 mt-0.5">Vendor: {vehicle.vendor_details.name}</div>
                       )}
                     </div>
+
+                    {/* Monthly stats */}
+                    {(() => {
+                      const s = vehicleStats[vehicle.id] || { trips: 0, km: 0, days: 0 };
+                      return (
+                        <div className="text-center">
+                          <div className="grid grid-cols-3 divide-x divide-gray-200 rounded-xl border border-gray-100 bg-gray-50 text-center">
+                            <div className="px-4 py-2">
+                              <div className="text-base font-bold text-gray-900">{s.trips}</div>
+                              <div className="text-xs text-gray-500">Trips</div>
+                            </div>
+                            <div className="px-4 py-2">
+                              <div className="text-base font-bold text-gray-900">{s.km.toFixed(0)}</div>
+                              <div className="text-xs text-gray-500">KM</div>
+                            </div>
+                            <div className="px-4 py-2">
+                              <div className="text-base font-bold text-gray-900">{s.days}</div>
+                              <div className="text-xs text-gray-500">Days</div>
+                            </div>
+                          </div>
+                          <div className="mt-0.5 text-xs text-gray-400">{monthLabel}</div>
+                        </div>
+                      );
+                    })()}
+
                     <span className="text-sm font-semibold text-blue-600 hover:underline">View Details →</span>
                   </div>
                 </div>

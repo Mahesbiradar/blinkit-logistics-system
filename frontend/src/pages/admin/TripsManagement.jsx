@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import {
-  Calendar, CheckCircle, Eye, Filter, Image, PlusCircle,
+  Calendar, CheckCircle, ChevronDown, ChevronUp, Eye, Filter, Image, PlusCircle,
   Search, Trash2, Truck, X, XCircle, Pencil,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -10,6 +10,14 @@ import { useVehicles } from '../../hooks/useVehicles';
 import tripService from '../../services/tripService';
 
 const fieldClass = 'w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
+
+const getMonthDefaults = () => {
+  const now = new Date();
+  return {
+    start_date: new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0],
+    end_date: now.toISOString().split('T')[0],
+  };
+};
 
 // ─── Store search (same as driver AddTrip) ────────────────────────────────────
 
@@ -86,6 +94,9 @@ const emptyTripForm = {
   vehicle_id: '',
   trip_date: new Date().toISOString().split('T')[0],
   trip_category: 'regular',
+  adhoc_vehicle_number: '',
+  adhoc_driver_name: '',
+  adhoc_driver_phone: '',
   store_name_1: '', one_way_km_1: '', dispatch_time_1: '',
   store_name_2: '', one_way_km_2: '', dispatch_time_2: '',
   remarks: '',
@@ -102,6 +113,9 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
       vehicle_id: trip.vehicle_id || '',
       trip_date: trip.trip_date,
       trip_category: trip.trip_category || 'regular',
+      adhoc_vehicle_number: trip.adhoc_vehicle_number || '',
+      adhoc_driver_name: trip.adhoc_driver_name || '',
+      adhoc_driver_phone: trip.adhoc_driver_phone || '',
       store_name_1: trip.trip_1?.store_name || trip.store_name_1 || '',
       one_way_km_1: trip.trip_1?.one_way_km || trip.one_way_km_1 || '',
       dispatch_time_1: trip.trip_1?.dispatch_time || trip.dispatch_time_1 || '',
@@ -113,6 +127,7 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
       map_screenshot: null,
     } : emptyTripForm
   );
+  const isAdhoc = form.trip_category === 'adhoc';
   const [showStore2, setShowStore2] = useState(isEdit && Boolean(trip?.trip_2));
   const gatePassRef = useRef(null);
   const mapRef = useRef(null);
@@ -132,7 +147,14 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isEdit && !form.vehicle_id) { toast.error('Vehicle is required'); return; }
+    if (!isEdit) {
+      if (isAdhoc) {
+        if (!form.adhoc_vehicle_number.trim()) { toast.error('Vehicle number is required for adhoc trips'); return; }
+        if (!form.adhoc_driver_name.trim()) { toast.error('Driver name is required for adhoc trips'); return; }
+      } else {
+        if (!form.vehicle_id) { toast.error('Vehicle is required'); return; }
+      }
+    }
     if (!form.store_name_1 || !form.one_way_km_1) { toast.error('Store 1 name and KM are required'); return; }
     if (showStore2 && form.store_name_2 && !form.one_way_km_2) { toast.error('Store 2 KM is required'); return; }
 
@@ -148,7 +170,13 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
       remarks: form.remarks.trim() || undefined,
     };
     if (!isEdit) {
-      payload.vehicle_id = form.vehicle_id;
+      if (isAdhoc) {
+        payload.adhoc_vehicle_number = form.adhoc_vehicle_number.trim().toUpperCase();
+        payload.adhoc_driver_name = form.adhoc_driver_name.trim();
+        payload.adhoc_driver_phone = form.adhoc_driver_phone.trim() || undefined;
+      } else {
+        payload.vehicle_id = form.vehicle_id;
+      }
       if (form.gate_pass_image) payload.gate_pass_image = form.gate_pass_image;
       if (form.map_screenshot) payload.map_screenshot = form.map_screenshot;
       if (showStore2 && form.gate_pass_image_2) payload.gate_pass_image_2 = form.gate_pass_image_2;
@@ -472,12 +500,14 @@ const TripDetailModal = ({ trip, onClose, onEdit, onApprove, onReject, isApprovi
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 const TripsManagement = () => {
-  const [filters, setFilters] = useState({ status: '', start_date: '', end_date: '' });
+  const [filters, setFilters] = useState({ status: '', ...getMonthDefaults() });
   const [showForm, setShowForm] = useState(false);
   const [editTrip, setEditTrip] = useState(null);
   const [viewTrip, setViewTrip] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [actionTripId, setActionTripId] = useState(null);
+  const [expandedTripId, setExpandedTripId] = useState(null);
+  const [lightboxUrl, setLightboxUrl] = useState(null);
 
   const { trips, pendingTrips, isLoading, isError, error, refetch,
     approveTrip, rejectTrip, isApproving, isRejecting,
@@ -522,6 +552,15 @@ const TripsManagement = () => {
 
   return (
     <div className="space-y-6">
+      {lightboxUrl && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90" onClick={() => setLightboxUrl(null)}>
+          <button className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20" onClick={() => setLightboxUrl(null)}>
+            <X className="h-6 w-6" />
+          </button>
+          <img src={lightboxUrl} alt="Full view" className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
+
       {(showForm || editTrip) && (
         <TripFormModal
           trip={editTrip}
@@ -595,7 +634,7 @@ const TripsManagement = () => {
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
           <input type="date" value={filters.end_date} onChange={(e) => setFilters((c) => ({ ...c, end_date: e.target.value }))}
             className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
-          <button onClick={() => setFilters({ status: '', start_date: '', end_date: '' })} className="text-sm text-blue-600 hover:underline">Clear</button>
+          <button onClick={() => setFilters({ status: '', ...getMonthDefaults() })} className="text-sm text-blue-600 hover:underline">Clear</button>
         </div>
       </div>
 
@@ -604,66 +643,142 @@ const TripsManagement = () => {
           <table className="w-full">
             <thead className="border-b bg-gray-50">
               <tr>
-                {['Date', 'Driver', 'Vehicle', 'Stores', 'KM', 'Type', 'Status', 'Actions'].map((h) => (
+                {['Date', 'Driver', 'Vehicle', 'Stores', 'KM', 'Type', 'Status', 'Actions', ''].map((h) => (
                   <th key={h} className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {displayTrips.length === 0 ? (
-                <tr><td colSpan={8} className="px-4 py-8 text-center text-gray-500">No trips found</td></tr>
+                <tr><td colSpan={9} className="px-4 py-8 text-center text-gray-500">No trips found</td></tr>
               ) : (
-                displayTrips.map((trip) => (
-                  <tr key={trip.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm">{format(new Date(trip.trip_date), 'MMM d, yyyy')}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-sm font-medium">{trip.driver_name}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1.5">
-                        <Truck className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm">{trip.vehicle_number}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-sm max-w-[180px] truncate">
-                      {trip.trip_1?.store_name || trip.store_name_1}
-                      {(trip.trip_2?.store_name || trip.store_name_2) ? ` + ${trip.trip_2?.store_name || trip.store_name_2}` : ''}
-                    </td>
-                    <td className="px-4 py-3 text-sm font-medium">{trip.total_km} km</td>
-                    <td className="px-4 py-3">
-                      <span className={`rounded-full px-2 py-1 text-xs font-medium capitalize ${trip.trip_category === 'adhoc' ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-700'}`}>
-                        {trip.trip_category || 'regular'}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">{statusBadge(trip.status)}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
-                        <button onClick={() => setViewTrip(trip)} className="rounded-lg p-1.5 text-gray-500 hover:bg-blue-50 hover:text-blue-600" title="View">
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button onClick={() => setEditTrip(trip)} className="rounded-lg p-1.5 text-gray-500 hover:bg-indigo-50 hover:text-indigo-600" title="Edit">
-                          <Pencil className="h-4 w-4" />
-                        </button>
-                        {trip.status === 'pending' && (
-                          <>
-                            <button onClick={() => handleApprove(trip.id, 'Approved')} disabled={isApproving && actionTripId === trip.id} className="rounded-lg p-1.5 text-gray-500 hover:bg-green-50 hover:text-green-600" title="Approve">
-                              <CheckCircle className="h-4 w-4" />
+                displayTrips.map((trip) => {
+                  const isExpanded = expandedTripId === trip.id;
+                  const images = [
+                    { url: trip.gate_pass_image_url, label: 'Gate Pass 1' },
+                    { url: trip.map_screenshot_url, label: 'Map 1' },
+                    { url: trip.gate_pass_image_2_url, label: 'Gate Pass 2' },
+                    { url: trip.map_screenshot_2_url, label: 'Map 2' },
+                  ].filter((i) => i.url);
+
+                  return (
+                    <Fragment key={trip.id}>
+                      <tr
+                        className="cursor-pointer hover:bg-gray-50"
+                        onClick={() => setExpandedTripId(isExpanded ? null : trip.id)}
+                      >
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm">{format(new Date(trip.trip_date), 'MMM d, yyyy')}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-sm font-medium">{trip.driver_name}</td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1.5">
+                            <Truck className="h-4 w-4 text-gray-400" />
+                            <span className="text-sm">{trip.vehicle_number}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-sm max-w-[180px] truncate">
+                          {trip.trip_1?.store_name || trip.store_name_1}
+                          {(trip.trip_2?.store_name || trip.store_name_2) ? ` + ${trip.trip_2?.store_name || trip.store_name_2}` : ''}
+                        </td>
+                        <td className="px-4 py-3 text-sm font-medium">{trip.total_km} km</td>
+                        <td className="px-4 py-3">
+                          <span className={`rounded-full px-2 py-1 text-xs font-medium capitalize ${trip.trip_category === 'adhoc' ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-700'}`}>
+                            {trip.trip_category || 'regular'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">{statusBadge(trip.status)}</td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                            <button onClick={() => setViewTrip(trip)} className="rounded-lg p-1.5 text-gray-500 hover:bg-blue-50 hover:text-blue-600" title="View details">
+                              <Eye className="h-4 w-4" />
                             </button>
-                            <button onClick={() => setViewTrip(trip)} className="rounded-lg p-1.5 text-gray-500 hover:bg-red-50 hover:text-red-600" title="Reject">
-                              <XCircle className="h-4 w-4" />
-                            </button>
-                          </>
-                        )}
-                        <button onClick={() => setConfirmDelete(trip)} className="rounded-lg p-1.5 text-gray-500 hover:bg-red-50 hover:text-red-600" title="Delete">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                            {trip.status === 'pending' && (
+                              <>
+                                <button onClick={() => handleApprove(trip.id, 'Approved')} disabled={isApproving && actionTripId === trip.id} className="rounded-lg p-1.5 text-gray-500 hover:bg-green-50 hover:text-green-600" title="Quick approve">
+                                  <CheckCircle className="h-4 w-4" />
+                                </button>
+                                <button onClick={() => setViewTrip(trip)} className="rounded-lg p-1.5 text-gray-500 hover:bg-red-50 hover:text-red-600" title="Reject">
+                                  <XCircle className="h-4 w-4" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          {isExpanded
+                            ? <ChevronUp className="h-4 w-4 text-gray-400 ml-auto" />
+                            : <ChevronDown className="h-4 w-4 text-gray-400 ml-auto" />}
+                        </td>
+                      </tr>
+
+                      {isExpanded && (
+                        <tr className="bg-gray-50">
+                          <td colSpan={9} className="px-6 pb-5 pt-2">
+                            <div className="flex flex-col gap-3">
+
+                              {/* Store details */}
+                              <div className="flex gap-3 flex-wrap">
+                                {trip.trip_1 && (
+                                  <div className="rounded-xl bg-blue-50 border border-blue-100 p-3 text-sm flex-1 min-w-[180px]">
+                                    <div className="font-semibold text-blue-900">Store 1: {trip.trip_1.store_name}</div>
+                                    <div className="text-blue-700 text-xs mt-0.5">{trip.trip_1.one_way_km} km one-way · {trip.trip_1.round_trip_km} km round</div>
+                                    {trip.trip_1.dispatch_time && <div className="text-xs text-blue-600 mt-0.5">Dispatch: {trip.trip_1.dispatch_time}</div>}
+                                  </div>
+                                )}
+                                {trip.trip_2 && (
+                                  <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-3 text-sm flex-1 min-w-[180px]">
+                                    <div className="font-semibold text-emerald-900">Store 2: {trip.trip_2.store_name}</div>
+                                    <div className="text-emerald-700 text-xs mt-0.5">{trip.trip_2.one_way_km} km one-way · {trip.trip_2.round_trip_km} km round</div>
+                                    {trip.trip_2.dispatch_time && <div className="text-xs text-emerald-600 mt-0.5">Dispatch: {trip.trip_2.dispatch_time}</div>}
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Remarks */}
+                              {trip.remarks && (
+                                <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-2.5 text-sm text-amber-800">
+                                  <span className="font-semibold">Remarks: </span>{trip.remarks}
+                                </div>
+                              )}
+
+                              {/* Image thumbnails */}
+                              {images.length > 0 && (
+                                <div className="flex gap-3 flex-wrap">
+                                  {images.map(({ url, label }) => (
+                                    <div key={label} className="cursor-pointer group" onClick={() => setLightboxUrl(url)}>
+                                      <img src={url} alt={label} className="h-16 w-20 rounded-lg object-cover border border-gray-200 group-hover:opacity-80 transition" />
+                                      <div className="text-xs text-center text-gray-500 mt-0.5">{label}</div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Edit + Delete actions */}
+                              <div className="flex items-center gap-2 pt-1">
+                                <button
+                                  onClick={() => setEditTrip(trip)}
+                                  className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition"
+                                >
+                                  <Pencil className="h-3.5 w-3.5" /> Edit
+                                </button>
+                                <button
+                                  onClick={() => setConfirmDelete(trip)}
+                                  className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100 transition"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" /> Delete
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
+                  );
+                })
               )}
             </tbody>
           </table>

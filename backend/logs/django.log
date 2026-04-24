@@ -5183,3 +5183,243 @@ INFO 2026-04-25 01:48:16,788 basehttp "OPTIONS /api/v1/expenses/my-expenses/ HTT
 INFO 2026-04-25 01:48:16,858 basehttp "GET /api/v1/expenses/my-expenses/ HTTP/1.1" 200 2625
 INFO 2026-04-25 01:48:36,633 basehttp "OPTIONS /api/v1/expenses/my-expenses/?expense_type=fuel HTTP/1.1" 200 0
 INFO 2026-04-25 01:48:36,659 basehttp "GET /api/v1/expenses/my-expenses/?expense_type=fuel HTTP/1.1" 200 744
+INFO 2026-04-25 01:53:13,220 basehttp "OPTIONS /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 0
+INFO 2026-04-25 01:53:13,255 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-25 01:53:13,263 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 15963
+INFO 2026-04-25 01:53:13,273 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1362
+INFO 2026-04-25 01:53:14,316 basehttp "GET /api/v1/trips/?vehicle_id=006644bb-b5a0-4a47-8c23-4a1c7b00cb24&status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 15963
+INFO 2026-04-25 01:53:14,328 basehttp "GET /api/v1/vehicles/006644bb-b5a0-4a47-8c23-4a1c7b00cb24/ HTTP/1.1" 200 618
+INFO 2026-04-25 01:53:14,333 basehttp "GET /api/v1/expenses/?vehicle_id=006644bb-b5a0-4a47-8c23-4a1c7b00cb24&expense_type= HTTP/1.1" 200 1508
+INFO 2026-04-25 01:53:18,492 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-25 01:53:18,504 basehttp "GET /api/v1/trips/?status=&start_date=&end_date= HTTP/1.1" 200 15963
+INFO 2026-04-25 01:53:18,517 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 1362
+INFO 2026-04-25 01:54:45,922 basehttp "GET /api/v1/trips/?vehicle_id=de5b93a2-f3e9-4fb6-a1c1-4453616d83b9&status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 55
+INFO 2026-04-25 01:54:45,931 basehttp "GET /api/v1/expenses/?vehicle_id=de5b93a2-f3e9-4fb6-a1c1-4453616d83b9&expense_type= HTTP/1.1" 200 558
+INFO 2026-04-25 01:54:45,932 basehttp "GET /api/v1/vehicles/de5b93a2-f3e9-4fb6-a1c1-4453616d83b9/ HTTP/1.1" 200 733
+INFO 2026-04-25 02:02:11,043 basehttp "OPTIONS /api/v1/trips/?status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 0
+INFO 2026-04-25 02:02:11,088 basehttp "GET /api/v1/trips/?status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 15963
+INFO 2026-04-25 02:02:11,091 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-25 02:02:11,098 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-25 02:02:11,116 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 1362
+INFO 2026-04-25 02:02:57,936 basehttp "GET /api/v1/trips/stores/?q=312 HTTP/1.1" 200 203
+INFO 2026-04-25 02:03:03,315 basehttp "OPTIONS /api/v1/trips/stores/?q=21 HTTP/1.1" 200 0
+INFO 2026-04-25 02:03:03,331 basehttp "GET /api/v1/trips/stores/?q=21 HTTP/1.1" 200 26
+INFO 2026-04-25 02:03:05,615 basehttp "GET /api/v1/trips/stores/?q=312 HTTP/1.1" 200 203
+INFO 2026-04-25 02:03:39,497 basehttp "POST /api/v1/trips/ HTTP/1.1" 201 1452
+INFO 2026-04-25 02:03:39,526 basehttp "GET /api/v1/trips/?status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 17354
+INFO 2026-04-25 02:03:41,777 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_7.33.12_PM.jpeg HTTP/1.1" 200 704861
+INFO 2026-04-25 02:03:41,783 basehttp "GET /media/trips/maps/2026/04/Harish_Sign.png HTTP/1.1" 200 2226972
+INFO 2026-04-25 02:03:58,007 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 17354
+INFO 2026-04-25 02:03:58,025 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1362
+INFO 2026-04-25 02:07:12,226 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-25 02:07:12,226 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 17354
+INFO 2026-04-25 02:07:12,239 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1362
+INFO 2026-04-25 02:07:15,060 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-25 02:07:15,060 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 17354
+INFO 2026-04-25 02:07:15,076 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1362
+INFO 2026-04-25 02:07:38,350 basehttp "GET /api/v1/trips/?vehicle_id=006644bb-b5a0-4a47-8c23-4a1c7b00cb24&status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 17354
+INFO 2026-04-25 02:07:38,361 basehttp "GET /api/v1/vehicles/006644bb-b5a0-4a47-8c23-4a1c7b00cb24/ HTTP/1.1" 200 618
+INFO 2026-04-25 02:07:38,361 basehttp "GET /api/v1/expenses/?vehicle_id=006644bb-b5a0-4a47-8c23-4a1c7b00cb24&expense_type= HTTP/1.1" 200 1508
+INFO 2026-04-25 02:08:18,645 basehttp "GET /api/v1/trips/?vehicle_id=de5b93a2-f3e9-4fb6-a1c1-4453616d83b9&status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 55
+INFO 2026-04-25 02:08:18,657 basehttp "GET /api/v1/expenses/?vehicle_id=de5b93a2-f3e9-4fb6-a1c1-4453616d83b9&expense_type= HTTP/1.1" 200 558
+INFO 2026-04-25 02:08:18,659 basehttp "GET /api/v1/vehicles/de5b93a2-f3e9-4fb6-a1c1-4453616d83b9/ HTTP/1.1" 200 733
+INFO 2026-04-25 02:08:19,695 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 1673
+INFO 2026-04-25 02:08:41,072 basehttp "GET /api/v1/trips/?status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 17354
+INFO 2026-04-25 02:08:41,073 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-25 02:08:41,091 basehttp "GET /api/v1/vehicles/?is_active=true HTTP/1.1" 200 1362
+INFO 2026-04-25 02:08:43,127 basehttp "GET /media/trips/gate_pass/2026/04/WhatsApp_Image_2026-04-21_at_7.33.12_PM.jpeg HTTP/1.1" 304 0
+INFO 2026-04-25 02:08:43,127 basehttp "GET /media/trips/maps/2026/04/Harish_Sign.png HTTP/1.1" 304 0
+INFO 2026-04-25 02:08:48,673 basehttp "OPTIONS /api/v1/trips/0d080efd-30e3-4247-b457-68f90c9c4717/ HTTP/1.1" 200 0
+INFO 2026-04-25 02:08:48,704 basehttp "DELETE /api/v1/trips/0d080efd-30e3-4247-b457-68f90c9c4717/ HTTP/1.1" 200 54
+INFO 2026-04-25 02:08:48,779 basehttp "GET /api/v1/trips/?status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 15963
+INFO 2026-04-25 02:08:48,779 basehttp "GET /api/v1/trips/pending/ HTTP/1.1" 200 46
+INFO 2026-04-25 02:16:08,354 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-25 HTTP/1.1" 200 698
+INFO 2026-04-25 02:16:19,325 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 15963
+INFO 2026-04-25 02:16:19,327 basehttp "GET /api/v1/vehicles/vendors/ HTTP/1.1" 200 348
+INFO 2026-04-25 02:16:19,341 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1362
+INFO 2026-04-25 02:16:23,558 basehttp "GET /api/v1/trips/?vehicle_id=006644bb-b5a0-4a47-8c23-4a1c7b00cb24&status=&start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 200 15963
+INFO 2026-04-25 02:16:23,571 basehttp "GET /api/v1/vehicles/006644bb-b5a0-4a47-8c23-4a1c7b00cb24/ HTTP/1.1" 200 618
+INFO 2026-04-25 02:16:23,571 basehttp "GET /api/v1/expenses/?vehicle_id=006644bb-b5a0-4a47-8c23-4a1c7b00cb24&expense_type= HTTP/1.1" 200 1508
+INFO 2026-04-25 02:16:25,379 basehttp "GET /api/v1/drivers/?is_active=true HTTP/1.1" 200 1673
+INFO 2026-04-25 02:17:39,625 autoreload D:\Projects\blinkit-logistics-system\backend\apps\trips\models.py changed, reloading.
+INFO 2026-04-25 02:17:39,887 autoreload /app/apps/trips/models.py changed, reloading.
+INFO 2026-04-25 02:17:40,271 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:17:41,315 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:17:44,699 autoreload /app/apps/trips/models.py changed, reloading.
+INFO 2026-04-25 02:17:44,819 autoreload D:\Projects\blinkit-logistics-system\backend\apps\trips\models.py changed, reloading.
+INFO 2026-04-25 02:17:45,356 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:17:45,846 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:18:21,937 autoreload D:\Projects\blinkit-logistics-system\backend\apps\trips\serializers.py changed, reloading.
+INFO 2026-04-25 02:18:22,167 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-25 02:18:22,832 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:18:24,250 autoreload Watching for file changes with StatReloader
+ERROR 2026-04-25 02:18:39,544 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.adhoc_vehicle_number does not exist
+LINE 1: ...."id", "trips"."driver_id", "trips"."vehicle_id", "trips"."a...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.adhoc_vehicle_number does not exist
+LINE 1: ...."id", "trips"."driver_id", "trips"."vehicle_id", "trips"."a...
+                                                             ^
+
+ERROR 2026-04-25 02:18:39,558 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 500 198644
+ERROR 2026-04-25 02:18:40,669 log Internal Server Error: /api/v1/trips/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column trips.adhoc_vehicle_number does not exist
+LINE 1: ...."id", "trips"."driver_id", "trips"."vehicle_id", "trips"."a...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/trips/views.py", line 70, in list
+    'trips': serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 809, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 727, in to_representation
+    return [
+           ^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column trips.adhoc_vehicle_number does not exist
+LINE 1: ...."id", "trips"."driver_id", "trips"."vehicle_id", "trips"."a...
+                                                             ^
+
+ERROR 2026-04-25 02:18:40,677 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-24 HTTP/1.1" 500 198644
+INFO 2026-04-25 02:18:56,041 autoreload D:\Projects\blinkit-logistics-system\backend\apps\trips\serializers.py changed, reloading.
+INFO 2026-04-25 02:18:57,054 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-25 02:18:57,085 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:18:59,077 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:19:03,927 autoreload /app/apps/trips/serializers.py changed, reloading.
+INFO 2026-04-25 02:19:04,381 autoreload D:\Projects\blinkit-logistics-system\backend\apps\trips\serializers.py changed, reloading.
+INFO 2026-04-25 02:19:05,255 autoreload Watching for file changes with StatReloader
+INFO 2026-04-25 02:19:05,526 autoreload Watching for file changes with StatReloader

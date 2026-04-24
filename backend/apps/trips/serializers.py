@@ -22,12 +22,12 @@ class TripSerializer(serializers.ModelSerializer):
     """Trip Serializer with full details"""
 
     driver = serializers.SerializerMethodField()
-    driver_id = serializers.UUIDField(source='driver.id', read_only=True)
-    driver_name = serializers.CharField(source='driver.user.get_full_name', read_only=True)
-    driver_phone = serializers.CharField(source='driver.user.phone', read_only=True)
+    driver_id = serializers.SerializerMethodField()
+    driver_name = serializers.SerializerMethodField()
+    driver_phone = serializers.SerializerMethodField()
     vehicle = serializers.SerializerMethodField()
-    vehicle_id = serializers.UUIDField(source='vehicle.id', read_only=True)
-    vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
+    vehicle_id = serializers.SerializerMethodField()
+    vehicle_number = serializers.SerializerMethodField()
     approved_by = serializers.SerializerMethodField()
     approved_by_name = serializers.CharField(source='approved_by.get_full_name', read_only=True)
     gate_pass_image_url = serializers.SerializerMethodField()
@@ -43,6 +43,7 @@ class TripSerializer(serializers.ModelSerializer):
             'id', 'trip_date', 'warehouse', 'trip_category',
             'driver', 'driver_id', 'driver_name', 'driver_phone',
             'vehicle', 'vehicle_id', 'vehicle_number',
+            'adhoc_vehicle_number', 'adhoc_driver_name', 'adhoc_driver_phone',
             'dispatch_time_1', 'store_name_1', 'one_way_km_1',
             'dispatch_time_2', 'store_name_2', 'one_way_km_2',
             'trip_1', 'trip_2', 'total_km',
@@ -66,19 +67,44 @@ class TripSerializer(serializers.ModelSerializer):
         return file_field.url
 
     def get_driver(self, obj):
+        if not obj.driver_id:
+            return None
         return {
             'id': str(obj.driver.id),
             'name': obj.driver.user.get_full_name(),
             'phone': obj.driver.user.phone,
         }
 
+    def get_driver_id(self, obj):
+        return str(obj.driver.id) if obj.driver_id else None
+
+    def get_driver_name(self, obj):
+        if obj.driver_id:
+            return obj.driver.user.get_full_name()
+        return obj.adhoc_driver_name or None
+
+    def get_driver_phone(self, obj):
+        if obj.driver_id:
+            return obj.driver.user.phone
+        return obj.adhoc_driver_phone or None
+
     def get_vehicle(self, obj):
+        if not obj.vehicle_id:
+            return None
         return {
             'id': str(obj.vehicle.id),
             'vehicle_number': obj.vehicle.vehicle_number,
             'vehicle_type': obj.vehicle.vehicle_type,
             'owner_type': obj.vehicle.owner_type,
         }
+
+    def get_vehicle_id(self, obj):
+        return str(obj.vehicle.id) if obj.vehicle_id else None
+
+    def get_vehicle_number(self, obj):
+        if obj.vehicle_id:
+            return obj.vehicle.vehicle_number
+        return obj.adhoc_vehicle_number or None
 
     def get_approved_by(self, obj):
         if not obj.approved_by:
@@ -124,15 +150,26 @@ class TripSerializer(serializers.ModelSerializer):
 class TripListSerializer(serializers.ModelSerializer):
     """Trip List Serializer (minimal fields)"""
 
-    driver_name = serializers.CharField(source='driver.user.get_full_name', read_only=True)
-    vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
+    driver_name = serializers.SerializerMethodField()
+    vehicle_number = serializers.SerializerMethodField()
 
     class Meta:
         model = Trip
         fields = [
             'id', 'trip_date', 'driver_name', 'vehicle_number',
-            'store_name_1', 'store_name_2', 'total_km', 'status'
+            'adhoc_vehicle_number', 'adhoc_driver_name',
+            'store_name_1', 'store_name_2', 'total_km', 'status', 'trip_category'
         ]
+
+    def get_driver_name(self, obj):
+        if obj.driver_id:
+            return obj.driver.user.get_full_name()
+        return obj.adhoc_driver_name or None
+
+    def get_vehicle_number(self, obj):
+        if obj.vehicle_id:
+            return obj.vehicle.vehicle_number
+        return obj.adhoc_vehicle_number or None
 
 
 class TripCreateSerializer(serializers.ModelSerializer):
@@ -160,6 +197,7 @@ class TripCreateSerializer(serializers.ModelSerializer):
         fields = [
             'driver_id', 'vehicle_id',
             'trip_date', 'warehouse', 'trip_category',
+            'adhoc_vehicle_number', 'adhoc_driver_name', 'adhoc_driver_phone',
             'dispatch_time_1', 'store_name_1', 'one_way_km_1',
             'dispatch_time_2', 'store_name_2', 'one_way_km_2',
             'gate_pass_image', 'map_screenshot',
@@ -209,6 +247,7 @@ class TripCreateSerializer(serializers.ModelSerializer):
         if not user or not user.is_authenticated:
             raise serializers.ValidationError("Authentication required")
 
+        trip_category = data.get('trip_category', 'regular')
         driver = data.get('driver')
         vehicle = data.get('vehicle')
 
@@ -232,26 +271,41 @@ class TripCreateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({
                     'vehicle_id': 'Vehicle is not assigned to this driver'
                 })
+
         elif user.is_owner() or user.is_coordinator():
-            if vehicle is None and driver is None:
-                raise serializers.ValidationError({'vehicle_id': 'Vehicle is required'})
-            if vehicle is None:
-                vehicle = driver.get_primary_vehicle()
-                if vehicle is None:
-                    raise serializers.ValidationError({'vehicle_id': 'No vehicle assigned to this driver'})
-            if driver is None:
-                driver = vehicle.get_primary_driver()
-                if driver is None:
-                    raise serializers.ValidationError({'vehicle_id': 'No driver assigned to this vehicle'})
-            else:
-                has_assignment = driver.vehicle_mappings.filter(
-                    vehicle=vehicle,
-                    unassigned_at__isnull=True,
-                ).exists()
-                if not has_assignment:
+            if trip_category == 'adhoc':
+                # Adhoc trips use free-text fields — no vehicle/driver FK required
+                if not data.get('adhoc_vehicle_number', '').strip():
                     raise serializers.ValidationError({
-                        'vehicle_id': 'Vehicle is not assigned to the selected driver'
+                        'adhoc_vehicle_number': 'Vehicle number is required for adhoc trips'
                     })
+                if not data.get('adhoc_driver_name', '').strip():
+                    raise serializers.ValidationError({
+                        'adhoc_driver_name': 'Driver name is required for adhoc trips'
+                    })
+                data['driver'] = None
+                data['vehicle'] = None
+                return data
+            else:
+                if vehicle is None and driver is None:
+                    raise serializers.ValidationError({'vehicle_id': 'Vehicle is required'})
+                if vehicle is None:
+                    vehicle = driver.get_primary_vehicle()
+                    if vehicle is None:
+                        raise serializers.ValidationError({'vehicle_id': 'No vehicle assigned to this driver'})
+                if driver is None:
+                    driver = vehicle.get_primary_driver()
+                    if driver is None:
+                        raise serializers.ValidationError({'vehicle_id': 'No driver assigned to this vehicle'})
+                else:
+                    has_assignment = driver.vehicle_mappings.filter(
+                        vehicle=vehicle,
+                        unassigned_at__isnull=True,
+                    ).exists()
+                    if not has_assignment:
+                        raise serializers.ValidationError({
+                            'vehicle_id': 'Vehicle is not assigned to the selected driver'
+                        })
         else:
             raise serializers.ValidationError("You do not have permission to create trips")
 
@@ -272,6 +326,7 @@ class TripUpdateSerializer(serializers.ModelSerializer):
         model = Trip
         fields = [
             'trip_date', 'trip_category', 'warehouse',
+            'adhoc_vehicle_number', 'adhoc_driver_name', 'adhoc_driver_phone',
             'dispatch_time_1', 'dispatch_time_2',
             'store_name_1', 'store_name_2',
             'one_way_km_1', 'one_way_km_2',

@@ -51,14 +51,23 @@ class Trip(models.Model):
     driver = models.ForeignKey(
         'drivers.Driver',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name='trips'
     )
     vehicle = models.ForeignKey(
         'vehicles.Vehicle',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name='trips'
     )
-    
+
+    # Adhoc-only fields — populated when trip_category='adhoc' and no vehicle/driver FK
+    adhoc_vehicle_number = models.CharField(max_length=50, blank=True)
+    adhoc_driver_name = models.CharField(max_length=200, blank=True)
+    adhoc_driver_phone = models.CharField(max_length=20, blank=True)
+
     trip_date = models.DateField()
     warehouse = models.CharField(max_length=50, default='B3 WH')
     trip_category = models.CharField(
@@ -129,7 +138,8 @@ class Trip(models.Model):
         ]
     
     def __str__(self):
-        return f"Trip {self.id} - {self.driver} - {self.trip_date}"
+        driver_str = self.adhoc_driver_name if not self.driver_id else str(self.driver)
+        return f"Trip {self.id} - {driver_str} - {self.trip_date}"
     
     def save(self, *args, **kwargs):
         # Calculate total KM
