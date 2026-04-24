@@ -1,22 +1,30 @@
 import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import {
-  ArrowLeft, Calendar, CheckCircle, Edit2, Image, MapPin,
-  PlusCircle, Search, Trash2, Truck, User, Wallet, X, XCircle, Pencil,
+  ArrowLeft, Calendar, CalendarCheck, Edit2, Image, MapPin,
+  PlusCircle, Search, Trash2, Truck, User, Wallet, X,
 } from 'lucide-react';
 import vehicleService from '../../services/vehicleService';
 import tripService from '../../services/tripService';
 import expenseService from '../../services/expenseService';
-import { useTrips } from '../../hooks/useTrips';
+import { useCreateTrip } from '../../hooks/useTrips';
 import { useExpenseActions } from '../../hooks/useExpenses';
-import { useVehicles } from '../../hooks/useVehicles';
 import { useDrivers } from '../../hooks/useDrivers';
 
 const fieldClass =
   'w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
+
+const VEHICLE_TYPES = [
+  { value: 'pickup', label: 'Pickup' },
+  { value: 'truck', label: 'Truck' },
+  { value: 'van', label: 'Van' },
+  { value: 'three_wheeler', label: '3-Wheeler' },
+  { value: 'bike', label: 'Bike' },
+  { value: 'other', label: 'Other' },
+];
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
@@ -90,6 +98,306 @@ const StoreSearch = ({ value, onChange, placeholder, required: isReq }) => {
             ))}
         </div>
       )}
+    </div>
+  );
+};
+
+// ─── Vehicle Settings Modal ───────────────────────────────────────────────────
+
+const VehicleSettingsModal = ({ vehicle, vehicleId, onClose }) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { drivers } = useDrivers({ is_active: true });
+
+  const isOwner = vehicle.owner_type === 'owner';
+  const primaryDriver = (vehicle.assigned_drivers || []).find((d) => d.is_primary);
+
+  const [tab, setTab] = useState('vehicle');
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [assignDriverId, setAssignDriverId] = useState('');
+  const [vForm, setVForm] = useState({
+    vehicle_number: vehicle.vehicle_number,
+    vehicle_type: vehicle.vehicle_type,
+  });
+  const [dForm, setDForm] = useState({
+    first_name: primaryDriver?.name?.split(' ')[0] || '',
+    last_name: primaryDriver?.name?.split(' ').slice(1).join(' ') || '',
+    phone: '',
+    password: '',
+  });
+
+  const setV = (f, v) => setVForm((c) => ({ ...c, [f]: v }));
+  const setD = (f, v) => setDForm((c) => ({ ...c, [f]: v }));
+
+  const invalidate = () => {
+    queryClient.invalidateQueries(['vehicle', vehicleId]);
+    queryClient.invalidateQueries(['vehicles']);
+  };
+
+  const updateMutation = useMutation(
+    ({ vId, data }) => vehicleService.updateVehicle(vId, data),
+    {
+      onSuccess: () => { toast.success('Vehicle updated'); invalidate(); onClose(); },
+      onError: (err) => toast.error(err.response?.data?.message || 'Failed to update vehicle'),
+    }
+  );
+
+  const deleteMutation = useMutation(
+    (vId) => vehicleService.deleteVehicle(vId),
+    {
+      onSuccess: () => { toast.success('Vehicle deleted'); queryClient.invalidateQueries(['vehicles']); navigate('/admin/vehicles'); },
+      onError: (err) => toast.error(err.response?.data?.message || 'Failed to delete vehicle'),
+    }
+  );
+
+  const updateDriverMutation = useMutation(
+    ({ vId, data }) => vehicleService.updateDriverLogin(vId, data),
+    {
+      onSuccess: () => { toast.success('Driver login updated'); invalidate(); onClose(); },
+      onError: (err) => toast.error(err.response?.data?.message || 'Failed to update driver'),
+    }
+  );
+
+  const createDriverMutation = useMutation(
+    ({ vId, data }) => vehicleService.createDriver(vId, data),
+    {
+      onSuccess: () => { toast.success('Driver created'); invalidate(); onClose(); },
+      onError: (err) => toast.error(err.response?.data?.message || 'Failed to create driver'),
+    }
+  );
+
+  const assignDriverMutation = useMutation(
+    ({ vId, data }) => vehicleService.assignDriver(vId, data),
+    {
+      onSuccess: () => { toast.success('Driver assigned'); invalidate(); onClose(); },
+      onError: (err) => toast.error(err.response?.data?.message || 'Failed to assign driver'),
+    }
+  );
+
+  const handleSaveVehicle = (e) => {
+    e.preventDefault();
+    updateMutation.mutate({ vId: vehicle.id, data: {
+      vehicle_number: vForm.vehicle_number.trim().toUpperCase(),
+      vehicle_type: vForm.vehicle_type,
+    }});
+  };
+
+  const handleToggleStatus = () => {
+    updateMutation.mutate({ vId: vehicle.id, data: { is_active: !vehicle.is_active } });
+  };
+
+  const handleSaveDriverLogin = (e) => {
+    e.preventDefault();
+    if (!primaryDriver) return;
+    const payload = {};
+    if (dForm.first_name) payload.first_name = dForm.first_name;
+    if (dForm.last_name) payload.last_name = dForm.last_name;
+    if (dForm.phone) payload.phone = dForm.phone;
+    if (dForm.password) payload.password = dForm.password;
+    updateDriverMutation.mutate({ vId: vehicle.id, data: payload });
+  };
+
+  const handleCreateDriver = (e) => {
+    e.preventDefault();
+    createDriverMutation.mutate({ vId: vehicle.id, data: dForm });
+  };
+
+  const handleAssignExisting = (e) => {
+    e.preventDefault();
+    assignDriverMutation.mutate({ vId: vehicle.id, data: { driver_id: assignDriverId, is_primary: true } });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 overflow-y-auto">
+      <div className="my-8 w-full max-w-xl rounded-2xl bg-white shadow-xl">
+        <div className="flex items-center justify-between border-b border-gray-100 p-5">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">{vehicle.vehicle_number} Settings</h2>
+            <div className="mt-1 flex items-center gap-2">
+              <span className="text-sm capitalize text-gray-500">{vehicle.vehicle_type}</span>
+              <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${isOwner ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
+                {isOwner ? 'Owner' : 'Vendor'}
+              </span>
+            </div>
+          </div>
+          <button onClick={onClose} className="rounded-lg p-2 text-gray-400 hover:bg-gray-100">✕</button>
+        </div>
+
+        <div className="flex border-b border-gray-100">
+          {['vehicle', 'driver'].map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`flex-1 py-3 text-sm font-semibold transition ${tab === t ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-800'}`}
+            >
+              {t === 'vehicle' ? 'Vehicle Details' : 'Driver Settings'}
+            </button>
+          ))}
+        </div>
+
+        <div className="p-5">
+          {tab === 'vehicle' && (
+            confirmDelete ? (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                  This will permanently delete <strong>{vehicle.vehicle_number}</strong>. Trips and expenses linked to it will remain.
+                </div>
+                <div className="flex gap-3">
+                  <button type="button" onClick={() => setConfirmDelete(false)} className="flex-1 rounded-xl bg-gray-100 py-2 text-sm font-semibold text-gray-700">Cancel</button>
+                  <button
+                    type="button"
+                    disabled={deleteMutation.isLoading}
+                    onClick={() => deleteMutation.mutate(vehicle.id)}
+                    className="flex-1 rounded-xl bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:bg-gray-300"
+                  >
+                    {deleteMutation.isLoading ? 'Deleting…' : 'Yes, Delete'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSaveVehicle} className="space-y-4">
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-gray-700">Vehicle number</span>
+                  <input required value={vForm.vehicle_number} onChange={(e) => setV('vehicle_number', e.target.value.toUpperCase())} className={fieldClass} />
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-gray-700">Vehicle type</span>
+                  <select value={vForm.vehicle_type} onChange={(e) => setV('vehicle_type', e.target.value)} className={fieldClass}>
+                    {VEHICLE_TYPES.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
+                  </select>
+                </label>
+
+                <div className="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3">
+                  <div>
+                    <div className="text-sm font-medium text-gray-700">Vehicle status</div>
+                    <div className="text-xs text-gray-500">Inactive vehicles won't appear in trip creation</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleToggleStatus}
+                    disabled={updateMutation.isLoading}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors disabled:opacity-50 ${vehicle.is_active ? 'bg-green-500' : 'bg-gray-300'}`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${vehicle.is_active ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
+                  <button
+                    type="button"
+                    onClick={() => setConfirmDelete(true)}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100 transition"
+                  >
+                    Delete Vehicle
+                  </button>
+                  <div className="flex gap-3">
+                    <button type="button" onClick={onClose} className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
+                    <button type="submit" disabled={updateMutation.isLoading} className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-gray-300">
+                      {updateMutation.isLoading ? 'Saving…' : 'Save Changes'}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )
+          )}
+
+          {tab === 'driver' && (
+            <div className="space-y-6">
+              {primaryDriver ? (
+                <>
+                  <div className="rounded-xl bg-blue-50 p-4 text-sm text-blue-800">
+                    Current driver: <strong>{primaryDriver.name}</strong> · {primaryDriver.phone || 'Phone not set'}
+                  </div>
+                  <form onSubmit={handleSaveDriverLogin} className="space-y-3">
+                    <div className="text-sm font-semibold text-gray-700">Update driver login details</div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">First name</span>
+                        <input value={dForm.first_name} onChange={(e) => setD('first_name', e.target.value)} className={fieldClass} />
+                      </label>
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">Last name</span>
+                        <input value={dForm.last_name} onChange={(e) => setD('last_name', e.target.value)} className={fieldClass} />
+                      </label>
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">New phone</span>
+                        <input value={dForm.phone} onChange={(e) => setD('phone', e.target.value.replace(/\D/g, '').slice(0, 10))} className={fieldClass} placeholder={primaryDriver.phone || 'Leave blank to keep'} />
+                      </label>
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">New password</span>
+                        <input type="password" value={dForm.password} onChange={(e) => setD('password', e.target.value)} className={fieldClass} placeholder="Leave blank to keep" />
+                      </label>
+                    </div>
+                    <div className="flex justify-end">
+                      <button type="submit" disabled={updateDriverMutation.isLoading} className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:bg-gray-300">
+                        {updateDriverMutation.isLoading ? 'Saving…' : 'Update Login'}
+                      </button>
+                    </div>
+                  </form>
+
+                  <div className="border-t border-gray-100 pt-4">
+                    <div className="text-sm font-semibold text-gray-700 mb-3">Or assign a different driver</div>
+                    <form onSubmit={handleAssignExisting} className="flex gap-3">
+                      <select required value={assignDriverId} onChange={(e) => setAssignDriverId(e.target.value)} className={`flex-1 ${fieldClass}`}>
+                        <option value="">Select driver</option>
+                        {drivers.map((d) => <option key={d.id} value={d.id}>{d.user?.first_name} {d.user?.last_name} | {d.user?.phone}</option>)}
+                      </select>
+                      <button type="submit" disabled={assignDriverMutation.isLoading} className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black disabled:bg-gray-300">
+                        {assignDriverMutation.isLoading ? '…' : 'Assign'}
+                      </button>
+                    </form>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-4 text-sm text-gray-500">
+                    No driver assigned yet. Create a new login or assign an existing driver.
+                  </div>
+                  <form onSubmit={handleCreateDriver} className="space-y-3">
+                    <div className="text-sm font-semibold text-gray-700">Create new driver login</div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">First name *</span>
+                        <input required value={dForm.first_name} onChange={(e) => setD('first_name', e.target.value)} className={fieldClass} />
+                      </label>
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">Last name</span>
+                        <input value={dForm.last_name} onChange={(e) => setD('last_name', e.target.value)} className={fieldClass} />
+                      </label>
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">Phone *</span>
+                        <input required value={dForm.phone} onChange={(e) => setD('phone', e.target.value.replace(/\D/g, '').slice(0, 10))} className={fieldClass} placeholder="10-digit number" />
+                      </label>
+                      <label className="block">
+                        <span className="mb-1 block text-xs font-medium text-gray-600">Password *</span>
+                        <input required type="password" value={dForm.password} onChange={(e) => setD('password', e.target.value)} className={fieldClass} />
+                      </label>
+                    </div>
+                    <div className="flex justify-end">
+                      <button type="submit" disabled={createDriverMutation.isLoading} className="rounded-xl bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:bg-gray-300">
+                        {createDriverMutation.isLoading ? 'Creating…' : 'Create Driver'}
+                      </button>
+                    </div>
+                  </form>
+
+                  <div className="border-t border-gray-100 pt-4">
+                    <div className="text-sm font-semibold text-gray-700 mb-3">Or assign existing driver</div>
+                    <form onSubmit={handleAssignExisting} className="flex gap-3">
+                      <select required value={assignDriverId} onChange={(e) => setAssignDriverId(e.target.value)} className={`flex-1 ${fieldClass}`}>
+                        <option value="">Select driver</option>
+                        {drivers.map((d) => <option key={d.id} value={d.id}>{d.user?.first_name} {d.user?.last_name} | {d.user?.phone}</option>)}
+                      </select>
+                      <button type="submit" disabled={assignDriverMutation.isLoading} className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black disabled:bg-gray-300">
+                        {assignDriverMutation.isLoading ? '…' : 'Assign'}
+                      </button>
+                    </form>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
@@ -336,17 +644,25 @@ const AddExpenseModal = ({ vehicle, onClose, onSave, isSaving }) => {
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 
+const getMonthDefaults = () => {
+  const today = new Date();
+  return {
+    start_date: new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0],
+    end_date: today.toISOString().split('T')[0],
+  };
+};
+
 const VehicleDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showAddTrip, setShowAddTrip] = useState(false);
   const [showAddExpense, setShowAddExpense] = useState(false);
-  const [tripFilter, setTripFilter] = useState({ status: '', start_date: '', end_date: '' });
+  const [showSettings, setShowSettings] = useState(false);
+  const [tripFilter, setTripFilter] = useState({ status: '', ...getMonthDefaults() });
   const [expenseFilter, setExpenseFilter] = useState({ expense_type: '' });
   const [deleteExpenseId, setDeleteExpenseId] = useState(null);
   const [activeTab, setActiveTab] = useState('trips');
 
-  // Fetch vehicle
   const { data: vehicleRes, isLoading: vehicleLoading, isError: vehicleError } = useQuery(
     ['vehicle', id],
     () => vehicleService.getVehicle(id),
@@ -354,7 +670,6 @@ const VehicleDetail = () => {
   );
   const vehicle = vehicleRes?.data?.data;
 
-  // Fetch trips for this vehicle
   const { data: tripsRes, isLoading: tripsLoading, refetch: refetchTrips } = useQuery(
     ['vehicleTrips', id, tripFilter],
     () => tripService.getTrips({ vehicle_id: id, ...tripFilter }),
@@ -362,7 +677,6 @@ const VehicleDetail = () => {
   );
   const trips = tripsRes?.data?.data?.trips || [];
 
-  // Fetch expenses for this vehicle
   const { data: expensesRes, isLoading: expensesLoading, refetch: refetchExpenses } = useQuery(
     ['vehicleExpenses', id, expenseFilter],
     () => expenseService.getExpenses({ vehicle_id: id, ...expenseFilter }),
@@ -371,10 +685,8 @@ const VehicleDetail = () => {
   const expensesPayload = expensesRes?.data?.data || {};
   const expenses = expensesPayload.expenses || [];
 
-  // Mutations
-  const { createTrip, isCreating: isCreatingTrip } = useTrips();
+  const { createTrip, isCreating: isCreatingTrip } = useCreateTrip();
   const { createExpense, isCreating: isCreatingExpense, deleteExpense, isDeleting } = useExpenseActions();
-  const hooks = useVehicles();
 
   if (vehicleLoading) {
     return (
@@ -400,6 +712,7 @@ const VehicleDetail = () => {
   const totalTripKm = trips.reduce((s, t) => s + parseFloat(t.total_km || 0), 0);
   const totalExpenses = expenses.reduce((s, e) => s + parseFloat(e.amount || 0), 0);
   const pendingTrips = trips.filter((t) => t.status === 'pending').length;
+  const attendedDays = new Set(trips.map((t) => t.trip_date)).size;
 
   const handleAddTrip = (payload) => {
     createTrip(payload, {
@@ -416,6 +729,13 @@ const VehicleDetail = () => {
   return (
     <div className="space-y-6">
       {/* Modals */}
+      {showSettings && (
+        <VehicleSettingsModal
+          vehicle={vehicle}
+          vehicleId={id}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
       {showAddTrip && (
         <AddTripModal vehicle={vehicle} onClose={() => setShowAddTrip(false)} onSave={handleAddTrip} isSaving={isCreatingTrip} />
       )}
@@ -449,7 +769,7 @@ const VehicleDetail = () => {
             <div className="flex items-center gap-3 flex-wrap">
               <h1 className="text-2xl font-bold text-gray-900">{vehicle.vehicle_number}</h1>
               <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isOwner ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
-                {isOwner ? 'Owner — Salary' : 'Vendor — Per KM'}
+                {isOwner ? 'Owner' : 'Vendor'}
               </span>
               <span className={`rounded-full px-3 py-1 text-xs font-semibold ${vehicle.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                 {vehicle.is_active ? 'Active' : 'Inactive'}
@@ -467,7 +787,7 @@ const VehicleDetail = () => {
             className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition">
             <PlusCircle className="h-4 w-4" /> Add Trip
           </button>
-          <button onClick={() => navigate('/admin/vehicles', { state: { openSettings: id } })}
+          <button onClick={() => setShowSettings(true)}
             className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition">
             <Edit2 className="h-4 w-4" /> Settings
           </button>
@@ -475,7 +795,7 @@ const VehicleDetail = () => {
       </div>
 
       {/* Info cards row */}
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {/* Driver card */}
         <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
@@ -494,10 +814,10 @@ const VehicleDetail = () => {
           )}
         </div>
 
-        {/* Trips this month */}
+        {/* Trips shown */}
         <div className="rounded-2xl border border-blue-50 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
-            <MapPin className="h-3.5 w-3.5" /> Trips shown
+            <MapPin className="h-3.5 w-3.5" /> Trips
           </div>
           <div className="text-3xl font-bold text-gray-900">{trips.length}</div>
           {pendingTrips > 0 && <div className="mt-1 text-xs text-yellow-600">{pendingTrips} pending approval</div>}
@@ -512,19 +832,13 @@ const VehicleDetail = () => {
           <div className="mt-1 text-xs text-gray-400">across filtered trips</div>
         </div>
 
-        {/* Rate / salary */}
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+        {/* Attended Days */}
+        <div className="rounded-2xl border border-emerald-50 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
-            <Wallet className="h-3.5 w-3.5" /> {isOwner ? 'Monthly salary' : 'KM rate'}
+            <CalendarCheck className="h-3.5 w-3.5" /> Attended Days
           </div>
-          <div className="text-2xl font-bold text-gray-900">
-            {isOwner
-              ? `Rs. ${Number(vehicle.base_salary || 0).toLocaleString('en-IN')}`
-              : `Rs. ${Number(vehicle.km_rate || 0).toLocaleString('en-IN')}/km`}
-          </div>
-          {!isOwner && vehicle.vendor_details?.name && (
-            <div className="mt-1 text-xs text-gray-500">Vendor: {vehicle.vendor_details.name}</div>
-          )}
+          <div className="text-3xl font-bold text-gray-900">{attendedDays}</div>
+          <div className="mt-1 text-xs text-gray-400">days with trips in range</div>
         </div>
       </div>
 
@@ -544,7 +858,6 @@ const VehicleDetail = () => {
       {/* ── Trips tab ─────────────────────────────────────────────────────────── */}
       {activeTab === 'trips' && (
         <div className="space-y-4">
-          {/* Filters */}
           <div className="flex flex-wrap items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
             <select value={tripFilter.status} onChange={(e) => setTripFilter((c) => ({ ...c, status: e.target.value }))}
               className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500">
@@ -557,7 +870,7 @@ const VehicleDetail = () => {
               className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
             <input type="date" value={tripFilter.end_date} onChange={(e) => setTripFilter((c) => ({ ...c, end_date: e.target.value }))}
               className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
-            <button onClick={() => setTripFilter({ status: '', start_date: '', end_date: '' })} className="text-sm text-blue-600 hover:underline">Clear</button>
+            <button onClick={() => setTripFilter({ status: '', ...getMonthDefaults() })} className="text-sm text-blue-600 hover:underline">Reset</button>
           </div>
 
           {tripsLoading ? (
@@ -615,7 +928,6 @@ const VehicleDetail = () => {
       {/* ── Expenses tab ──────────────────────────────────────────────────────── */}
       {activeTab === 'expenses' && (
         <div className="space-y-4">
-          {/* Expense summary bar */}
           {expenses.length > 0 && (
             <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-5">
               {Object.entries(
@@ -636,7 +948,6 @@ const VehicleDetail = () => {
             </div>
           )}
 
-          {/* Filter */}
           <div className="flex flex-wrap items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
             <select value={expenseFilter.expense_type} onChange={(e) => setExpenseFilter({ expense_type: e.target.value })}
               className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500">
