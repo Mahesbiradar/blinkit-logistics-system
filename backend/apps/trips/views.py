@@ -37,7 +37,7 @@ class TripListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Trip.objects.select_related(
             'driver__user', 'vehicle', 'approved_by'
-        )
+        ).order_by('-trip_date', '-created_at')
 
         driver_id = self.request.query_params.get('driver_id')
         vehicle_id = self.request.query_params.get('vehicle_id')

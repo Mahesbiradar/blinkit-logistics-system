@@ -194,26 +194,7 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
         </div>
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
 
-          {/* Vehicle selector (create only) */}
-          {!isEdit && (
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">Vehicle *</label>
-              <select required value={form.vehicle_id} onChange={(e) => set('vehicle_id', e.target.value)} className={fieldClass}>
-                <option value="">Select vehicle</option>
-                {vehicles.map((v) => {
-                  const drv = v.assigned_drivers?.find((d) => d.is_primary);
-                  return <option key={v.id} value={v.id}>{v.vehicle_number}{drv ? ` — ${drv.name}` : ' — No driver'}</option>;
-                })}
-              </select>
-              {primaryDriver && (
-                <p className="mt-1.5 text-xs text-emerald-700 font-medium">Driver: {primaryDriver.name} · {primaryDriver.phone}</p>
-              )}
-              {form.vehicle_id && !primaryDriver && (
-                <p className="mt-1.5 text-xs text-red-600">No driver assigned to this vehicle — assign one first</p>
-              )}
-            </div>
-          )}
-
+          {/* Date + Type */}
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">Trip date *</label>
@@ -221,12 +202,69 @@ const TripFormModal = ({ trip, vehicles, onClose, onSave, isSaving }) => {
             </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">Trip type</label>
-              <select value={form.trip_category} onChange={(e) => set('trip_category', e.target.value)} className={fieldClass}>
+              <select value={form.trip_category} onChange={(e) => { set('trip_category', e.target.value); set('vehicle_id', ''); }} className={fieldClass}>
                 <option value="regular">Regular</option>
                 <option value="adhoc">Adhoc</option>
               </select>
             </div>
           </div>
+
+          {/* Vehicle / Driver — regular vs adhoc */}
+          {!isEdit && (
+            isAdhoc ? (
+              <div className="rounded-xl border border-orange-200 bg-orange-50 p-4 space-y-3">
+                <div className="text-sm font-semibold text-orange-800">Adhoc Vehicle & Driver Details</div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div>
+                    <label className="mb-1 block text-xs font-medium text-gray-600">Vehicle Number *</label>
+                    <input
+                      required
+                      value={form.adhoc_vehicle_number}
+                      onChange={(e) => set('adhoc_vehicle_number', e.target.value.toUpperCase())}
+                      className={fieldClass}
+                      placeholder="KA15A1234"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs font-medium text-gray-600">Driver Name *</label>
+                    <input
+                      required
+                      value={form.adhoc_driver_name}
+                      onChange={(e) => set('adhoc_driver_name', e.target.value)}
+                      className={fieldClass}
+                      placeholder="Raju Kumar"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs font-medium text-gray-600">Driver Phone</label>
+                    <input
+                      value={form.adhoc_driver_phone}
+                      onChange={(e) => set('adhoc_driver_phone', e.target.value.replace(/\D/g, '').slice(0, 10))}
+                      className={fieldClass}
+                      placeholder="9876543210"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">Vehicle *</label>
+                <select required value={form.vehicle_id} onChange={(e) => set('vehicle_id', e.target.value)} className={fieldClass}>
+                  <option value="">Select vehicle</option>
+                  {vehicles.map((v) => {
+                    const drv = v.assigned_drivers?.find((d) => d.is_primary);
+                    return <option key={v.id} value={v.id}>{v.vehicle_number}{drv ? ` — ${drv.name}` : ' — No driver'}</option>;
+                  })}
+                </select>
+                {primaryDriver && (
+                  <p className="mt-1.5 text-xs text-emerald-700 font-medium">Driver: {primaryDriver.name} · {primaryDriver.phone}</p>
+                )}
+                {form.vehicle_id && !primaryDriver && (
+                  <p className="mt-1.5 text-xs text-red-600">No driver assigned to this vehicle — assign one first</p>
+                )}
+              </div>
+            )
+          )}
 
           {/* Store 1 */}
           <div className="rounded-xl border border-gray-200 p-4 space-y-3">
@@ -421,11 +459,22 @@ const TripDetailModal = ({ trip, onClose, onEdit, onApprove, onReject, isApprovi
             </div>
           )}
 
+          {trip.trip_category === 'adhoc' && (
+            <div className="rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm">
+              <div className="font-semibold text-orange-800 mb-1.5">Adhoc Trip</div>
+              <div className="grid grid-cols-2 gap-1 text-xs text-orange-700">
+                <span>Vehicle: <strong>{trip.adhoc_vehicle_number || '—'}</strong></span>
+                <span>Driver: <strong>{trip.adhoc_driver_name || '—'}</strong></span>
+                {trip.adhoc_driver_phone && <span>Phone: <strong>{trip.adhoc_driver_phone}</strong></span>}
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-3 text-sm">
             {[
               ['Date', format(new Date(trip.trip_date), 'MMM d, yyyy')],
-              ['Driver', trip.driver_name],
-              ['Vehicle', trip.vehicle_number],
+              ['Driver', trip.driver_name || trip.adhoc_driver_name],
+              ['Vehicle', trip.vehicle_number || trip.adhoc_vehicle_number],
               ['Total KM', `${trip.total_km} km`],
               ['Type', trip.trip_category || 'regular'],
               ['Status', null],
@@ -673,11 +722,13 @@ const TripsManagement = () => {
                             <span className="text-sm">{format(new Date(trip.trip_date), 'MMM d, yyyy')}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-sm font-medium">{trip.driver_name}</td>
+                        <td className="px-4 py-3 text-sm font-medium">
+                          {trip.driver_name || trip.adhoc_driver_name || '—'}
+                        </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-1.5">
-                            <Truck className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm">{trip.vehicle_number}</span>
+                            <Truck className={`h-4 w-4 ${trip.trip_category === 'adhoc' ? 'text-orange-400' : 'text-gray-400'}`} />
+                            <span className="text-sm">{trip.vehicle_number || trip.adhoc_vehicle_number || '—'}</span>
                           </div>
                         </td>
                         <td className="px-4 py-3 text-sm max-w-[180px] truncate">

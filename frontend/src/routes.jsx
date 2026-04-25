@@ -21,6 +21,8 @@ import VehicleDetail from './pages/admin/VehicleDetail';
 import ExpensesManagement from './pages/admin/ExpensesManagement';
 import PaymentsManagement from './pages/admin/PaymentsManagement';
 import ReportsManagement from './pages/admin/ReportsManagement';
+import AdminProfile from './pages/admin/AdminProfile';
+import DriverProfile from './pages/driver/DriverProfile';
 
 const DriverRoute = ({ children }) => {
   const { isAuthenticated, isDriver, getHomeRoute } = useAuthStore();
@@ -109,6 +111,7 @@ export const router = createBrowserRouter([
       { path: 'trips', element: <MyTrips /> },
       { path: 'my-expenses', element: <MyExpenses /> },
       { path: 'expenses', element: <MyExpenses /> },
+      { path: 'profile', element: <DriverProfile /> },
     ],
   },
   {
@@ -127,6 +130,7 @@ export const router = createBrowserRouter([
       { path: 'expenses', element: <ExpensesManagement /> },
       { path: 'payments', element: <PaymentsManagement /> },
       { path: 'reports', element: <ReportsManagement /> },
+      { path: 'profile', element: <AdminProfile /> },
     ],
   },
   {

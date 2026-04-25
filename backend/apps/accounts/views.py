@@ -16,9 +16,12 @@ from apps.common.permissions import IsOwner
 from .models import User, OTPCode
 from .serializers import (
     CoordinatorCreateSerializer,
+    DriverProfileUpdateSerializer,
     DriverRegistrationSerializer,
     ForgotPasswordRequestSerializer,
     LoginSerializer,
+    PasswordChangeSerializer,
+    ProfileUpdateSerializer,
     ResetPasswordSerializer,
     SendOTPSerializer,
     UserSerializer,
@@ -556,21 +559,84 @@ class TokenRefreshView(APIView):
 
 
 class ProfileView(APIView):
-    """Get user profile"""
-    
+    """Get and update own user profile"""
+
     def get(self, request):
         user = request.user
-        
-        data = {
-            'user': UserSerializer(user).data
-        }
-        
-        # Include driver profile if applicable
+        data = {'user': UserSerializer(user).data}
         if user.is_driver_role() and hasattr(user, 'driver_profile'):
             from apps.drivers.serializers import DriverSerializer
             data['driver_profile'] = DriverSerializer(user.driver_profile).data
-        
+        return Response({'success': True, 'data': data})
+
+    def patch(self, request):
+        user = request.user
+        serializer = ProfileUpdateSerializer(data=request.data, context={'request': request})
+        if not serializer.is_valid():
+            return Response({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        data = serializer.validated_data
+        update_fields = ['updated_at']
+        if 'first_name' in data:
+            user.first_name = data['first_name']
+            update_fields.append('first_name')
+        if 'last_name' in data:
+            user.last_name = data['last_name']
+            update_fields.append('last_name')
+        if 'email' in data and not user.is_driver_role():
+            user.email = data['email']
+            update_fields.append('email')
+        user.save(update_fields=update_fields)
+
         return Response({
             'success': True,
-            'data': data
+            'message': 'Profile updated successfully',
+            'data': {'user': UserSerializer(user).data}
+        })
+
+
+class ChangePasswordView(APIView):
+    """Change password for owner / coordinator accounts"""
+
+    def post(self, request):
+        user = request.user
+        if user.is_driver_role():
+            return Response(
+                {'success': False, 'message': 'Drivers use OTP-based login and cannot set a password'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = PasswordChangeSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not user.check_password(serializer.validated_data['current_password']):
+            return Response({'success': False, 'message': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(serializer.validated_data['new_password'])
+        user.save(update_fields=['password', 'updated_at'])
+        return Response({'success': True, 'message': 'Password changed successfully'})
+
+
+class DriverProfileUpdateView(APIView):
+    """Update driver-specific profile fields (license, address, etc.)"""
+
+    def patch(self, request):
+        user = request.user
+        if not user.is_driver_role() or not hasattr(user, 'driver_profile'):
+            return Response({'success': False, 'message': 'Driver profile not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = DriverProfileUpdateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'success': False, 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+        driver = user.driver_profile
+        for field, value in serializer.validated_data.items():
+            setattr(driver, field, value)
+        driver.save()
+
+        from apps.drivers.serializers import DriverSerializer
+        return Response({
+            'success': True,
+            'message': 'Driver details updated successfully',
+            'data': {'driver_profile': DriverSerializer(driver).data}
         })

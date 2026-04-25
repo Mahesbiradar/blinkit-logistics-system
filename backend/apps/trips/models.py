@@ -188,7 +188,7 @@ class Trip(models.Model):
     def get_pending_trips(cls):
         """Get all pending trips"""
         return cls.objects.filter(status='pending').select_related(
-            'driver__user', 'vehicle'
+            'driver__user', 'vehicle', 'approved_by'
         ).order_by('-trip_date')
     
     @classmethod

@@ -27,10 +27,8 @@ const tripService = {
     const imageFields = ['gate_pass_image', 'map_screenshot', 'gate_pass_image_2', 'map_screenshot_2'];
 
     Object.keys(data).forEach((key) => {
-      if (!imageFields.includes(key)) {
-        if (data[key] !== null && data[key] !== undefined) {
-          formData.append(key, data[key]);
-        }
+      if (!imageFields.includes(key) && data[key] !== null && data[key] !== undefined) {
+        formData.append(key, data[key]);
       }
     });
 
@@ -49,8 +47,8 @@ const tripService = {
     if (hasImages) {
       const formData = new FormData();
       Object.keys(data).forEach((key) => {
-        if (!imageFields.includes(key)) {
-          if (data[key] !== null && data[key] !== undefined) formData.append(key, data[key]);
+        if (!imageFields.includes(key) && data[key] !== null && data[key] !== undefined) {
+          formData.append(key, data[key]);
         }
       });
       imageFields.forEach((key) => { if (data[key]) formData.append(key, data[key]); });

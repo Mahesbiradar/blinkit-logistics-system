@@ -14,4 +14,6 @@ urlpatterns = [
     path('coordinators/', views.CoordinatorCreateView.as_view(), name='coordinator-create'),
     path('token/refresh/', views.TokenRefreshView.as_view(), name='token-refresh'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('profile/change-password/', views.ChangePasswordView.as_view(), name='change-password'),
+    path('profile/driver/', views.DriverProfileUpdateView.as_view(), name='driver-profile-update'),
 ]

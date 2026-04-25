@@ -143,6 +143,41 @@ class DriverRegistrationSerializer(serializers.Serializer):
     vehicle_id = serializers.UUIDField(required=True)
 
 
+class ProfileUpdateSerializer(serializers.Serializer):
+    """Update own profile (name / email)"""
+    first_name = serializers.CharField(max_length=100, required=False)
+    last_name = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    email = serializers.EmailField(required=False)
+
+    def validate_email(self, value):
+        normalized = value.lower().strip()
+        user = self.context['request'].user
+        if User.objects.filter(email__iexact=normalized).exclude(id=user.id).exists():
+            raise serializers.ValidationError("Email already in use by another account")
+        return normalized
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    """Change own password (owner / coordinator only)"""
+    current_password = serializers.CharField(required=True, write_only=True)
+    new_password = serializers.CharField(min_length=8, required=True, write_only=True)
+    confirm_password = serializers.CharField(required=True, write_only=True)
+
+    def validate(self, data):
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError({'confirm_password': 'Passwords do not match'})
+        return data
+
+
+class DriverProfileUpdateSerializer(serializers.Serializer):
+    """Update driver-specific profile fields"""
+    license_number = serializers.CharField(max_length=50, required=False, allow_blank=True)
+    license_expiry = serializers.DateField(required=False, allow_null=True)
+    aadhar_number = serializers.CharField(max_length=20, required=False, allow_blank=True)
+    emergency_contact = serializers.CharField(max_length=15, required=False, allow_blank=True)
+    address = serializers.CharField(required=False, allow_blank=True)
+
+
 class TokenResponseSerializer(serializers.Serializer):
     """Serializer for token response"""
     access = serializers.CharField()

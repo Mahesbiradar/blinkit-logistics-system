@@ -2,7 +2,6 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import {
   Home,
   MapPin,
-  Users,
   Truck,
   Wallet,
   CreditCard,
@@ -10,15 +9,17 @@ import {
   LogOut,
   Menu,
   X,
-  Settings,
+  UserCircle,
   Truck as TruckIcon
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { useAuthStore } from '../../store/authStore';
 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { user } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -28,6 +29,7 @@ const AdminLayout = () => {
     { path: '/admin/expenses', label: 'Expenses', icon: Wallet },
     { path: '/admin/payments', label: 'Payments', icon: CreditCard },
     { path: '/admin/reports', label: 'Reports', icon: BarChart2 },
+    { path: '/admin/profile', label: 'Profile', icon: UserCircle },
   ];
 
   const handleLogout = () => {
@@ -118,10 +120,22 @@ const AdminLayout = () => {
             ))}
           </nav>
 
-          <div className="p-4 border-t border-slate-800">
+          <div className="p-4 border-t border-slate-800 space-y-2">
+            <NavLink
+              to="/admin/profile"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-800 transition-colors"
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-xs font-bold text-white flex-shrink-0">
+                {user?.first_name?.[0]}{user?.last_name?.[0]}
+              </div>
+              <div className="min-w-0">
+                <div className="truncate text-sm font-medium text-white">{user?.first_name} {user?.last_name}</div>
+                <div className="truncate text-xs text-slate-400 capitalize">{user?.role}</div>
+              </div>
+            </NavLink>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-slate-800 rounded-xl transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-red-400 hover:bg-slate-800 rounded-xl transition-colors"
             >
               <LogOut className="w-5 h-5" />
               Logout
