@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from apps.common.permissions import IsOwnerOrCoordinator
 from apps.trips.models import Trip
 from apps.expenses.models import Expense
-from apps.payments.models import Payment
+from apps.payments.models import VehicleSettlement
 
 
 def _month_label(year, month):
@@ -102,7 +102,7 @@ class MonthlyMISReportView(APIView):
 
             last_col = get_column_letter(len(COLS))
             ws.merge_cells(f'A1:{last_col}1')
-            ws['A1'].value = f"JJR Logistics \u2014 {sheet_title} | {label}"
+            ws['A1'].value = f"JJR Logistics — {sheet_title} | {label}"
             ws['A1'].font = Font(bold=True, size=13, color='1E3A8A')
             ws['A1'].alignment = s['center']
             ws.row_dimensions[1].height = 26
@@ -136,14 +136,14 @@ class MonthlyMISReportView(APIView):
                     trip.trip_date.strftime('%d-%m-%Y'),
                     driver_name,
                     vehicle_num,
-                    trip.store_name_1 or '\u2014',
-                    km1_1w or '\u2014',
-                    km1_1w * 2 or '\u2014',
-                    trip.store_name_2 or '\u2014',
-                    km2_1w or '\u2014',
-                    km2_1w * 2 or '\u2014',
+                    trip.store_name_1 or '—',
+                    km1_1w or '—',
+                    km1_1w * 2 or '—',
+                    trip.store_name_2 or '—',
+                    km2_1w or '—',
+                    km2_1w * 2 or '—',
                     total_km,
-                    dispatch_str or '\u2014',
+                    dispatch_str or '—',
                     trip.get_status_display(),
                     trip.remarks or '',
                 ]
@@ -208,19 +208,16 @@ class ExpenseReportView(APIView):
 
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
-        driver_id = request.query_params.get('driver_id')
         vehicle_id = request.query_params.get('vehicle_id')
         expense_type = request.query_params.get('expense_type')
 
-        qs = Expense.objects.select_related('driver__user', 'vehicle', 'trip').order_by(
+        qs = Expense.objects.select_related('vehicle', 'created_by').order_by(
             'expense_date', 'expense_type'
         )
         if start_date:
             qs = qs.filter(expense_date__gte=start_date)
         if end_date:
             qs = qs.filter(expense_date__lte=end_date)
-        if driver_id:
-            qs = qs.filter(driver_id=driver_id)
         if vehicle_id:
             qs = qs.filter(vehicle_id=vehicle_id)
         if expense_type:
@@ -237,15 +234,12 @@ class ExpenseReportView(APIView):
 
         COLS = [
             ('Date', 12),
-            ('Driver', 20),
-            ('Vehicle', 14),
+            ('Vehicle', 16),
             ('Expense Type', 18),
-            ('Amount (\u20b9)', 14),
+            ('Amount (₹)', 14),
             ('Payment Mode', 15),
-            ('Linked Trip Date', 16),
-            ('Reimbursable', 13),
-            ('Deducted', 10),
-            ('Description', 30),
+            ('Paid To', 20),
+            ('Remarks', 30),
         ]
 
         wb = openpyxl.Workbook()
@@ -256,7 +250,7 @@ class ExpenseReportView(APIView):
         date_range = f"{start_date or 'All'} to {end_date or 'All'}"
         last_col = get_column_letter(len(COLS))
         ws.merge_cells(f'A1:{last_col}1')
-        ws['A1'].value = f"JJR Logistics \u2014 Expense Report | {date_range}"
+        ws['A1'].value = f"JJR Logistics — Expense Report | {date_range}"
         ws['A1'].font = Font(bold=True, size=13, color='065F46')
         ws['A1'].alignment = s['center']
         ws.row_dimensions[1].height = 26
@@ -273,26 +267,19 @@ class ExpenseReportView(APIView):
         total_amount = 0
 
         for ri, exp in enumerate(expenses, 3):
-            driver_name = ''
-            if exp.driver and exp.driver.user:
-                u = exp.driver.user
-                driver_name = u.get_full_name() or str(u.phone or '')
-            vehicle_num = exp.vehicle.vehicle_number if exp.vehicle else ''
-            trip_date = exp.trip.trip_date.strftime('%d-%m-%Y') if exp.trip else ''
+            vehicle_num = exp.vehicle.vehicle_number if exp.vehicle else '—'
+            paid_to = exp.paid_to_name or exp.paid_to_number or '—'
             amount = float(exp.amount)
             total_amount += amount
 
             row_data = [
                 exp.expense_date.strftime('%d-%m-%Y'),
-                driver_name or '\u2014',
-                vehicle_num or '\u2014',
+                vehicle_num,
                 exp.get_expense_type_display(),
                 amount,
-                exp.get_payment_mode_display() if exp.payment_mode else '\u2014',
-                trip_date or '\u2014',
-                'Yes' if exp.is_blinkit_reimbursable else 'No',
-                'Yes' if exp.is_deducted else 'No',
-                exp.description or '',
+                exp.get_payment_mode_display(),
+                paid_to,
+                exp.remarks or '',
             ]
             fill = EVEN_FILL if ri % 2 == 0 else None
 
@@ -303,7 +290,7 @@ class ExpenseReportView(APIView):
                     c.fill = fill
                 if ci == 1:
                     c.alignment = s['center']
-                elif ci == 5:
+                elif ci == 4:
                     c.alignment = s['right']
                     c.number_format = '#,##0.00'
 
@@ -316,7 +303,7 @@ class ExpenseReportView(APIView):
             c.font = TOT_FONT
         ws.cell(row=tr, column=1).value = 'TOTAL'
         ws.cell(row=tr, column=1).alignment = s['center']
-        tc = ws.cell(row=tr, column=5)
+        tc = ws.cell(row=tr, column=4)
         tc.value = round(total_amount, 2)
         tc.number_format = '#,##0.00'
         tc.alignment = s['right']
@@ -351,7 +338,7 @@ class ExpenseReportView(APIView):
 
 
 class PaymentSummaryReportView(APIView):
-    """Payment summary as Excel (default) or PDF (format=pdf)."""
+    """Vehicle settlement summary as Excel (default) or PDF (format=pdf)."""
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrCoordinator]
 
     def get(self, request):
@@ -375,18 +362,18 @@ class PaymentSummaryReportView(APIView):
             )
 
         month_start = date(year, month, 1)
-        payments = list(
-            Payment.objects.select_related('driver__user', 'vehicle', 'vendor')
+        settlements = list(
+            VehicleSettlement.objects.select_related('vehicle', 'paid_by')
             .filter(month_year=month_start)
-            .order_by('payment_type', 'driver__user__first_name')
+            .order_by('vehicle__vehicle_number')
         )
         label = _month_label(year, month)
 
         if fmt == 'pdf':
-            return self._build_pdf(payments, label, year, month)
-        return self._build_excel(payments, label, year, month)
+            return self._build_pdf(settlements, label, year, month)
+        return self._build_excel(settlements, label, year, month)
 
-    def _build_excel(self, payments, label, year, month):
+    def _build_excel(self, settlements, label, year, month):
         import openpyxl
         from openpyxl.styles import Font, PatternFill
         from openpyxl.utils import get_column_letter
@@ -399,30 +386,28 @@ class PaymentSummaryReportView(APIView):
         EVEN_FILL = PatternFill(start_color='F5F3FF', end_color='F5F3FF', fill_type='solid')
 
         COLS = [
-            ('Driver / Vendor', 22),
-            ('Vehicle', 14),
-            ('Type', 15),
-            ('Trips', 8),
+            ('Vehicle', 16),
+            ('Working Days', 13),
             ('Total KM', 10),
-            ('Gross (\u20b9)', 14),
-            ('Fuel (\u20b9)', 12),
-            ('Advance (\u20b9)', 12),
-            ('Allowance (\u20b9)', 13),
-            ('Toll (\u20b9)', 11),
-            ('Other (\u20b9)', 11),
-            ('Total Dedn (\u20b9)', 14),
-            ('Final Payable (\u20b9)', 16),
-            ('Status', 11),
+            ('Base Amt (₹)', 14),
+            ('Penalty (₹)', 13),
+            ('Extra KM (₹)', 13),
+            ('Gross Amt (₹)', 14),
+            ('Total Expenses (₹)', 18),
+            ('Carry Fwd (₹)', 14),
+            ('Balance Payable (₹)', 18),
+            ('Status', 12),
+            ('Paid Amt (₹)', 13),
         ]
 
         wb = openpyxl.Workbook()
         ws = wb.active
-        ws.title = 'Payment Summary'
+        ws.title = 'Settlement Summary'
         ws.freeze_panes = 'A3'
 
         last_col = get_column_letter(len(COLS))
         ws.merge_cells(f'A1:{last_col}1')
-        ws['A1'].value = f"JJR Logistics \u2014 Payment Summary | {label}"
+        ws['A1'].value = f"JJR Logistics — Settlement Summary | {label}"
         ws['A1'].font = Font(bold=True, size=13, color='7C3AED')
         ws['A1'].alignment = s['center']
         ws.row_dimensions[1].height = 26
@@ -436,53 +421,44 @@ class PaymentSummaryReportView(APIView):
             ws.column_dimensions[get_column_letter(ci)].width = width
         ws.row_dimensions[2].height = 28
 
-        total_final = 0
+        total_balance = 0
 
-        for ri, pmt in enumerate(payments, 3):
-            if pmt.driver and pmt.driver.user:
-                u = pmt.driver.user
-                name = u.get_full_name() or str(u.phone or '')
-            elif pmt.vendor:
-                name = pmt.vendor.name
-            else:
-                name = '\u2014'
-            vehicle_num = pmt.vehicle.vehicle_number if pmt.vehicle else '\u2014'
-            final = float(pmt.final_amount)
-            total_final += final
+        for ri, stl in enumerate(settlements, 3):
+            balance = float(stl.balance_payable)
+            total_balance += balance
 
             row_data = [
-                name,
-                vehicle_num,
-                pmt.get_payment_type_display(),
-                pmt.total_trips,
-                float(pmt.total_km),
-                float(pmt.gross_amount),
-                float(pmt.total_fuel_expenses),
-                float(pmt.total_advance),
-                float(pmt.total_allowance),
-                float(pmt.total_toll_expenses),
-                float(pmt.other_deductions),
-                float(pmt.total_deductions),
-                final,
-                pmt.get_status_display(),
+                stl.vehicle.vehicle_number if stl.vehicle else '—',
+                stl.working_days,
+                float(stl.total_km),
+                float(stl.base_amount),
+                float(stl.absent_penalty_amount),
+                float(stl.extra_km_amount),
+                float(stl.gross_amount),
+                float(stl.total_expenses),
+                float(stl.carry_forward_from_previous),
+                balance,
+                stl.get_status_display(),
+                float(stl.paid_amount),
             ]
             fill = EVEN_FILL if ri % 2 == 0 else None
 
+            money_cols = {4, 5, 6, 7, 8, 9, 10, 12}
             for ci, val in enumerate(row_data, 1):
                 c = ws.cell(row=ri, column=ci, value=val)
                 c.border = s['thin']
                 if fill:
                     c.fill = fill
-                if ci in (6, 7, 8, 9, 10, 11, 12, 13):
+                if ci in money_cols:
                     c.alignment = s['right']
                     c.number_format = '#,##0.00'
-                elif ci in (4, 5):
+                elif ci in (2, 3):
                     c.alignment = s['right']
-                elif ci == 14:
+                elif ci == 11:
                     c.alignment = s['center']
 
         # Totals
-        tr = len(payments) + 3
+        tr = len(settlements) + 3
         for ci in range(1, len(COLS) + 1):
             c = ws.cell(row=tr, column=ci)
             c.border = s['thin']
@@ -490,8 +466,8 @@ class PaymentSummaryReportView(APIView):
             c.font = TOT_FONT
         ws.cell(row=tr, column=1).value = 'TOTAL PAYABLE'
         ws.cell(row=tr, column=1).alignment = s['center']
-        tc = ws.cell(row=tr, column=13)
-        tc.value = round(total_final, 2)
+        tc = ws.cell(row=tr, column=10)
+        tc.value = round(total_balance, 2)
         tc.number_format = '#,##0.00'
         tc.alignment = s['right']
 
@@ -499,7 +475,7 @@ class PaymentSummaryReportView(APIView):
         wb.save(buf)
         buf.seek(0)
 
-        fname = f"Payments_{month:02d}_{year}.xlsx"
+        fname = f"Settlements_{month:02d}_{year}.xlsx"
         resp = HttpResponse(
             buf.getvalue(),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -508,12 +484,11 @@ class PaymentSummaryReportView(APIView):
         resp['Access-Control-Expose-Headers'] = 'Content-Disposition'
         return resp
 
-    def _build_pdf(self, payments, label, year, month):
+    def _build_pdf(self, settlements, label, year, month):
         from reportlab.lib import colors
         from reportlab.lib.pagesizes import A4, landscape
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import mm
-        from reportlab.lib.enums import TA_CENTER
         from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
         buf = io.BytesIO()
@@ -540,47 +515,36 @@ class PaymentSummaryReportView(APIView):
         )
 
         elements = [
-            Paragraph("JJR Logistics \u2014 Payment Summary", title_style),
+            Paragraph("JJR Logistics — Settlement Summary", title_style),
             Paragraph(label, sub_style),
             Spacer(1, 4 * mm),
         ]
 
         headers = [
-            'Driver / Vendor', 'Vehicle', 'Type', 'Trips', 'KM',
-            'Gross (\u20b9)', 'Fuel (\u20b9)', 'Advance (\u20b9)', 'Allowance (\u20b9)',
-            'Deductions (\u20b9)', 'Final (\u20b9)', 'Status',
+            'Vehicle', 'Working Days', 'Total KM',
+            'Base Amt (₹)', 'Gross Amt (₹)', 'Total Exp (₹)',
+            'Balance (₹)', 'Status',
         ]
         data = [headers]
-        total_final = 0
+        total_balance = 0
 
-        for pmt in payments:
-            if pmt.driver and pmt.driver.user:
-                u = pmt.driver.user
-                name = u.get_full_name() or str(u.phone or '')
-            elif pmt.vendor:
-                name = pmt.vendor.name
-            else:
-                name = '\u2014'
-            final = float(pmt.final_amount)
-            total_final += final
+        for stl in settlements:
+            balance = float(stl.balance_payable)
+            total_balance += balance
             data.append([
-                name,
-                pmt.vehicle.vehicle_number if pmt.vehicle else '\u2014',
-                pmt.get_payment_type_display(),
-                str(pmt.total_trips),
-                f"{float(pmt.total_km):.1f}",
-                f"{float(pmt.gross_amount):,.0f}",
-                f"{float(pmt.total_fuel_expenses):,.0f}",
-                f"{float(pmt.total_advance):,.0f}",
-                f"{float(pmt.total_allowance):,.0f}",
-                f"{float(pmt.total_deductions):,.0f}",
-                f"{final:,.0f}",
-                pmt.get_status_display(),
+                stl.vehicle.vehicle_number if stl.vehicle else '—',
+                str(stl.working_days),
+                f"{float(stl.total_km):.1f}",
+                f"{float(stl.base_amount):,.0f}",
+                f"{float(stl.gross_amount):,.0f}",
+                f"{float(stl.total_expenses):,.0f}",
+                f"{balance:,.0f}",
+                stl.get_status_display(),
             ])
 
-        data.append(['TOTAL', '', '', '', '', '', '', '', '', '', f"{total_final:,.0f}", ''])
+        data.append(['TOTAL', '', '', '', '', '', f"{total_balance:,.0f}", ''])
 
-        col_widths = [38*mm, 20*mm, 20*mm, 12*mm, 14*mm, 20*mm, 17*mm, 19*mm, 19*mm, 22*mm, 20*mm, 15*mm]
+        col_widths = [28*mm, 22*mm, 18*mm, 24*mm, 24*mm, 24*mm, 24*mm, 18*mm]
 
         table = Table(data, colWidths=col_widths, repeatRows=1)
         table.setStyle(TableStyle([
@@ -591,13 +555,13 @@ class PaymentSummaryReportView(APIView):
             ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
             ('FONTNAME', (0, 1), (-1, -2), 'Helvetica'),
             ('FONTSIZE', (0, 1), (-1, -2), 8),
-            ('ALIGN', (3, 1), (-2, -2), 'RIGHT'),
-            ('ALIGN', (0, 1), (2, -1), 'LEFT'),
+            ('ALIGN', (1, 1), (6, -2), 'RIGHT'),
+            ('ALIGN', (0, 1), (0, -1), 'LEFT'),
             ('ROWBACKGROUNDS', (0, 1), (-1, -2), [colors.white, light_purple]),
             ('BACKGROUND', (0, -1), (-1, -1), yellow),
             ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
             ('FONTSIZE', (0, -1), (-1, -1), 9),
-            ('ALIGN', (10, -1), (10, -1), 'RIGHT'),
+            ('ALIGN', (6, -1), (6, -1), 'RIGHT'),
             ('GRID', (0, 0), (-1, -1), 0.4, colors.grey),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('ROWHEIGHT', (0, 0), (-1, 0), 16),
@@ -608,15 +572,15 @@ class PaymentSummaryReportView(APIView):
         elements.append(Spacer(1, 5 * mm))
         elements.append(Paragraph(
             f"Generated: {date.today().strftime('%d %B %Y')} | "
-            f"Records: {len(payments)} | "
-            f"Total Payable: \u20b9{total_final:,.0f}",
+            f"Records: {len(settlements)} | "
+            f"Total Balance Payable: ₹{total_balance:,.0f}",
             styles['Normal'],
         ))
 
         doc.build(elements)
         buf.seek(0)
 
-        fname = f"Payments_{month:02d}_{year}.pdf"
+        fname = f"Settlements_{month:02d}_{year}.pdf"
         resp = HttpResponse(buf.getvalue(), content_type='application/pdf')
         resp['Content-Disposition'] = f'attachment; filename="{fname}"'
         resp['Access-Control-Expose-Headers'] = 'Content-Disposition'
