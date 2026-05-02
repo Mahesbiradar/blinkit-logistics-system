@@ -5,6 +5,7 @@ import {
   Truck,
   Wallet,
   CreditCard,
+  Receipt,
   BarChart2,
   LogOut,
   Menu,
@@ -27,7 +28,9 @@ const AdminLayout = () => {
     { path: '/admin/trips', label: 'Trips', icon: MapPin },
     { path: '/admin/vehicles', label: 'Vehicles', icon: Truck },
     { path: '/admin/expenses', label: 'Expenses', icon: Wallet },
-    { path: '/admin/payments', label: 'Payments', icon: CreditCard },
+    { path: '/admin/settlements', label: 'Settlements', icon: CreditCard },
+    { path: '/admin/fastag', label: 'Fastag', icon: Receipt },
+    { path: '/admin/company-expenses', label: 'Company Expenses', icon: Wallet },
     { path: '/admin/reports', label: 'Reports', icon: BarChart2 },
     { path: '/admin/profile', label: 'Profile', icon: UserCircle },
   ];

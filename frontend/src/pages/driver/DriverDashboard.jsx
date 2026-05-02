@@ -11,51 +11,55 @@ import {
   Wallet,
 } from 'lucide-react';
 import { useDriverDashboard } from '../../hooks/useDashboard';
+import { useMyExpenses } from '../../hooks/useExpenses';
 import { useAuthStore } from '../../store/authStore';
 
 const DriverDashboard = () => {
   const navigate = useNavigate();
   const { user, driverProfile } = useAuthStore();
   const { data, isLoading } = useDriverDashboard();
+  const now = new Date();
+  const monthYear = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+  const { data: expensesData } = useMyExpenses({ month_year: monthYear });
 
   const dashboardData = data?.data?.data || {};
-  const trips = dashboardData.trips || {};
-  const salary = dashboardData.salary || {};
-  const expenses = dashboardData.expenses || {};
+  const tripStats = dashboardData.trips || {};
+  const vehicleExpenses = expensesData?.data?.data?.expenses || [];
+  const totalExpenses = vehicleExpenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
   const recentTrips = dashboardData.recent_trips || [];
   const period = dashboardData.period || {};
   const firstName = user?.first_name || 'Driver';
   const assignedVehicle = driverProfile?.primary_vehicle?.vehicle_number || 'Not assigned';
 
   const statsCards = [
-    {
-      title: 'Total Trips',
-      value: trips.total || 0,
-      icon: MapPin,
-      color: 'bg-blue-500',
-      trend: `${trips.approved || 0} approved`,
-    },
-    {
-      title: 'Total KM',
-      value: `${trips.total_km || 0} km`,
-      icon: TrendingUp,
-      color: 'bg-green-500',
-      trend: 'This month',
-    },
-    {
-      title: 'Pending Trips',
-      value: trips.pending || 0,
-      icon: Clock,
-      color: 'bg-yellow-500',
-      trend: 'Awaiting approval',
-    },
-    {
-      title: 'Expected Salary',
-      value: `Rs. ${Number(salary.final_amount || 0).toLocaleString('en-IN')}`,
-      icon: Wallet,
-      color: 'bg-purple-500',
-      trend: `Status: ${salary.status || 'pending'}`,
-    },
+      {
+        title: 'Total Trips',
+        value: dashboardData.trips_this_month ?? tripStats.total ?? 0,
+        icon: MapPin,
+        color: 'bg-blue-500',
+        trend: 'This month',
+      },
+      {
+        title: 'Total KM',
+        value: `${dashboardData.total_km_this_month ?? tripStats.total_km ?? 0} km`,
+        icon: TrendingUp,
+        color: 'bg-green-500',
+        trend: 'This month',
+      },
+      {
+        title: 'Recent Trips',
+        value: recentTrips.length,
+        icon: Clock,
+        color: 'bg-yellow-500',
+        trend: 'Latest entries',
+      },
+      {
+        title: 'Vehicle Expenses',
+        value: `Rs. ${Number(totalExpenses || 0).toLocaleString('en-IN')}`,
+        icon: Wallet,
+        color: 'bg-purple-500',
+        trend: 'Current month',
+      },
   ];
 
   const quickActions = [
@@ -97,7 +101,7 @@ const DriverDashboard = () => {
           <div>
             <h1 className="text-2xl font-bold">Welcome back, {firstName}</h1>
             <p className="mt-2 text-sm text-blue-100">
-              Stay on top of your trips, approvals, salary, and advances from one place.
+              Stay on top of your trips, approvals, and vehicle expenses from one place.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -222,7 +226,7 @@ const DriverDashboard = () => {
         )}
       </div>
 
-      {expenses.remaining_advance > 0 && (
+      {vehicleExpenses.length > 0 && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
           <div className="flex items-center gap-3">
             <div className="bg-yellow-100 p-2 rounded-lg">
@@ -230,10 +234,10 @@ const DriverDashboard = () => {
             </div>
             <div>
               <p className="font-medium text-yellow-800">
-                Advance Balance: Rs. {Number(expenses.remaining_advance || 0).toLocaleString('en-IN')}
+                Current Month Vehicle Expenses: Rs. {Number(totalExpenses || 0).toLocaleString('en-IN')}
               </p>
               <p className="text-sm text-yellow-600">
-                This will be deducted from your salary
+                These are maintained by the owner or coordinator.
               </p>
             </div>
           </div>

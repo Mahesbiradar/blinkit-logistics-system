@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import vehicleService from '../../services/vehicleService';
 import tripService from '../../services/tripService';
-import expenseService from '../../services/expenseService';
+import expenseService, { EXPENSE_TYPES, PAYMENT_MODES } from '../../services/expenseService';
 import { useCreateTrip } from '../../hooks/useTrips';
 import { useExpenseActions } from '../../hooks/useExpenses';
 import { useDrivers } from '../../hooks/useDrivers';
@@ -51,12 +51,11 @@ const statusBadge = (s) => {
 };
 
 const expenseColor = {
-  fuel: 'bg-orange-100 text-orange-700',
-  toll: 'bg-blue-100 text-blue-700',
-  advance: 'bg-purple-100 text-purple-700',
-  allowance: 'bg-teal-100 text-teal-700',
-  maintenance: 'bg-red-100 text-red-700',
-  company_management: 'bg-gray-100 text-gray-700',
+  diesel: 'bg-orange-100 text-orange-700',
+  fastag_recharge: 'bg-blue-100 text-blue-700',
+  driver_advance: 'bg-purple-100 text-purple-700',
+  driver_payment: 'bg-teal-100 text-teal-700',
+  repair: 'bg-red-100 text-red-700',
   other: 'bg-gray-100 text-gray-700',
 };
 
@@ -413,11 +412,15 @@ const EditTripModal = ({ trip, onClose, onSave, isSaving }) => {
 
 const EditExpenseModal = ({ expense, onClose, onSave, isSaving }) => {
   const [form, setForm] = useState({
-    expense_type: expense.expense_type || 'fuel',
+    vehicle_id: expense.vehicle || '',
+    expense_type: expense.expense_type || 'diesel',
     amount: expense.amount || '',
     expense_date: expense.expense_date || new Date().toISOString().split('T')[0],
-    description: expense.description || '',
+    expense_time: expense.expense_time || '',
+    remarks: expense.remarks || '',
     payment_mode: expense.payment_mode || 'cash',
+    paid_to_name: expense.paid_to_name || '',
+    paid_to_number: expense.paid_to_number || '',
   });
   const set = (f, v) => setForm((c) => ({ ...c, [f]: v }));
 
@@ -432,13 +435,7 @@ const EditExpenseModal = ({ expense, onClose, onSave, isSaving }) => {
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-gray-700">Expense type</span>
             <select value={form.expense_type} onChange={(e) => set('expense_type', e.target.value)} className={fieldClass}>
-              <option value="fuel">Fuel</option>
-              <option value="toll">Toll</option>
-              <option value="advance">Advance</option>
-              <option value="allowance">Allowance</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="other">Other</option>
-              <option value="company_management">Company / Management</option>
+              {EXPENSE_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
             </select>
           </label>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -454,18 +451,20 @@ const EditExpenseModal = ({ expense, onClose, onSave, isSaving }) => {
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-gray-700">Payment mode</span>
             <select value={form.payment_mode} onChange={(e) => set('payment_mode', e.target.value)} className={fieldClass}>
-              <option value="cash">Cash</option>
-              <option value="phonepay">PhonePe</option>
-              <option value="gpay">Google Pay</option>
-              <option value="paytm">Paytm</option>
-              <option value="upi">UPI</option>
-              <option value="card">Card</option>
-              <option value="other">Other</option>
+              {PAYMENT_MODES.map((mode) => <option key={mode.value} value={mode.value}>{mode.label}</option>)}
             </select>
           </label>
           <label className="block">
-            <span className="mb-2 block text-sm font-medium text-gray-700">Description</span>
-            <textarea rows={2} value={form.description} onChange={(e) => set('description', e.target.value)} className={`${fieldClass} resize-none`} placeholder="Optional notes…" />
+            <span className="mb-2 block text-sm font-medium text-gray-700">Paid to name</span>
+            <input value={form.paid_to_name} onChange={(e) => set('paid_to_name', e.target.value)} className={fieldClass} />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">Paid to number</span>
+            <input value={form.paid_to_number} onChange={(e) => set('paid_to_number', e.target.value)} className={fieldClass} />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">Remarks</span>
+            <textarea rows={2} value={form.remarks} onChange={(e) => set('remarks', e.target.value)} className={`${fieldClass} resize-none`} placeholder="Optional notes" />
           </label>
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={onClose} className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
@@ -626,9 +625,10 @@ const AddTripModal = ({ vehicle, onClose, onSave, isSaving }) => {
 const AddExpenseModal = ({ vehicle, onClose, onSave, isSaving }) => {
   const primaryDriver = vehicle.assigned_drivers?.find((d) => d.is_primary);
   const [form, setForm] = useState({
-    expense_type: 'fuel', amount: '',
+    expense_type: 'diesel', amount: '',
     expense_date: new Date().toISOString().split('T')[0],
-    description: '', payment_mode: 'cash', receipt_image: null,
+    expense_time: '', remarks: '', payment_mode: 'cash',
+    paid_to_name: '', paid_to_number: '', receipt_image: null,
   });
   const set = (f, v) => setForm((c) => ({ ...c, [f]: v }));
 
@@ -642,17 +642,11 @@ const AddExpenseModal = ({ vehicle, onClose, onSave, isSaving }) => {
           </div>
           <button onClick={onClose} className="rounded-lg p-2 text-gray-400 hover:bg-gray-100">✕</button>
         </div>
-        <form onSubmit={(e) => { e.preventDefault(); onSave({ vehicle_id: vehicle.id, driver_id: primaryDriver?.id, ...form }); }} className="p-5 space-y-4">
+        <form onSubmit={(e) => { e.preventDefault(); onSave({ vehicle_id: vehicle.id, ...form }); }} className="p-5 space-y-4">
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-gray-700">Expense type</span>
             <select value={form.expense_type} onChange={(e) => set('expense_type', e.target.value)} className={fieldClass}>
-              <option value="fuel">Fuel</option>
-              <option value="toll">Toll</option>
-              <option value="advance">Advance</option>
-              <option value="allowance">Allowance</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="other">Other</option>
-              <option value="company_management">Company / Management</option>
+              {EXPENSE_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
             </select>
           </label>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -668,13 +662,7 @@ const AddExpenseModal = ({ vehicle, onClose, onSave, isSaving }) => {
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-gray-700">Payment mode</span>
             <select value={form.payment_mode} onChange={(e) => set('payment_mode', e.target.value)} className={fieldClass}>
-              <option value="cash">Cash</option>
-              <option value="phonepay">PhonePe</option>
-              <option value="gpay">Google Pay</option>
-              <option value="paytm">Paytm</option>
-              <option value="upi">UPI</option>
-              <option value="card">Card</option>
-              <option value="other">Other</option>
+              {PAYMENT_MODES.map((mode) => <option key={mode.value} value={mode.value}>{mode.label}</option>)}
             </select>
           </label>
           <label className="block">
@@ -683,8 +671,16 @@ const AddExpenseModal = ({ vehicle, onClose, onSave, isSaving }) => {
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-gray-100 file:px-3 file:py-2 text-sm" />
           </label>
           <label className="block">
-            <span className="mb-2 block text-sm font-medium text-gray-700">Description</span>
-            <textarea rows={2} value={form.description} onChange={(e) => set('description', e.target.value)} className={`${fieldClass} resize-none`} placeholder="Optional notes…" />
+            <span className="mb-2 block text-sm font-medium text-gray-700">Paid to name</span>
+            <input value={form.paid_to_name} onChange={(e) => set('paid_to_name', e.target.value)} className={fieldClass} />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">Paid to number</span>
+            <input value={form.paid_to_number} onChange={(e) => set('paid_to_number', e.target.value)} className={fieldClass} />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm font-medium text-gray-700">Remarks</span>
+            <textarea rows={2} value={form.remarks} onChange={(e) => set('remarks', e.target.value)} className={`${fieldClass} resize-none`} placeholder="Optional notes" />
           </label>
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={onClose} className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">Cancel</button>
@@ -1074,7 +1070,7 @@ const VehicleDetail = () => {
                 expenses.reduce((acc, e) => { acc[e.expense_type] = (acc[e.expense_type] || 0) + parseFloat(e.amount || 0); return acc; }, {})
               ).map(([type, amt]) => (
                 <div key={type} className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-                  <div className={`mb-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold capitalize ${expenseColor[type] || 'bg-gray-100 text-gray-700'}`}>{type}</div>
+                  <div className={`mb-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold capitalize ${expenseColor[type] || 'bg-gray-100 text-gray-700'}`}>{EXPENSE_TYPES.find((item) => item.value === type)?.label || type}</div>
                   <div className="text-lg font-bold text-gray-900">Rs. {Number(amt).toLocaleString('en-IN')}</div>
                 </div>
               ))}
@@ -1089,13 +1085,7 @@ const VehicleDetail = () => {
             <select value={expenseFilter.expense_type} onChange={(e) => setExpenseFilter({ expense_type: e.target.value })}
               className="rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500">
               <option value="">All Types</option>
-              <option value="fuel">Fuel</option>
-              <option value="toll">Toll</option>
-              <option value="advance">Advance</option>
-              <option value="allowance">Allowance</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="other">Other</option>
-              <option value="company_management">Company / Management</option>
+              {EXPENSE_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
             </select>
             {expenseFilter.expense_type && <button onClick={() => setExpenseFilter({ expense_type: '' })} className="text-sm text-blue-600 hover:underline">Clear</button>}
           </div>
@@ -1122,14 +1112,13 @@ const VehicleDetail = () => {
                       <div className="text-sm font-semibold text-gray-900">Rs. {Number(expense.amount).toLocaleString('en-IN')}</div>
                       <div className="text-xs text-gray-500 flex items-center gap-3 mt-0.5">
                         <span><Calendar className="inline h-3 w-3 mr-1" />{new Date(expense.expense_date).toLocaleDateString('en-IN')}</span>
-                        {expense.driver_name && <span><User className="inline h-3 w-3 mr-1" />{expense.driver_name}</span>}
+                        {expense.paid_to_name && <span><User className="inline h-3 w-3 mr-1" />{expense.paid_to_name}</span>}
                         {expense.payment_mode && <span className="capitalize">{expense.payment_mode}</span>}
                       </div>
-                      {expense.description && <div className="text-xs text-gray-400 mt-0.5 truncate max-w-xs">{expense.description}</div>}
+                      {expense.remarks && <div className="text-xs text-gray-400 mt-0.5 truncate max-w-xs">{expense.remarks}</div>}
                     </div>
                   </div>
                   <div className="flex items-center gap-1 ml-4 shrink-0">
-                    {expense.is_deducted && <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700 mr-1">Deducted</span>}
                     <button onClick={() => setEditExpense(expense)} className="rounded-lg p-1.5 text-gray-400 hover:bg-indigo-50 hover:text-indigo-600 transition" title="Edit">
                       <Pencil className="h-4 w-4" />
                     </button>

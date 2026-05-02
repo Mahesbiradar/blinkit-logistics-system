@@ -41,7 +41,7 @@ const AdminDashboard = () => {
 
   const trips = dashboardData.trips || {};
   const expenses = dashboardData.expenses || {};
-  const payments = dashboardData.payments || {};
+  const settlements = dashboardData.payments || dashboardData.settlements || {};
   const topPerformers = dashboardData.top_performers || [];
   const vehicleUtilization = dashboardData.vehicle_utilization || [];
 
@@ -72,15 +72,15 @@ const AdminDashboard = () => {
         trendUp: false,
       },
       {
-        title: 'Pending Payments',
-        value: `Rs. ${Number(payments.pending_payments || 0).toLocaleString('en-IN')}`,
-        trend: 'To be processed',
+        title: 'Pending Settlements',
+        value: `Rs. ${Number(settlements.total_balance_payable || settlements.pending_payments || 0).toLocaleString('en-IN')}`,
+        trend: `${settlements.pending_count || 0} open`,
         icon: Users,
         color: 'bg-yellow-500',
         trendUp: false,
       },
     ],
-    [expenses.total, payments.pending_payments, trips.approved, trips.total, trips.total_km]
+    [expenses.total, settlements.pending_count, settlements.pending_payments, settlements.total_balance_payable, trips.approved, trips.total, trips.total_km]
   );
 
   const quickLinks = [
@@ -106,11 +106,11 @@ const AdminDashboard = () => {
       onClick: () => navigate('/admin/vehicles'),
     },
     {
-      title: 'Process Payments',
-      description: 'Salary and vendor payments',
+      title: 'Vehicle Settlements',
+      description: 'Vehicle monthly settlements',
       icon: Wallet,
       color: 'bg-orange-600',
-      onClick: () => navigate('/admin/payments'),
+      onClick: () => navigate('/admin/settlements'),
     },
   ];
 

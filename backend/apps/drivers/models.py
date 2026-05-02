@@ -88,25 +88,22 @@ class Driver(models.Model):
         )['total_km'] or 0
     
     def get_total_advance_this_month(self):
-        """Get total advance taken this month"""
-        current_month = timezone.now().replace(day=1)
-        return self.expenses.filter(
-            expense_type='advance',
-            expense_date__month=current_month.month,
-            expense_date__year=current_month.year,
-            is_deducted=False
-        ).aggregate(
-            total=models.Sum('amount')
-        )['total'] or 0
-    
+        """Get total driver_advance expenses this month for the driver's primary vehicle."""
+        from apps.expenses.models import Expense
+        current_date = timezone.now().date()
+        vehicle = self.get_primary_vehicle()
+        if not vehicle:
+            return 0
+        return Expense.objects.filter(
+            vehicle=vehicle,
+            expense_type__in=['driver_advance', 'adhoc_driver'],
+            expense_date__month=current_date.month,
+            expense_date__year=current_date.year,
+        ).aggregate(total=models.Sum('amount'))['total'] or 0
+
     def get_total_unpaid_advance(self):
-        """Get total unpaid advance"""
-        return self.expenses.filter(
-            expense_type='advance',
-            is_deducted=False
-        ).aggregate(
-            total=models.Sum('amount')
-        )['total'] or 0
+        """Get total driver_advance expenses this month for the driver's primary vehicle."""
+        return self.get_total_advance_this_month()
     
     def get_effective_base_salary(self):
         """Get effective base salary (from driver or vehicle)"""

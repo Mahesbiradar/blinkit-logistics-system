@@ -6,7 +6,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.common.permissions import IsOwner
+from apps.common.permissions import IsOwner, IsDriver
 from .models import CompanyExpense, Expense, FastagRecord
 from .serializers import (
     CompanyExpenseSerializer,
@@ -17,6 +17,26 @@ from .serializers import (
     FastagRecordPatchSerializer,
     FastagRecordSerializer,
 )
+
+
+# ── Driver: my vehicle's expenses ─────────────────────────────────────────────
+
+class MyExpensesView(APIView):
+    permission_classes = [IsDriver]
+
+    def get(self, request):
+        driver = request.user.driver_profile
+        vehicle = driver.get_primary_vehicle()
+        if not vehicle:
+            return Response({'success': True, 'data': {'expenses': [], 'total': 0}})
+        qs = Expense.objects.filter(vehicle=vehicle).select_related('vehicle', 'created_by')
+        params = request.query_params
+        if params.get('month_year'):
+            qs = qs.filter(month_year=params['month_year'])
+        if params.get('expense_type'):
+            qs = qs.filter(expense_type=params['expense_type'])
+        serializer = ExpenseSerializer(qs, many=True, context={'request': request})
+        return Response({'success': True, 'data': {'expenses': serializer.data, 'total': qs.count()}})
 
 
 # ── Expense ───────────────────────────────────────────────────────────────────

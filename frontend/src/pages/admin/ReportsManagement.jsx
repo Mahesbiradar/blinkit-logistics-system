@@ -3,8 +3,8 @@ import { useQuery } from 'react-query';
 import { FileSpreadsheet, FileText, Download, Filter, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import reportService from '../../services/reportService';
-import driverService from '../../services/driverService';
 import vehicleService from '../../services/vehicleService';
+import { EXPENSE_TYPES as VEHICLE_EXPENSE_TYPES } from '../../services/expenseService';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const CURRENT_MONTH = new Date().getMonth() + 1;
@@ -19,16 +19,7 @@ const MONTHS = [
   { value: 11, label: 'November' }, { value: 12, label: 'December' },
 ];
 
-const EXPENSE_TYPES = [
-  { value: '', label: 'All Types' },
-  { value: 'fuel', label: 'Fuel' },
-  { value: 'toll', label: 'Toll' },
-  { value: 'advance', label: 'Advance' },
-  { value: 'allowance', label: 'Allowance' },
-  { value: 'maintenance', label: 'Maintenance' },
-  { value: 'other', label: 'Other' },
-  { value: 'company_management', label: 'Company / Management' },
-];
+const REPORT_EXPENSE_TYPES = [{ value: '', label: 'All Types' }, ...VEHICLE_EXPENSE_TYPES];
 
 const SelectField = ({ label, value, onChange, children }) => (
   <div className="flex flex-col gap-1">
@@ -151,10 +142,9 @@ const MonthlyMISSection = ({ vehicles }) => {
 
 // ─── Expense Report ───────────────────────────────────────────────────────────
 
-const ExpenseReportSection = ({ drivers, vehicles }) => {
+const ExpenseReportSection = ({ vehicles }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [driverId, setDriverId] = useState('');
   const [vehicleId, setVehicleId] = useState('');
   const [expenseType, setExpenseType] = useState('');
   const [loading, setLoading] = useState(false);
@@ -162,7 +152,7 @@ const ExpenseReportSection = ({ drivers, vehicles }) => {
   const handleDownload = async () => {
     setLoading(true);
     try {
-      await reportService.downloadExpenseReport({ startDate, endDate, driverId, vehicleId, expenseType });
+      await reportService.downloadExpenseReport({ startDate, endDate, vehicleId, expenseType });
       toast.success('Expense report downloaded');
     } catch {
       toast.error('Failed to download expense report');
@@ -174,22 +164,13 @@ const ExpenseReportSection = ({ drivers, vehicles }) => {
   return (
     <ReportCard
       title="Expense Report"
-      description="All expenses filtered by driver, vehicle, type, or date range."
+      description="All vehicle expenses filtered by vehicle, type, or date range."
       icon={Filter}
       iconColor="bg-emerald-600"
     >
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
         <InputField label="Start Date" type="date" value={startDate} onChange={setStartDate} />
         <InputField label="End Date" type="date" value={endDate} onChange={setEndDate} />
-
-        <SelectField label="Driver (optional)" value={driverId} onChange={setDriverId}>
-          <option value="">All Drivers</option>
-          {drivers.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.user?.first_name} {d.user?.last_name}
-            </option>
-          ))}
-        </SelectField>
 
         <SelectField label="Vehicle (optional)" value={vehicleId} onChange={setVehicleId}>
           <option value="">All Vehicles</option>
@@ -199,7 +180,7 @@ const ExpenseReportSection = ({ drivers, vehicles }) => {
         </SelectField>
 
         <SelectField label="Expense Type" value={expenseType} onChange={setExpenseType}>
-          {EXPENSE_TYPES.map((t) => (
+          {REPORT_EXPENSE_TYPES.map((t) => (
             <option key={t.value} value={t.value}>{t.label}</option>
           ))}
         </SelectField>
@@ -274,28 +255,24 @@ const PaymentSummarySection = () => {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 const ReportsManagement = () => {
-  const { data: driversData } = useQuery('report-drivers', () =>
-    driverService.getDrivers({ page_size: 200 })
-  );
   const { data: vehiclesData } = useQuery('report-vehicles', () =>
     vehicleService.getVehicles({ page_size: 200 })
   );
 
-  const drivers = driversData?.data?.drivers || driversData?.data?.results || [];
-  const vehicles = vehiclesData?.data?.vehicles || vehiclesData?.data?.results || [];
+  const vehicles = vehiclesData?.data?.data?.vehicles || vehiclesData?.data?.vehicles || vehiclesData?.data?.results || [];
 
   return (
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Download MIS reports, expense summaries, and payment statements
+          Download MIS reports, expense summaries, and settlement statements
         </p>
       </div>
 
       <div className="grid gap-6">
         <MonthlyMISSection vehicles={vehicles} />
-        <ExpenseReportSection drivers={drivers} vehicles={vehicles} />
+        <ExpenseReportSection vehicles={vehicles} />
         <PaymentSummarySection />
       </div>
     </div>

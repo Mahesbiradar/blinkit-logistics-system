@@ -4,9 +4,57 @@ import paymentService from '../services/paymentService';
 
 export const usePayments = (params = {}) =>
   useQuery({
-    queryKey: ['payments', params],
-    queryFn: () => paymentService.getPayments(params),
+    queryKey: ['settlements', params],
+    queryFn: () => paymentService.getSettlements(params),
   });
+
+export const useSettlements = usePayments;
+
+export const useSettlementSummary = (params = {}) =>
+  useQuery({
+    queryKey: ['settlement-summary', params],
+    queryFn: () => paymentService.getSettlementSummary(params),
+    enabled: Boolean(params?.month_year),
+  });
+
+export const useCalculateSettlement = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: paymentService.calculateSettlement,
+    onSuccess: () => {
+      toast.success('Settlement calculated');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+      queryClient.invalidateQueries({ queryKey: ['settlement-summary'] });
+    },
+    onError: (error) => toast.error(error.response?.data?.message || 'Failed to calculate settlement'),
+  });
+};
+
+export const useFinalizeSettlement = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: paymentService.finalizeSettlement,
+    onSuccess: () => {
+      toast.success('Settlement finalized');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+      queryClient.invalidateQueries({ queryKey: ['settlement-summary'] });
+    },
+    onError: (error) => toast.error(error.response?.data?.message || 'Failed to finalize settlement'),
+  });
+};
+
+export const useMarkPaid = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }) => paymentService.markPaid(id, data),
+    onSuccess: () => {
+      toast.success('Settlement marked as paid');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+      queryClient.invalidateQueries({ queryKey: ['settlement-summary'] });
+    },
+    onError: (error) => toast.error(error.response?.data?.message || 'Failed to mark settlement as paid'),
+  });
+};
 
 export const usePaymentActions = () => {
   const queryClient = useQueryClient();
@@ -14,38 +62,79 @@ export const usePaymentActions = () => {
   const createMutation = useMutation({
     mutationFn: paymentService.createPayment,
     onSuccess: () => {
-      toast.success('Payment created successfully');
-      queryClient.invalidateQueries({ queryKey: ['payments'] });
+      toast.success('Settlement created successfully');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create payment');
+      toast.error(error.response?.data?.message || 'Failed to create settlement');
     },
   });
 
   const markPaidMutation = useMutation({
     mutationFn: ({ id, ...data }) => paymentService.markPaid(id, data),
     onSuccess: () => {
-      toast.success('Payment marked as paid');
-      queryClient.invalidateQueries({ queryKey: ['payments'] });
+      toast.success('Settlement marked as paid');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to mark payment as paid');
+      toast.error(error.response?.data?.message || 'Failed to mark settlement as paid');
     },
   });
 
   const calculateMutation = useMutation({
-    mutationFn: paymentService.calculatePayment,
+    mutationFn: paymentService.calculateSettlement,
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to calculate payment');
+      toast.error(error.response?.data?.message || 'Failed to calculate settlement');
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => paymentService.updateSettlement(id, data),
+    onSuccess: () => {
+      toast.success('Settlement updated');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to update settlement');
+    },
+  });
+
+  const finalizeMutation = useMutation({
+    mutationFn: paymentService.finalizeSettlement,
+    onSuccess: () => {
+      toast.success('Settlement finalized');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to finalize settlement');
+    },
+  });
+
+  const reopenMutation = useMutation({
+    mutationFn: paymentService.reopenSettlement,
+    onSuccess: () => {
+      toast.success('Settlement reopened');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to reopen settlement');
     },
   });
 
   return {
     createPayment: createMutation.mutate,
+    createSettlement: createMutation.mutate,
     isCreating: createMutation.isLoading,
+    updateSettlement: updateMutation.mutate,
+    isUpdating: updateMutation.isLoading,
     markPaid: markPaidMutation.mutate,
     isMarkingPaid: markPaidMutation.isLoading,
     calculatePayment: calculateMutation.mutateAsync,
+    calculateSettlement: calculateMutation.mutate,
     isCalculating: calculateMutation.isLoading,
+    finalizeSettlement: finalizeMutation.mutate,
+    isFinalizing: finalizeMutation.isLoading,
+    reopenSettlement: reopenMutation.mutate,
+    isReopening: reopenMutation.isLoading,
   };
 };

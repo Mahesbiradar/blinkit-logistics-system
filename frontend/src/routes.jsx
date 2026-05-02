@@ -20,6 +20,9 @@ import VehiclesManagement from './pages/admin/VehiclesManagement';
 import VehicleDetail from './pages/admin/VehicleDetail';
 import ExpensesManagement from './pages/admin/ExpensesManagement';
 import PaymentsManagement from './pages/admin/PaymentsManagement';
+import VehicleSettlements from './pages/admin/VehicleSettlements';
+import FastagManagement from './pages/admin/FastagManagement';
+import CompanyExpenses from './pages/admin/CompanyExpenses';
 import ReportsManagement from './pages/admin/ReportsManagement';
 import AdminProfile from './pages/admin/AdminProfile';
 import DriverProfile from './pages/driver/DriverProfile';
@@ -128,6 +131,9 @@ export const router = createBrowserRouter([
       { path: 'vehicles', element: <VehiclesManagement /> },
       { path: 'vehicles/:id', element: <VehicleDetail /> },
       { path: 'expenses', element: <ExpensesManagement /> },
+      { path: 'settlements', element: <VehicleSettlements /> },
+      { path: 'fastag', element: <FastagManagement /> },
+      { path: 'company-expenses', element: <CompanyExpenses /> },
       { path: 'payments', element: <PaymentsManagement /> },
       { path: 'reports', element: <ReportsManagement /> },
       { path: 'profile', element: <AdminProfile /> },

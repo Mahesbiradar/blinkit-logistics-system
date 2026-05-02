@@ -95,26 +95,22 @@ class OwnerDashboardView(APIView):
         }
     
     def _get_payment_stats(self, start_date, end_date):
-        """Get payment summary"""
-        from apps.payments.models import Payment
-        
-        payments = Payment.objects.filter(
+        """Get settlement summary"""
+        from apps.payments.models import VehicleSettlement
+
+        settlements = VehicleSettlement.objects.filter(
             month_year__gte=start_date,
             month_year__lte=end_date
         )
-        
+
         return {
-            'total_salary_paid': float(payments.filter(
-                payment_type='salary',
-                status='paid'
-            ).aggregate(total=Sum('final_amount'))['total'] or 0),
-            'total_vendor_paid': float(payments.filter(
-                payment_type='vendor_payment',
-                status='paid'
-            ).aggregate(total=Sum('final_amount'))['total'] or 0),
-            'pending_payments': float(payments.filter(
-                status='pending'
-            ).aggregate(total=Sum('final_amount'))['total'] or 0)
+            'total_balance_payable': float(
+                settlements.aggregate(total=Sum('balance_payable'))['total'] or 0
+            ),
+            'total_paid': float(
+                settlements.filter(status='paid').aggregate(total=Sum('paid_amount'))['total'] or 0
+            ),
+            'pending_count': settlements.exclude(status='paid').count(),
         }
     
     def _get_top_performers(self, start_date, end_date):
@@ -187,46 +183,43 @@ class DriverDashboardView(APIView):
             'total_km': float(trips.aggregate(total=Sum('total_km'))['total'] or 0)
         }
         
-        # Expense summary
-        expenses = Expense.objects.filter(
-            driver=driver,
-            expense_date__gte=start_date,
-            expense_date__lte=end_date
-        )
-        
-        advance_taken = float(expenses.filter(
-            expense_type='advance'
-        ).aggregate(total=Sum('amount'))['total'] or 0)
-        
-        advance_deducted = float(expenses.filter(
-            expense_type='advance',
-            is_deducted=True
-        ).aggregate(total=Sum('amount'))['total'] or 0)
-        
-        # Salary info
-        from apps.payments.models import Payment
-        
-        try:
-            payment = Payment.objects.get(
-                driver=driver,
-                month_year=today.replace(day=1)
+        # Expenses for driver's primary vehicle this month
+        from apps.payments.models import VehicleSettlement
+        month_start = today.replace(day=1)
+        primary_vehicle = driver.get_primary_vehicle()
+
+        advance_taken = 0
+        if primary_vehicle:
+            advance_taken = float(
+                Expense.objects.filter(
+                    vehicle=primary_vehicle,
+                    expense_type__in=['driver_advance', 'adhoc_driver'],
+                    expense_date__gte=month_start,
+                    expense_date__lte=today,
+                ).aggregate(total=Sum('amount'))['total'] or 0
             )
-            salary = {
-                'base_salary': float(payment.base_salary),
-                'deductions': float(payment.total_deductions),
-                'final_amount': float(payment.final_amount),
-                'status': payment.status
-            }
-        except Payment.DoesNotExist:
-            # Calculate expected salary
-            base_salary = driver.get_effective_base_salary()
-            total_advance = driver.get_total_advance_this_month()
-            salary = {
-                'base_salary': float(base_salary),
-                'deductions': float(total_advance),
-                'final_amount': float(base_salary - total_advance),
-                'status': 'pending'
-            }
+
+        # Settlement for driver's vehicle
+        salary = {'status': 'no_vehicle', 'gross_amount': 0, 'total_expenses': 0, 'balance_payable': 0}
+        if primary_vehicle:
+            try:
+                settlement = VehicleSettlement.objects.get(
+                    vehicle=primary_vehicle,
+                    month_year=month_start,
+                )
+                salary = {
+                    'gross_amount': float(settlement.gross_amount),
+                    'total_expenses': float(settlement.total_expenses),
+                    'balance_payable': float(settlement.balance_payable),
+                    'status': settlement.status,
+                }
+            except VehicleSettlement.DoesNotExist:
+                salary = {
+                    'gross_amount': 0,
+                    'total_expenses': 0,
+                    'balance_payable': 0,
+                    'status': 'draft',
+                }
         
         # Recent trips
         recent_trips = trips.order_by('-trip_date')[:5]
@@ -252,8 +245,6 @@ class DriverDashboardView(APIView):
                 'trips': trip_stats,
                 'expenses': {
                     'advance_taken': advance_taken,
-                    'advance_deducted': advance_deducted,
-                    'remaining_advance': advance_taken - advance_deducted
                 },
                 'salary': salary,
                 'recent_trips': recent_trips_data
@@ -323,27 +314,15 @@ class MonthlyReportView(APIView):
             status='approved'
         )
         
-        # Driver-wise data
+        # Driver-wise data (expenses are now per vehicle, not per driver)
         driver_data = []
         for driver in Driver.objects.filter(is_active=True):
             driver_trips = trips.filter(driver=driver)
-            driver_expenses = Expense.objects.filter(
-                driver=driver,
-                expense_date__year=year,
-                expense_date__month=month
-            )
-            
             driver_data.append({
                 'driver_id': str(driver.id),
                 'driver_name': driver.user.get_full_name(),
                 'total_trips': driver_trips.count(),
                 'total_km': float(driver_trips.aggregate(total=Sum('total_km'))['total'] or 0),
-                'total_advance': float(driver_expenses.filter(
-                    expense_type='advance'
-                ).aggregate(total=Sum('amount'))['total'] or 0),
-                'total_fuel': float(driver_expenses.filter(
-                    expense_type='fuel'
-                ).aggregate(total=Sum('amount'))['total'] or 0)
             })
         
         # Vehicle-wise data

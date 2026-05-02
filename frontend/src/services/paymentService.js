@@ -1,15 +1,32 @@
 import api from './api';
 
 const paymentService = {
-  getPayments: (params = {}) => api.get('/payments/', { params }),
+  getSettlements: (params = {}) => api.get('/settlements/', { params }),
 
-  getPayment: (id) => api.get(`/payments/${id}/`),
+  getSettlement: (id) => api.get(`/settlements/${id}/`),
 
-  createPayment: (data) => api.post('/payments/', data),
+  getSettlementSummary: (params = {}) => api.get('/settlements/summary/', { params }),
 
-  calculatePayment: (data) => api.post('/payments/calculate/', data),
+  createSettlement: (data) => api.post('/settlements/', data),
 
-  markPaid: (id, data) => api.post(`/payments/${id}/mark-paid/`, data),
+  updateSettlement: (id, data) => api.patch(`/settlements/${id}/`, data),
+
+  calculateSettlement: (id) => api.post(`/settlements/${id}/calculate/`),
+
+  finalizeSettlement: (id) => api.post(`/settlements/${id}/finalize/`),
+
+  markPaid: (id, data) => api.post(`/settlements/${id}/mark-paid/`, data),
+
+  reopenSettlement: (id) => api.post(`/settlements/${id}/reopen/`),
+
+  // Legacy aliases so existing hooks continue to work without changes
+  getPayments: (params = {}) => api.get('/settlements/', { params }),
+  getPayment: (id) => api.get(`/settlements/${id}/`),
+  createPayment: (data) => api.post('/settlements/', data),
+  updatePayment: (id, data) => api.patch(`/settlements/${id}/`, data),
+  calculatePayment: (id) => api.post(`/settlements/${id}/calculate/`),
+  finalizePayment: (id) => api.post(`/settlements/${id}/finalize/`),
+  reopenPayment: (id) => api.post(`/settlements/${id}/reopen/`),
 };
 
 export default paymentService;

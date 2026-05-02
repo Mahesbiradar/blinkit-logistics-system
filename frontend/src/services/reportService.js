@@ -33,13 +33,12 @@ const reportService = {
 
   /**
    * Expense report Excel with optional filters
-   * @param {Object} filters - { startDate, endDate, driverId, vehicleId, expenseType }
+   * @param {Object} filters - { startDate, endDate, vehicleId, expenseType }
    */
   downloadExpenseReport: async (filters = {}) => {
     const params = {};
     if (filters.startDate) params.start_date = filters.startDate;
     if (filters.endDate) params.end_date = filters.endDate;
-    if (filters.driverId) params.driver_id = filters.driverId;
     if (filters.vehicleId) params.vehicle_id = filters.vehicleId;
     if (filters.expenseType) params.expense_type = filters.expenseType;
 
