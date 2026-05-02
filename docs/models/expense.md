@@ -1,89 +1,103 @@
 # Expense
 
 ## Purpose
-Tracks all cash outflows associated with operations: fuel, toll, driver advances, allowances, vehicle maintenance, and company/management overhead. Each expense can be linked to a driver, a vehicle, and optionally a specific trip. The `expense_type` determines how the expense is treated in payment calculations — some are deducted from driver salary, some from vendor settlement, and toll is never deducted (Blinkit reimburses the owner directly).
+Running payment ledger for every rupee JJR sends out for a specific vehicle during a month.
+Every row is money-already-paid — at settlement time ALL expenses for a vehicle+month are
+summed and deducted from gross. There is no per-row "deductible" flag.
 
 ## Source files
-- Model: backend/apps/expenses/models.py
-- Migration/Schema: backend/apps/expenses/migrations/ (0001_initial, 0002_nullable_company_management)
-- Controller/Service: backend/apps/expenses/views.py
-- Routes: backend/apps/expenses/urls.py
-- Validators: backend/apps/expenses/serializers.py (`ExpenseWriteSerializer`)
-- Tests: none
+- Model:      backend/apps/expenses/models.py
+- Migration:  backend/apps/expenses/migrations/
+- Views:      backend/apps/expenses/views.py
+- Routes:     backend/apps/expenses/urls.py
+- Serializer: backend/apps/expenses/serializers.py
+- Tests:      none
 
 ## Fields
-| Field | Type | Nullable | Default | Constraints | Notes |
-|-------|------|----------|---------|-------------|-------|
-| id | UUIDField | No | uuid4 | PK, editable=False | |
-| driver | ForeignKey → drivers.Driver | Yes | — | CASCADE on delete | Null for vehicle-only or company expenses |
-| vehicle | ForeignKey → vehicles.Vehicle | Yes | — | CASCADE on delete | Null for company_management type |
-| trip | ForeignKey → trips.Trip | Yes | — | SET_NULL on delete | Optional link to specific trip |
-| expense_type | CharField(20) | No | — | choices (7 values) | See choices below |
-| amount | DecimalField(10,2) | No | — | — | Validated > 0 in serializer |
-| expense_date | DateField | No | — | — | Cannot be in the future (serializer) |
-| description | TextField | No | `''` | blank=True | Free-text notes |
-| receipt_image | ImageField | Yes | — | upload_to='expenses/receipts/%Y/%m/' | Optional photo of receipt |
-| payment_mode | CharField(20) | No | `''` | choices (7 values), blank=True | How the expense was paid |
-| is_blinkit_reimbursable | BooleanField | No | False | — | Auto-set True for toll type |
-| is_deducted | BooleanField | No | False | — | Tracks if advance has been deducted from payment |
-| deducted_at | DateTimeField | Yes | — | — | Set by `mark_deducted()` |
-| created_by | ForeignKey → accounts.User | Yes | — | SET_NULL on delete | Auto-set to request.user; no related_name |
-| created_at | DateTimeField | No | auto_now_add | — | |
-| updated_at | DateTimeField | No | auto_now | — | |
+| Field           | Type                        | Nullable | Default | Constraints            | Notes                                              |
+|-----------------|-----------------------------|----------|---------|------------------------|----------------------------------------------------|
+| id              | UUIDField                   | No       | uuid4   | PK, editable=False     |                                                    |
+| vehicle         | FK → vehicles.Vehicle       | No       | —       | CASCADE                | Every expense belongs to a vehicle                 |
+| expense_date    | DateField                   | No       | —       | —                      | Cannot be future (serializer)                      |
+| expense_time    | TimeField                   | Yes      | —       | —                      | Coordinator logs time when available               |
+| expense_type    | CharField(30)               | No       | —       | choices (12 values)    | See table below                                    |
+| amount          | DecimalField(10,2)          | No       | —       | —                      | Must be > 0 (serializer)                           |
+| payment_mode    | CharField(20)               | No       | —       | choices (6 values)     | phonepay/kiwi/amazon_pay/whatsapp/cash/other       |
+| paid_to_name    | CharField(200)              | No       | ''      | blank=True             | "Saptagiri Service Station", "Mantayya"            |
+| paid_to_number  | CharField(50)               | No       | ''      | blank=True             | Phone / scanner / account number                   |
+| month_year      | DateField                   | No       | —       | —                      | First day of settlement month (e.g. 2026-04-01)   |
+| remarks         | TextField                   | No       | ''      | blank=True             |                                                    |
+| receipt_image   | ImageField                  | Yes      | —       | upload_to='expenses/receipts/%Y/%m/' |                                    |
+| created_by      | FK → accounts.User          | Yes      | —       | SET_NULL, related_name='expenses_created' | Auto-set to request.user         |
+| created_at      | DateTimeField               | No       | auto_now_add | —                 |                                                    |
+| updated_at      | DateTimeField               | No       | auto_now    | —                  |                                                    |
 
-**expense_type choices:** `fuel`, `toll`, `advance`, `allowance`, `maintenance`, `other`, `company_management`
+### expense_type choices
+| Value           | Real-world meaning                                           |
+|-----------------|--------------------------------------------------------------|
+| diesel          | Fuel paid to petrol pump (via Kiwi scanner usually)         |
+| driver_advance  | Cash advance to driver (personal needs, fines, etc.)        |
+| driver_payment  | Monthly salary / driver PM payment                          |
+| emi             | Vehicle loan EMI paid by JJR on driver's behalf             |
+| fastag_recharge | Amount topped up into vehicle Fastag tag                    |
+| adhoc_driver    | Payment to substitute driver covering absent primary driver |
+| repair          | Mechanical work — clutch plate, tyres, servicing, etc.      |
+| accident        | Accident-related payments                                    |
+| fine            | Traffic fine / wrong-route fine                             |
+| food            | Driver meal expenses                                        |
+| penalty         | Blinkit absent penalty paid directly from JJR pocket        |
+| other           | Everything else (fan, FC renewal, etc.)                     |
 
-**payment_mode choices:** `cash`, `phonepay`, `gpay`, `paytm`, `upi`, `card`, `other`
+### payment_mode choices
+`phonepay`, `kiwi`, `amazon_pay`, `whatsapp`, `cash`, `other`
 
 ## Relationships
-| Relation | Type | Target | FK | On delete | Notes |
-|----------|------|--------|-----|-----------|-------|
-| driver | belongs_to | drivers.Driver | driver_id | CASCADE | Null for company/vehicle-only expenses |
-| vehicle | belongs_to | vehicles.Vehicle | vehicle_id | CASCADE | Null for company_management expenses |
-| trip | belongs_to | trips.Trip | trip_id | SET_NULL | Trip deletion nulls this FK, not vice versa |
-| created_by | belongs_to | accounts.User | created_by_id | SET_NULL | No related_name defined |
+| Relation   | Type        | Target           | FK         | On delete | Notes                          |
+|------------|-------------|------------------|------------|-----------|--------------------------------|
+| vehicle    | belongs_to  | Vehicle          | vehicle_id | CASCADE   | Required on every expense      |
+| created_by | belongs_to  | accounts.User    | created_by_id | SET_NULL | related_name='expenses_created' |
 
 ## Indexes
-- `(driver_id, expense_date)` — composite index
-- `(vehicle_id, expense_date)` — composite index
-- `expense_type` — single-column index
-- `expense_date` — single-column index
-- `is_deducted` — single-column index
+- `(vehicle_id, month_year)` — composite; primary query pattern
+- `(vehicle_id, expense_date)` — for date-range filtering
+- `expense_type` — single column
+- `month_year` — single column
 
 ## Validations & business rules
 - `amount` must be > 0 (serializer)
 - `expense_date` cannot be in the future (serializer)
-- For `toll` type: serializer auto-sets `is_blinkit_reimbursable = True`
-- For `company_management` type: driver and vehicle are both optional (expense is not linked to either)
-- For driver role: serializer prevents logging expenses for other drivers; `company_management` type is forbidden for drivers
-- `is_deducted` is relevant only for `advance` type; it is set to True when the payment that deducts the advance is marked as paid
-- Payment deduction logic in `Payment.mark_paid()` queries advances for the month with `is_deducted=False` and calls `mark_deducted()` on each
+- `month_year` is auto-derived in serializer from `expense_date` (first day of that month) — coordinator never sets it manually
+- `expense_type = fastag_recharge` rows feed `FastagRecord.fastag_recharged_amount` (aggregated at settlement time, not via signal)
+- ALL expense rows for a vehicle+month are summed into `VehicleSettlement.total_expenses` at settlement calculation time
+- Coordinator (and owner) can create/edit; no driver write access
+- Only owner can delete (permission class)
 
-**Payment formula reference:**
-- Owner vehicle salary: `Base Salary - advance` (only advance is deducted from driver)
-- Vendor settlement: `(KM × rate) - fuel - advance - allowance - maintenance - other` (toll excluded)
-- `company_management` expenses are tracked separately and do not affect either formula
-
-## State / status (if applicable)
-- `is_deducted`: False (default) → True (set when payment is marked paid). Only meaningful for `expense_type='advance'`.
+## State / status
+N/A — no status field. Expenses are immutable once created except by owner.
 
 ## API endpoints
-| Method | Path | Purpose | Auth required |
-|--------|------|---------|---------------|
-| GET | /api/v1/expenses/ | List expenses (filter: driver_id, vehicle_id, expense_type, start_date, end_date, is_deducted) | Any authenticated |
-| POST | /api/v1/expenses/ | Create expense | Any authenticated |
-| GET | /api/v1/expenses/{id}/ | Expense detail | Any authenticated |
-| PUT/PATCH | /api/v1/expenses/{id}/ | Update expense | Any authenticated |
-| DELETE | /api/v1/expenses/{id}/ | Delete expense | Any authenticated |
-| GET | /api/v1/expenses/my-expenses/ | Driver's own expenses + advance summary | Driver |
+| Method     | Path                              | Purpose                                    | Auth              |
+|------------|-----------------------------------|--------------------------------------------|-------------------|
+| GET        | /api/v1/expenses/                 | List (filter: vehicle, month_year, type)   | Owner             |
+| POST       | /api/v1/expenses/                 | Log a new expense                          | Owner             |
+| GET        | /api/v1/expenses/{id}/            | Detail                                     | Owner             |
+| PUT/PATCH  | /api/v1/expenses/{id}/            | Update                                     | Owner             |
+| DELETE     | /api/v1/expenses/{id}/            | Delete                                     | Owner only        |
+| GET        | /api/v1/expenses/summary/         | Monthly totals per vehicle (for settlement screen) | Owner    |
 
 ## Lifecycle hooks / side effects
-- `mark_deducted()` sets `is_deducted=True` and `deducted_at=now()` via `save(update_fields=[...])`; called from `Payment.mark_paid()`
-- No signals; no background jobs
+- None. Expenses are queried (aggregated) by VehicleSettlement at calculation time.
+- No signals.
 
 ## Open questions / known limitations
-- `company_management` expenses have no driver or vehicle — they are fleet-level overhead but appear in the same expense list with no clear grouping or reporting path beyond the dedicated Excel report
-- `is_deducted` is set by `Payment.mark_paid()` for advances in the payment month — but advances taken in different months (e.g. December advance carried into January payment) are not handled; only same-month advances are deducted
-- `created_by` FK has no `related_name`, so reverse access from User → Expense is unavailable via the ORM
-- No constraint prevents a driver from logging an advance with `is_deducted=True` at creation time (it defaults False but nothing prevents overriding)
-- The `is_blinkit_reimbursable` flag is auto-set for toll in serializer but nothing prevents manually setting it for other types — there is no validation that only toll can be reimbursable
+- `paid_to_number` is a free-text string; no format validation (intentional — scanner IDs, UPI handles, and phone numbers all land here)
+- Receipt image upload is optional; no OCR or validation on image content
+- `month_year` derivation: if coordinator logs an expense on May 1 for work done April 30, they must manually correct the date to April 30 — month_year will follow automatically
+
+## Removed from previous model
+- `is_deducted`, `deducted_at` — removed; all expenses deduct at settlement
+- `is_blinkit_reimbursable` — removed; Fastag handled by FastagRecord
+- `trip` FK — removed; expenses belong to vehicle+month, not individual trips
+- `company_management` type — moved to CompanyExpense model
+- `driver` FK — removed; vehicle is the primary grouping
+- `allowance`, `maintenance`, `toll` types — replaced by specific types above
