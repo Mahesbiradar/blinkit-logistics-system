@@ -8,14 +8,15 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
     # API v1
     path('api/v1/auth/', include('apps.accounts.urls')),
     path('api/v1/trips/', include('apps.trips.urls')),
     path('api/v1/drivers/', include('apps.drivers.urls')),
     path('api/v1/vehicles/', include('apps.vehicles.urls')),
     path('api/v1/expenses/', include('apps.expenses.urls')),
-    path('api/v1/payments/', include('apps.payments.urls')),
+    path('api/v1/company-expenses/', include('apps.expenses.company_expense_urls')),
+    path('api/v1/settlements/', include('apps.payments.urls')),
     path('api/v1/dashboard/', include('apps.dashboard.urls')),
     path('api/v1/reports/', include('apps.reports.urls')),
 ]

@@ -55,18 +55,20 @@ blinkit-logistics-system/
 | Model | File | Purpose | Key relationships |
 |-------|------|---------|-------------------|
 | User | backend/apps/accounts/models.py | Auth user; drives role-based access | OneToOne → Driver |
-| OTPCode | backend/apps/accounts/models.py | Phone-based OTP for driver login | standalone (phone string FK) |
+| OTPCode | backend/apps/accounts/models.py | Phone-based OTP for driver login | standalone (phone string match) |
 | Driver | backend/apps/drivers/models.py | Driver profile extending User | OneToOne ← User; M2M → Vehicle via DriverVehicleMapping |
 | DriverVehicleMapping | backend/apps/drivers/models.py | M2M join with assignment history | FK → Driver, FK → Vehicle |
-| Vendor | backend/apps/vehicles/models.py | Third-party vehicle owner for settlement | has_many → Vehicle |
+| Vendor | backend/apps/vehicles/models.py | Third-party vehicle owner | has_many → Vehicle |
 | Vehicle | backend/apps/vehicles/models.py | Vehicle master; owner or vendor type | FK → Vendor; M2M → Driver via DriverVehicleMapping |
-| Store | backend/apps/trips/models.py | Blinkit store/delivery destination master | referenced by Trip via store_name_1/2 (string, not FK) |
+| Store | backend/apps/trips/models.py | Blinkit store/destination master | name string copied into Trip (no FK) |
 | Trip | backend/apps/trips/models.py | One day's dispatch record (up to 2 sub-trips) | FK → Driver, FK → Vehicle, FK → User (created_by, approved_by) |
-| Expense | backend/apps/expenses/models.py | All cash outflows: fuel, toll, advance, etc. | FK → Driver, FK → Vehicle, FK → Trip, FK → User (created_by) |
-| Payment | backend/apps/payments/models.py | Monthly salary or vendor settlement | FK → Driver, FK → Vehicle, FK → Vendor, FK → User (paid_by) |
+| Expense | backend/apps/expenses/models.py | Vehicle payment ledger (diesel, advance, repair, etc.) — 12 types | FK → Vehicle, FK → User (created_by) |
+| FastagRecord | backend/apps/expenses/models.py | Monthly Fastag balance per vehicle (independent of settlement) | FK → Vehicle; save() aggregates from Expense(fastag_recharge) |
+| CompanyExpense | backend/apps/expenses/models.py | JJR overhead with no vehicle (coordinator salary, rent, etc.) — 7 types | FK → User (created_by) only |
+| VehicleSettlement | backend/apps/payments/models.py | Monthly closing document per vehicle; calculate() sums expenses | FK → Vehicle, FK → User (paid_by, created_by) |
 
 ## Models planned (not yet implemented)
-- None currently planned in code — see PENDING items in build_status memory for UI gaps
+- None currently planned in code
 
 ## How to run
 ```bash

@@ -8,11 +8,11 @@ computes the balance. Fastag is tracked completely separately in FastagRecord
 and does NOT appear here.
 
 ## Source files
-- Model:      backend/apps/payments/models.py
-- Migration:  backend/apps/payments/migrations/
-- Views:      backend/apps/payments/views.py
-- Routes:     backend/apps/payments/urls.py
-- Serializer: backend/apps/payments/serializers.py
+- Model:      backend/apps/payments/models.py — `VehicleSettlement` class
+- Migration:  backend/apps/payments/migrations/0002_replace_payment_with_vehicle_settlement.py
+- Views:      backend/apps/payments/views.py — `VehicleSettlementListCreateView`, `VehicleSettlementDetailView`, `SettlementCalculateView`, `SettlementFinalizeView`, `SettlementMarkPaidView`, `SettlementReopenView`, `VehicleSettlementSummaryView`
+- Routes:     backend/apps/payments/urls.py (mounted at /api/v1/settlements/)
+- Serializer: backend/apps/payments/serializers.py — `VehicleSettlementSerializer`, `VehicleSettlementCreateSerializer`, `VehicleSettlementPatchSerializer`, `MarkPaidSerializer`
 - Tests:      none
 
 ## Fields

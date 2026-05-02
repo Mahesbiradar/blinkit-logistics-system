@@ -1,321 +1,136 @@
 """
-Payments Models - Payment and Salary Management
+Payments Models — VehicleSettlement
+Monthly closing document per vehicle. Replaces the old Payment model.
+FastagRecord (in expenses app) is completely independent — no FK between them.
 """
 import uuid
 from django.db import models
 from django.utils import timezone
 
 
-class Payment(models.Model):
+class VehicleSettlement(models.Model):
     """
-    Payment Model
-    Handles both Owner Vehicle Driver Salaries and Vendor Payments
+    Monthly financial settlement for a vehicle.
+    Coordinator fills manual inputs; calculate() aggregates expenses and computes balances.
+    mark_paid() auto-carries the unpaid remainder to the next month's record.
     """
-    
-    PAYMENT_TYPE_CHOICES = [
-        ('salary', 'Salary'),
-        ('vendor_payment', 'Vendor Payment'),
-        ('advance', 'Advance'),
-        ('reimbursement', 'Reimbursement'),
-    ]
-    
+
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('processed', 'Processed'),
+        ('draft', 'Draft'),
+        ('finalized', 'Finalized'),
         ('paid', 'Paid'),
     ]
-    
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    
-    # Payment recipient (either driver or vendor)
-    driver = models.ForeignKey(
-        'drivers.Driver',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='payments'
-    )
     vehicle = models.ForeignKey(
         'vehicles.Vehicle',
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='payments'
+        related_name='settlements',
     )
-    vendor = models.ForeignKey(
-        'vehicles.Vendor',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='payments'
-    )
-    
-    payment_type = models.CharField(max_length=20, choices=PAYMENT_TYPE_CHOICES)
-    
-    # Payment period (first day of the month)
     month_year = models.DateField()
-    
-    # Trip statistics
-    total_trips = models.IntegerField(default=0)
+
+    # ── Manual inputs ──────────────────────────────────────────────────────────
+    total_days = models.IntegerField(default=0)
+    working_days = models.IntegerField(default=0)
     total_km = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    km_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    km_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
-    # Financial breakdown
-    base_salary = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_fuel_expenses = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_advance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_toll_expenses = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_allowance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    other_deductions = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
-    # Totals
+    base_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    absent_penalty_days = models.IntegerField(default=0)
+    absent_penalty_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    extra_km_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # ── System-computed ────────────────────────────────────────────────────────
+    total_expenses = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     gross_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_deductions = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    final_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
-    # Payment status
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    carry_forward_from_previous = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    balance_payable = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # ── Payment ────────────────────────────────────────────────────────────────
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    paid_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     paid_at = models.DateTimeField(null=True, blank=True)
     paid_by = models.ForeignKey(
         'accounts.User',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
+        related_name='settlements_paid',
     )
     payment_mode = models.CharField(max_length=20, blank=True)
     transaction_reference = models.CharField(max_length=100, blank=True)
-    
     remarks = models.TextField(blank=True)
-    
+
+    # ── Audit ──────────────────────────────────────────────────────────────────
+    created_by = models.ForeignKey(
+        'accounts.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='settlements_created',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
-        db_table = 'payments'
+        db_table = 'vehicle_settlements'
+        unique_together = ['vehicle', 'month_year']
         ordering = ['-month_year', '-created_at']
-        verbose_name = 'Payment'
-        verbose_name_plural = 'Payments'
+        verbose_name = 'Vehicle Settlement'
+        verbose_name_plural = 'Vehicle Settlements'
         indexes = [
-            models.Index(fields=['driver', 'month_year']),
-            models.Index(fields=['vehicle', 'month_year']),
-            models.Index(fields=['vendor', 'month_year']),
             models.Index(fields=['status']),
             models.Index(fields=['month_year']),
         ]
-    
+
     def __str__(self):
-        recipient = self.driver or self.vendor
-        return f"{self.get_payment_type_display()} - {recipient} - {self.month_year.strftime('%B %Y')}"
-    
-    def calculate_totals(self):
+        return f"Settlement {self.vehicle} — {self.month_year.strftime('%B %Y')} ({self.status})"
+
+    def calculate(self):
         """
-        Calculate gross amount, deductions, and final amount
-        Based on vehicle type (owner vs vendor)
+        Aggregate total_expenses from Expense table and recompute derived fields.
+        fastag_recharge rows ARE included (real money JJR paid out).
         """
-        if self.payment_type == 'salary':
-            # Owner vehicle driver salary
-            self.gross_amount = self.base_salary
-            self.total_deductions = self.total_advance + self.other_deductions
-            
-        elif self.payment_type == 'vendor_payment':
-            # Vendor payment: (KM × Rate) - Fuel - Advance
-            self.km_amount = self.total_km * self.km_rate
-            self.gross_amount = self.km_amount
-            self.total_deductions = (
-                self.total_fuel_expenses + 
-                self.total_advance + 
-                self.other_deductions
-            )
-        
-        self.final_amount = self.gross_amount - self.total_deductions
-        self.save(update_fields=[
-            'km_amount', 'gross_amount', 'total_deductions', 'final_amount'
-        ])
-    
-    def mark_paid(self, user, payment_mode='', reference=''):
-        """Mark payment as paid"""
+        from apps.expenses.models import Expense
+        from django.db.models import Sum
+
+        self.total_expenses = (
+            Expense.objects
+            .filter(vehicle=self.vehicle, month_year=self.month_year)
+            .aggregate(total=Sum('amount'))['total'] or 0
+        )
+        self.gross_amount = (
+            self.base_amount
+            - self.absent_penalty_amount
+            + self.extra_km_amount
+        )
+        self.balance_payable = (
+            self.gross_amount
+            - self.total_expenses
+            + self.carry_forward_from_previous
+        )
+        self.save()
+
+    def mark_paid(self, paid_by_user, paid_amount, payment_mode='', transaction_reference=''):
         self.status = 'paid'
+        self.paid_amount = paid_amount
         self.paid_at = timezone.now()
-        self.paid_by = user
+        self.paid_by = paid_by_user
         self.payment_mode = payment_mode
-        self.transaction_reference = reference
-        self.save(update_fields=[
-            'status', 'paid_at', 'paid_by', 'payment_mode', 'transaction_reference'
-        ])
-        
-        # Mark advances as deducted
-        if self.total_advance > 0:
-            from apps.expenses.models import Expense
-            advances = Expense.objects.filter(
-                driver=self.driver,
-                expense_type='advance',
-                is_deducted=False,
-                expense_date__month=self.month_year.month,
-                expense_date__year=self.month_year.year
+        self.transaction_reference = transaction_reference
+        self.save()
+
+        unpaid = self.balance_payable - paid_amount
+        if unpaid != 0:
+            next_month = self._next_month()
+            settlement, created = VehicleSettlement.objects.get_or_create(
+                vehicle=self.vehicle,
+                month_year=next_month,
+                defaults={'status': 'draft', 'carry_forward_from_previous': unpaid},
             )
-            for advance in advances:
-                advance.mark_deducted()
-    
-    def is_salary_payment(self):
-        """Check if this is a salary payment"""
-        return self.payment_type == 'salary'
-    
-    def is_vendor_payment(self):
-        """Check if this is a vendor payment"""
-        return self.payment_type == 'vendor_payment'
-    
-    @classmethod
-    def calculate_driver_salary(cls, driver, year, month):
-        """
-        Calculate salary for an owner vehicle driver
-        Formula: Base Salary - Advance
-        """
-        from apps.trips.models import Trip
-        from apps.expenses.models import Expense
-        
-        # Get base salary
-        base_salary = driver.get_effective_base_salary()
-        
-        # Get approved trips
-        trips = Trip.objects.filter(
-            driver=driver,
-            trip_date__year=year,
-            trip_date__month=month,
-            status='approved'
-        )
-        
-        total_trips = trips.count()
-        total_km = trips.aggregate(
-            total=models.Sum('total_km')
-        )['total'] or 0
-        
-        # Get expenses
-        expenses = Expense.objects.filter(
-            driver=driver,
-            expense_date__year=year,
-            expense_date__month=month
-        )
-        
-        total_advance = expenses.filter(
-            expense_type='advance',
-            is_deducted=False
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-        
-        total_fuel = expenses.filter(
-            expense_type='fuel'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-        
-        total_toll = expenses.filter(
-            expense_type='toll'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-        
-        total_allowance = expenses.filter(
-            expense_type='allowance'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-        
-        # Calculate
-        gross_amount = base_salary
-        total_deductions = total_advance
-        final_amount = gross_amount - total_deductions
-        
-        return {
-            'driver': driver,
-            'month_year': timezone.datetime(year, month, 1).date(),
-            'payment_type': 'salary',
-            'total_trips': total_trips,
-            'total_km': total_km,
-            'base_salary': base_salary,
-            'total_advance': total_advance,
-            'total_fuel_expenses': total_fuel,
-            'total_toll_expenses': total_toll,
-            'total_allowance': total_allowance,
-            'gross_amount': gross_amount,
-            'total_deductions': total_deductions,
-            'final_amount': final_amount,
-        }
-    
-    @classmethod
-    def calculate_vendor_payment(cls, vendor, vehicle, year, month):
-        """
-        Calculate payment for a vendor vehicle
-        Formula: (Total KM × Rate per KM) - Fuel - Advance
-        """
-        from apps.trips.models import Trip
-        from apps.drivers.models import Driver
-        from apps.expenses.models import Expense
-        
-        # Get approved trips for this vehicle
-        trips = Trip.objects.filter(
-            vehicle=vehicle,
-            trip_date__year=year,
-            trip_date__month=month,
-            status='approved'
-        )
-        
-        total_trips = trips.count()
-        total_km = trips.aggregate(
-            total=models.Sum('total_km')
-        )['total'] or 0
-        
-        # Get expenses for this vehicle
-        expenses = Expense.objects.filter(
-            vehicle=vehicle,
-            expense_date__year=year,
-            expense_date__month=month
-        )
-        
-        total_fuel = expenses.filter(
-            expense_type='fuel'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
+            if not created:
+                settlement.carry_forward_from_previous = unpaid
+                settlement.save(update_fields=['carry_forward_from_previous', 'updated_at'])
 
-        total_advance = expenses.filter(
-            expense_type='advance',
-            is_deducted=False
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-
-        total_toll = expenses.filter(
-            expense_type='toll'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-
-        total_allowance = expenses.filter(
-            expense_type='allowance'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-
-        total_maintenance = expenses.filter(
-            expense_type='maintenance'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-
-        total_other = expenses.filter(
-            expense_type='other'
-        ).aggregate(total=models.Sum('amount'))['total'] or 0
-
-        # Vendor settlement: (KM × Rate) - all expenses except toll
-        # Toll is borne by owner (Blinkit reimburses separately)
-        km_rate = vehicle.km_rate
-        km_amount = total_km * km_rate
-        gross_amount = km_amount
-        total_deductions = (
-            total_fuel + total_advance + total_allowance +
-            total_maintenance + total_other
-        )
-        final_amount = gross_amount - total_deductions
-
-        return {
-            'vendor': vendor,
-            'vehicle': vehicle,
-            'month_year': timezone.datetime(year, month, 1).date(),
-            'payment_type': 'vendor_payment',
-            'total_trips': total_trips,
-            'total_km': total_km,
-            'km_rate': km_rate,
-            'km_amount': km_amount,
-            'total_fuel_expenses': total_fuel,
-            'total_advance': total_advance,
-            'total_toll_expenses': total_toll,
-            'total_allowance': total_allowance,
-            'other_deductions': total_maintenance + total_other,
-            'gross_amount': gross_amount,
-            'total_deductions': total_deductions,
-            'final_amount': final_amount,
-        }
+    def _next_month(self):
+        from datetime import date
+        y, m = self.month_year.year, self.month_year.month
+        return date(y + 1, 1, 1) if m == 12 else date(y, m + 1, 1)

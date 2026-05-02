@@ -11,11 +11,11 @@ This model has NO connection to VehicleSettlement. Fastag money is tracked
 separately from the vehicle payment calculation entirely.
 
 ## Source files
-- Model:      backend/apps/expenses/models.py  (same app as Expense)
-- Migration:  backend/apps/expenses/migrations/
-- Views:      backend/apps/expenses/views.py
-- Routes:     backend/apps/expenses/urls.py
-- Serializer: backend/apps/expenses/serializers.py
+- Model:      backend/apps/expenses/models.py — `FastagRecord` class
+- Migration:  backend/apps/expenses/migrations/0003_restructure_expense_add_fastag_company.py
+- Views:      backend/apps/expenses/views.py — `FastagRecordListCreateView`, `FastagRecordDetailView`, `FastagRefreshView`, `FastagMarkClosedView`, `FastagReopenView`
+- Routes:     backend/apps/expenses/urls.py (prefix: fastag/)
+- Serializer: backend/apps/expenses/serializers.py — `FastagRecordSerializer`, `FastagRecordCreateSerializer`, `FastagRecordPatchSerializer`
 - Tests:      none
 
 ## Fields

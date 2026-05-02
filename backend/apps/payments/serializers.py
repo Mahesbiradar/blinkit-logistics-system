@@ -1,132 +1,117 @@
 """
-Payments Serializers
+VehicleSettlement Serializers
 """
 from rest_framework import serializers
-from .models import Payment
+
+from apps.vehicles.models import Vehicle
+from .models import VehicleSettlement
+
+READONLY_COMPUTED = [
+    'total_expenses', 'gross_amount', 'carry_forward_from_previous',
+    'balance_payable', 'status', 'paid_amount', 'paid_at', 'paid_by',
+    'created_at', 'updated_at',
+]
 
 
-class PaymentSerializer(serializers.ModelSerializer):
-    """Payment Serializer"""
-    
-    driver_name = serializers.CharField(source='driver.user.get_full_name', read_only=True)
+class VehicleSettlementSerializer(serializers.ModelSerializer):
     vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
-    vendor_name = serializers.CharField(source='vendor.name', read_only=True)
-    payment_type_display = serializers.CharField(source='get_payment_type_display', read_only=True)
     status_display = serializers.CharField(source='get_status_display', read_only=True)
-    paid_by_name = serializers.CharField(source='paid_by.get_full_name', read_only=True)
-    
+    paid_by_name = serializers.SerializerMethodField()
+
     class Meta:
-        model = Payment
+        model = VehicleSettlement
         fields = [
-            'id', 'driver', 'driver_name', 'vehicle', 'vehicle_number',
-            'vendor', 'vendor_name', 'payment_type', 'payment_type_display',
-            'month_year', 'total_trips', 'total_km', 'km_rate', 'km_amount',
-            'base_salary', 'total_fuel_expenses', 'total_advance',
-            'total_toll_expenses', 'total_allowance', 'other_deductions',
-            'gross_amount', 'total_deductions', 'final_amount',
-            'status', 'status_display', 'paid_at', 'paid_by', 'paid_by_name',
+            'id', 'vehicle', 'vehicle_number', 'month_year',
+            'total_days', 'working_days', 'total_km',
+            'base_amount', 'absent_penalty_days', 'absent_penalty_amount', 'extra_km_amount',
+            'total_expenses', 'gross_amount',
+            'carry_forward_from_previous', 'balance_payable',
+            'status', 'status_display',
+            'paid_amount', 'paid_at', 'paid_by', 'paid_by_name',
             'payment_mode', 'transaction_reference', 'remarks',
-            'created_at'
+            'created_at', 'updated_at',
         ]
-        read_only_fields = [
-            'id', 'km_amount', 'gross_amount', 'total_deductions',
-            'final_amount', 'paid_at', 'paid_by', 'created_at'
-        ]
+        read_only_fields = ['id'] + READONLY_COMPUTED
+
+    def get_paid_by_name(self, obj):
+        return obj.paid_by.get_full_name() if obj.paid_by else None
 
 
-class PaymentListSerializer(serializers.ModelSerializer):
-    """Payment List Serializer (minimal fields)"""
-    
-    recipient_name = serializers.SerializerMethodField()
-    vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
-    
+class VehicleSettlementCreateSerializer(serializers.ModelSerializer):
+    vehicle_id = serializers.PrimaryKeyRelatedField(
+        source='vehicle',
+        queryset=Vehicle.objects.filter(is_active=True),
+        write_only=True,
+    )
+
     class Meta:
-        model = Payment
+        model = VehicleSettlement
         fields = [
-            'id', 'recipient_name', 'vehicle_number',
-            'payment_type', 'month_year', 'final_amount', 'status'
+            'vehicle_id', 'month_year',
+            'total_days', 'working_days', 'total_km',
+            'base_amount', 'absent_penalty_days', 'absent_penalty_amount',
+            'extra_km_amount', 'remarks',
         ]
-    
-    def get_recipient_name(self, obj):
-        if obj.driver:
-            return obj.driver.user.get_full_name()
-        elif obj.vendor:
-            return obj.vendor.name
-        return 'Unknown'
 
-
-class PaymentCreateSerializer(serializers.Serializer):
-    """Payment Create Serializer"""
-    
-    driver_id = serializers.UUIDField(required=False)
-    vendor_id = serializers.UUIDField(required=False)
-    vehicle_id = serializers.UUIDField(required=False)
-    month_year = serializers.DateField(required=True)
-    payment_mode = serializers.CharField(required=False, allow_blank=True)
-    transaction_reference = serializers.CharField(required=False, allow_blank=True)
-    remarks = serializers.CharField(required=False, allow_blank=True)
-    
     def validate(self, data):
-        """Validate payment data"""
-        driver_id = data.get('driver_id')
-        vendor_id = data.get('vendor_id')
-        
-        if not driver_id and not vendor_id:
+        vehicle = data.get('vehicle')
+        month_year = data.get('month_year')
+        if VehicleSettlement.objects.filter(vehicle=vehicle, month_year=month_year).exists():
             raise serializers.ValidationError(
-                "Either driver_id or vendor_id must be provided"
+                "A settlement already exists for this vehicle and month."
             )
-        
+        working = data.get('working_days', 0)
+        total = data.get('total_days', 0)
+        if working > total:
+            raise serializers.ValidationError({'working_days': 'working_days cannot exceed total_days.'})
+        return data
+
+    def create(self, validated_data):
+        validated_data['created_by'] = self.context['request'].user
+        return super().create(validated_data)
+
+
+class VehicleSettlementPatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VehicleSettlement
+        fields = [
+            'total_days', 'working_days', 'total_km',
+            'base_amount', 'absent_penalty_days', 'absent_penalty_amount',
+            'extra_km_amount', 'remarks',
+        ]
+
+    def validate(self, data):
+        instance = self.instance
+        if instance and instance.status != 'draft':
+            raise serializers.ValidationError("Only draft settlements can be edited.")
+        working = data.get('working_days', getattr(instance, 'working_days', 0))
+        total = data.get('total_days', getattr(instance, 'total_days', 0))
+        if working > total:
+            raise serializers.ValidationError({'working_days': 'working_days cannot exceed total_days.'})
         return data
 
 
-class PaymentCalculationSerializer(serializers.Serializer):
-    """Payment Calculation Response Serializer"""
-    
-    driver_id = serializers.UUIDField(required=False)
-    driver_name = serializers.CharField(required=False)
-    vendor_id = serializers.UUIDField(required=False)
-    vendor_name = serializers.CharField(required=False)
-    vehicle = serializers.DictField()
-    month_year = serializers.DateField()
-    
-    total_trips = serializers.IntegerField()
-    total_km = serializers.DecimalField(max_digits=10, decimal_places=2)
-    km_rate = serializers.DecimalField(max_digits=10, decimal_places=2)
-    km_amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-    
-    base_salary = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total_fuel_expenses = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total_advance = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total_toll_expenses = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total_allowance = serializers.DecimalField(max_digits=10, decimal_places=2)
-    
-    gross_amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total_deductions = serializers.DecimalField(max_digits=10, decimal_places=2)
-    final_amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-
-
-class PaymentMarkPaidSerializer(serializers.Serializer):
-    """Payment Mark Paid Serializer"""
-    
+class MarkPaidSerializer(serializers.Serializer):
+    paid_amount = serializers.DecimalField(max_digits=10, decimal_places=2)
     payment_mode = serializers.ChoiceField(
-        choices=['cash', 'phonepay', 'gpay', 'paytm', 'upi', 'card', 'bank_transfer'],
-        required=True
+        choices=['phonepay', 'kiwi', 'amazon_pay', 'whatsapp', 'cash', 'bank_transfer', 'other']
     )
     transaction_reference = serializers.CharField(required=False, allow_blank=True)
 
+    def validate_paid_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("paid_amount must be greater than 0.")
+        return value
 
-class PaymentFilterSerializer(serializers.Serializer):
-    """Payment Filter Serializer"""
-    
-    driver_id = serializers.UUIDField(required=False)
-    vehicle_id = serializers.UUIDField(required=False)
-    vendor_id = serializers.UUIDField(required=False)
-    month_year = serializers.DateField(required=False)
-    status = serializers.ChoiceField(
-        choices=['pending', 'processed', 'paid'],
-        required=False
-    )
-    payment_type = serializers.ChoiceField(
-        choices=['salary', 'vendor_payment', 'advance', 'reimbursement'],
-        required=False
-    )
+
+class VehicleSettlementSummarySerializer(serializers.ModelSerializer):
+    vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+
+    class Meta:
+        model = VehicleSettlement
+        fields = [
+            'id', 'vehicle', 'vehicle_number', 'month_year',
+            'gross_amount', 'total_expenses', 'balance_payable',
+            'status', 'status_display',
+        ]

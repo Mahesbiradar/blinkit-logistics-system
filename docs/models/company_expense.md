@@ -7,11 +7,11 @@ any other business operating costs. Completely separate from vehicle Expenses.
 Feeds only the company P&L report.
 
 ## Source files
-- Model:      backend/apps/expenses/models.py  (same app as Expense and FastagRecord)
-- Migration:  backend/apps/expenses/migrations/
-- Views:      backend/apps/expenses/views.py
-- Routes:     backend/apps/expenses/urls.py
-- Serializer: backend/apps/expenses/serializers.py
+- Model:      backend/apps/expenses/models.py — `CompanyExpense` class
+- Migration:  backend/apps/expenses/migrations/0003_restructure_expense_add_fastag_company.py
+- Views:      backend/apps/expenses/views.py — `CompanyExpenseListCreateView`, `CompanyExpenseDetailView`, `CompanyExpenseSummaryView`
+- Routes:     backend/apps/expenses/company_expense_urls.py (mounted at /api/v1/company-expenses/)
+- Serializer: backend/apps/expenses/serializers.py — `CompanyExpenseSerializer`, `CompanyExpenseWriteSerializer`
 - Tests:      none
 
 ## Fields

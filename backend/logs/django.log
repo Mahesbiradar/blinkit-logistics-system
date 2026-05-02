@@ -10276,3 +10276,4 @@ INFO 2026-04-25 11:05:58,050 basehttp "GET /api/v1/vehicles/?is_active=true HTTP
 INFO 2026-04-25 11:06:00,330 basehttp "GET /api/v1/dashboard/owner/?start_date=2026-04-01&end_date=2026-04-25 HTTP/1.1" 200 698
 INFO 2026-04-25 11:06:04,768 basehttp "GET /api/v1/trips/?start_date=2026-03-31&end_date=2026-04-25 HTTP/1.1" 200 16912
 INFO 2026-04-25 11:06:04,793 basehttp "GET /api/v1/vehicles/ HTTP/1.1" 200 1363
+INFO 2026-05-03 01:18:07,712 autoreload Watching for file changes with StatReloader

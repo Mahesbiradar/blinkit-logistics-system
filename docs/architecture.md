@@ -40,23 +40,32 @@ User ──1:1──► Driver ──M:M──► Vehicle ◄──── Vendor
                 │                               │
                 ▼                               ▼
               Trip ◄────────────────────── Vehicle
-                │
-                ▼
-            Expense ──────────────────────► Trip (optional)
-                │
-                └──────────────────────────► Driver
-                └──────────────────────────► Vehicle
+                                               │
+                                               ├──► Expense (vehicle FK, 12 types)
+                                               │      └── fastag_recharge type feeds FastagRecord.save()
+                                               │
+                                               ├──► FastagRecord  ← standalone Fastag ledger
+                                               │      (no link to VehicleSettlement)
+                                               │
+                                               └──► VehicleSettlement  ← monthly closing doc
+                                                      calculate() reads ALL Expense rows for vehicle+month
 
-Payment ─────────────────────────────────► Driver (salary)
-        ─────────────────────────────────► Vehicle + Vendor (vendor settlement)
+CompanyExpense  ← standalone (no vehicle FK)
 
 User ──► Trip.created_by / Trip.approved_by
-User ──► Payment.paid_by
+User ──► VehicleSettlement.paid_by / created_by
 User ──► Expense.created_by
+User ──► FastagRecord.created_by / updated_by
+User ──► CompanyExpense.created_by
 
 Store  (standalone master; name copied into Trip.store_name_1/2 as string)
 OTPCode (standalone; linked to User by phone string, not FK)
 ```
+
+**Key independence rule:** FastagRecord ↔ VehicleSettlement have zero FK between them.
+FastagRecord tracks Fastag account balance. VehicleSettlement tracks vehicle payment.
+The only shared data is that `fastag_recharge` Expense rows appear in both
+(FastagRecord.save() aggregates them; VehicleSettlement.calculate() includes them in total_expenses).
 
 **FK summary:**
 
@@ -70,14 +79,15 @@ OTPCode (standalone; linked to User by phone string, not FK)
 | Trip | vehicle | Vehicle | CASCADE |
 | Trip | created_by | User | SET_NULL |
 | Trip | approved_by | User | SET_NULL |
-| Expense | driver | Driver | CASCADE |
 | Expense | vehicle | Vehicle | CASCADE |
-| Expense | trip | Trip | SET_NULL |
-| Expense | created_by | User | SET_NULL |
-| Payment | driver | Driver | CASCADE |
-| Payment | vehicle | Vehicle | CASCADE |
-| Payment | vendor | Vendor | CASCADE |
-| Payment | paid_by | User | SET_NULL |
+| Expense | created_by | User | SET_NULL (related_name='expenses_created') |
+| FastagRecord | vehicle | Vehicle | CASCADE |
+| FastagRecord | created_by | User | SET_NULL (related_name='fastag_records_created') |
+| FastagRecord | updated_by | User | SET_NULL (related_name='fastag_records_updated') |
+| VehicleSettlement | vehicle | Vehicle | CASCADE |
+| VehicleSettlement | paid_by | User | SET_NULL (related_name='settlements_paid') |
+| VehicleSettlement | created_by | User | SET_NULL (related_name='settlements_created') |
+| CompanyExpense | created_by | User | SET_NULL (related_name='company_expenses_created') |
 
 ## Cross-cutting concerns
 
@@ -127,6 +137,15 @@ OTPCode (standalone; linked to User by phone string, not FK)
 8. **Image fields** — use `ImageField(upload_to='<app>/<subfolder>/%Y/%m/', null=True, blank=True)`; requires Pillow
 9. **Response shape** — do not return raw model data; always go through a serializer so `StandardJSONRenderer` wraps it correctly
 10. **Indexes** — add explicit `Meta.indexes` for any FK + date composite query (see Trip and Expense as examples)
+
+## URL mount points (current)
+
+| Prefix | App | Notes |
+|--------|-----|-------|
+| /api/v1/expenses/ | apps.expenses.urls | Expense + FastagRecord |
+| /api/v1/company-expenses/ | apps.expenses.company_expense_urls | CompanyExpense |
+| /api/v1/settlements/ | apps.payments.urls | VehicleSettlement (replaces /api/v1/payments/) |
+| /api/v1/payments/ | **removed** | Old Payment model deleted |
 
 ## Inconsistencies to resolve
 

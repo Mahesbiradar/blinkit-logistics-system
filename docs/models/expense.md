@@ -6,11 +6,11 @@ Every row is money-already-paid — at settlement time ALL expenses for a vehicl
 summed and deducted from gross. There is no per-row "deductible" flag.
 
 ## Source files
-- Model:      backend/apps/expenses/models.py
-- Migration:  backend/apps/expenses/migrations/
-- Views:      backend/apps/expenses/views.py
+- Model:      backend/apps/expenses/models.py — `Expense` class
+- Migration:  backend/apps/expenses/migrations/0003_restructure_expense_add_fastag_company.py
+- Views:      backend/apps/expenses/views.py — `ExpenseListCreateView`, `ExpenseDetailView`, `ExpenseSummaryView`
 - Routes:     backend/apps/expenses/urls.py
-- Serializer: backend/apps/expenses/serializers.py
+- Serializer: backend/apps/expenses/serializers.py — `ExpenseSerializer`, `ExpenseWriteSerializer`
 - Tests:      none
 
 ## Fields

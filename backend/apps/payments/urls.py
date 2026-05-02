@@ -1,12 +1,15 @@
 """
-Payments URLs
+VehicleSettlement URLs — mounted at /api/v1/settlements/
 """
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.PaymentListView.as_view(), name='payment-list'),
-    path('calculate/', views.PaymentCalculateView.as_view(), name='payment-calculate'),
-    path('<uuid:pk>/', views.PaymentDetailView.as_view(), name='payment-detail'),
-    path('<uuid:pk>/mark-paid/', views.PaymentMarkPaidView.as_view(), name='payment-mark-paid'),
+    path('', views.VehicleSettlementListCreateView.as_view(), name='settlement-list-create'),
+    path('summary/', views.VehicleSettlementSummaryView.as_view(), name='settlement-summary'),
+    path('<uuid:pk>/', views.VehicleSettlementDetailView.as_view(), name='settlement-detail'),
+    path('<uuid:pk>/calculate/', views.SettlementCalculateView.as_view(), name='settlement-calculate'),
+    path('<uuid:pk>/finalize/', views.SettlementFinalizeView.as_view(), name='settlement-finalize'),
+    path('<uuid:pk>/mark-paid/', views.SettlementMarkPaidView.as_view(), name='settlement-mark-paid'),
+    path('<uuid:pk>/reopen/', views.SettlementReopenView.as_view(), name='settlement-reopen'),
 ]
