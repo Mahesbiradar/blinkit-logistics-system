@@ -26,6 +26,20 @@ export const useFastagRecords = (params = {}) =>
     queryFn: () => expenseService.getFastagRecords(params),
   });
 
+export const useExpenseBreakdown = (params = {}) =>
+  useQuery({
+    queryKey: ['expense-breakdown', params],
+    queryFn: () => expenseService.getExpenseBreakdown(params),
+    enabled: Boolean(params?.vehicle_id && params?.month_year),
+  });
+
+export const useFastagDetail = (id) =>
+  useQuery({
+    queryKey: ['fastag-detail', id],
+    queryFn: () => expenseService.getFastagDetail(id),
+    enabled: Boolean(id),
+  });
+
 export const useCompanyExpenses = (params = {}) =>
   useQuery({
     queryKey: ['company-expenses', params],

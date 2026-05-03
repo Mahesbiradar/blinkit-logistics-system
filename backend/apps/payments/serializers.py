@@ -22,7 +22,7 @@ class VehicleSettlementSerializer(serializers.ModelSerializer):
         model = VehicleSettlement
         fields = [
             'id', 'vehicle', 'vehicle_number', 'month_year',
-            'total_days', 'working_days', 'total_km',
+            'total_days', 'working_days', 'working_days_manual', 'total_km', 'total_km_manual',
             'base_amount', 'absent_penalty_days', 'absent_penalty_amount', 'extra_km_amount',
             'total_expenses', 'gross_amount',
             'carry_forward_from_previous', 'balance_payable',
@@ -48,7 +48,7 @@ class VehicleSettlementCreateSerializer(serializers.ModelSerializer):
         model = VehicleSettlement
         fields = [
             'vehicle_id', 'month_year',
-            'total_days', 'working_days', 'total_km',
+            'total_days', 'working_days', 'working_days_manual', 'total_km', 'total_km_manual',
             'base_amount', 'absent_penalty_days', 'absent_penalty_amount',
             'extra_km_amount', 'remarks',
         ]
@@ -75,7 +75,7 @@ class VehicleSettlementPatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = VehicleSettlement
         fields = [
-            'total_days', 'working_days', 'total_km',
+            'total_days', 'working_days', 'working_days_manual', 'total_km', 'total_km_manual',
             'base_amount', 'absent_penalty_days', 'absent_penalty_amount',
             'extra_km_amount', 'remarks',
         ]

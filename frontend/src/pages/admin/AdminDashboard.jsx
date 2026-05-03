@@ -99,11 +99,11 @@ const AdminDashboard = () => {
       onClick: () => navigate('/admin/vehicles'),
     },
     {
-      title: 'Manage Vehicles',
-      description: 'Track vehicle utilization',
-      icon: Truck,
+      title: 'Manage Drivers',
+      description: 'View and manage driver profiles',
+      icon: Users,
       color: 'bg-purple-600',
-      onClick: () => navigate('/admin/vehicles'),
+      onClick: () => navigate('/admin/drivers'),
     },
     {
       title: 'Vehicle Settlements',

@@ -160,11 +160,29 @@ class FastagRecord(models.Model):
             + self.fastag_recharged_amount
             - self.fastag_debited_amount
         )
+        if self.fastag_debited_amount > 0:
+            self.status = 'submitted'
+        else:
+            self.status = 'open'
         super().save(*args, **kwargs)
+        if self.fastag_debited_amount > 0:
+            self._auto_carry_forward()
+
+    def _auto_carry_forward(self):
+        """Push closing_balance to next month's opening_balance."""
+        next_month = self._next_month()
+        record, created = FastagRecord.objects.get_or_create(
+            vehicle=self.vehicle,
+            month_year=next_month,
+            defaults={'status': 'open', 'opening_balance': self.closing_balance},
+        )
+        if not created and record.status != 'closed':
+            record.opening_balance = self.closing_balance
+            record.save(update_fields=['opening_balance', 'updated_at'])
 
     def mark_closed(self, closed_by_user):
         self.status = 'closed'
-        self.save()
+        super().save(update_fields=['status', 'updated_at'])
         next_month = self._next_month()
         record, created = FastagRecord.objects.get_or_create(
             vehicle=self.vehicle,

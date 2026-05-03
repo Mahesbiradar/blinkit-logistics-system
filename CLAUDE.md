@@ -94,3 +94,17 @@ npm run dev
 ```
 
 **Ports:** Backend → 8000, Frontend → 5173, PostgreSQL → 5433, Redis → 6380
+
+## ⚠️ Development server warning
+
+Do NOT run the local Python `manage.py runserver` at the same time as
+`docker compose up`. Both attempt to serve on port 8000.
+
+The browser resolves `localhost` to 127.0.0.1 (IPv4) and will hit
+whichever server wins the port — usually the local Python server.
+If Docker has applied a migration that the local server's DB has not,
+expense endpoints will return HTTP 500.
+
+**Rule:** use ONE method, not both:
+- Docker only: `cd docker && docker compose up --build`
+- Local only: activate venv → `python manage.py migrate` → `python manage.py runserver`

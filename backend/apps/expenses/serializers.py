@@ -82,22 +82,35 @@ class ExpenseWriteSerializer(serializers.ModelSerializer):
 
 class FastagRecordSerializer(serializers.ModelSerializer):
     vehicle_number = serializers.CharField(source='vehicle.vehicle_number', read_only=True)
-    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    previous_remaining = serializers.DecimalField(
+        source='opening_balance', max_digits=10, decimal_places=2, read_only=True,
+    )
+    recharge_amount = serializers.DecimalField(
+        source='fastag_recharged_amount', max_digits=10, decimal_places=2, read_only=True,
+    )
+    used_amount = serializers.DecimalField(
+        source='fastag_debited_amount', max_digits=10, decimal_places=2,
+    )
+    remaining = serializers.DecimalField(
+        source='closing_balance', max_digits=10, decimal_places=2, read_only=True,
+    )
     statement_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = FastagRecord
         fields = [
             'id', 'vehicle', 'vehicle_number', 'month_year',
-            'opening_balance', 'fastag_recharged_amount',
-            'fastag_debited_amount', 'closing_balance',
-            'statement_submitted_at', 'statement_image_url',
-            'status', 'status_display',
+            'previous_remaining',
+            'recharge_amount',
+            'used_amount',
+            'remaining',
+            'statement_image',
+            'statement_image_url',
             'created_at', 'updated_at',
         ]
         read_only_fields = [
-            'id', 'fastag_recharged_amount', 'closing_balance',
-            'statement_submitted_at', 'created_at', 'updated_at',
+            'id', 'previous_remaining', 'recharge_amount',
+            'remaining', 'created_at', 'updated_at',
         ]
 
     def get_statement_image_url(self, obj):
@@ -140,22 +153,24 @@ class FastagRecordCreateSerializer(serializers.ModelSerializer):
 
 
 class FastagRecordPatchSerializer(serializers.ModelSerializer):
+    used_amount = serializers.DecimalField(
+        source='fastag_debited_amount', max_digits=10, decimal_places=2, required=False,
+    )
     statement_image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = FastagRecord
-        fields = ['fastag_debited_amount', 'statement_image']
+        fields = ['used_amount', 'statement_image']
 
-    def validate_fastag_debited_amount(self, value):
+    def validate_used_amount(self, value):
         if value < 0:
-            raise serializers.ValidationError("Fastag debited amount cannot be negative.")
+            raise serializers.ValidationError("Fastag used amount cannot be negative.")
         return value
 
     def update(self, instance, validated_data):
         if instance.status == 'closed':
             raise serializers.ValidationError("Closed Fastag records cannot be edited.")
         if 'fastag_debited_amount' in validated_data:
-            instance.status = 'submitted'
             instance.statement_submitted_at = timezone.now()
         instance.updated_by = self.context['request'].user
         for attr, value in validated_data.items():

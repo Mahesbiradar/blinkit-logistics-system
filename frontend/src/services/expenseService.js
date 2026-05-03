@@ -64,6 +64,10 @@ const expenseService = {
   markFastagClosed: (id) => api.post(`/expenses/fastag/${id}/mark-closed/`),
   reopenFastag: (id) => api.post(`/expenses/fastag/${id}/reopen/`),
 
+  getExpenseBreakdown: (params = {}) => api.get('/expenses/breakdown/', { params }),
+
+  getFastagDetail: (id) => api.get(`/expenses/fastag/${id}/detail/`),
+
   getCompanyExpenses: (params = {}) => api.get('/company-expenses/', { params }),
   getCompanyExpense: (id) => api.get(`/company-expenses/${id}/`),
   createCompanyExpense: (data) => api.post('/company-expenses/', toFormData(data), multipart),

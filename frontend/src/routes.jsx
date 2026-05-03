@@ -15,11 +15,11 @@ import MyTrips from './pages/driver/MyTrips';
 import MyExpenses from './pages/driver/MyExpenses';
 
 import AdminDashboard from './pages/admin/AdminDashboard';
+import DriversManagement from './pages/admin/DriversManagement';
 import TripsManagement from './pages/admin/TripsManagement';
 import VehiclesManagement from './pages/admin/VehiclesManagement';
 import VehicleDetail from './pages/admin/VehicleDetail';
 import ExpensesManagement from './pages/admin/ExpensesManagement';
-import PaymentsManagement from './pages/admin/PaymentsManagement';
 import VehicleSettlements from './pages/admin/VehicleSettlements';
 import FastagManagement from './pages/admin/FastagManagement';
 import CompanyExpenses from './pages/admin/CompanyExpenses';
@@ -130,11 +130,12 @@ export const router = createBrowserRouter([
       { path: 'trips', element: <TripsManagement /> },
       { path: 'vehicles', element: <VehiclesManagement /> },
       { path: 'vehicles/:id', element: <VehicleDetail /> },
+      { path: 'drivers', element: <DriversManagement /> },
       { path: 'expenses', element: <ExpensesManagement /> },
       { path: 'settlements', element: <VehicleSettlements /> },
       { path: 'fastag', element: <FastagManagement /> },
       { path: 'company-expenses', element: <CompanyExpenses /> },
-      { path: 'payments', element: <PaymentsManagement /> },
+      { path: 'payments', element: <VehicleSettlements /> },
       { path: 'reports', element: <ReportsManagement /> },
       { path: 'profile', element: <AdminProfile /> },
     ],

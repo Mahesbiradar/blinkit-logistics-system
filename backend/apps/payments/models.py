@@ -32,7 +32,9 @@ class VehicleSettlement(models.Model):
     # ── Manual inputs ──────────────────────────────────────────────────────────
     total_days = models.IntegerField(default=0)
     working_days = models.IntegerField(default=0)
+    working_days_manual = models.BooleanField(default=False)
     total_km = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_km_manual = models.BooleanField(default=False)
     base_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     absent_penalty_days = models.IntegerField(default=0)
     absent_penalty_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -108,6 +110,43 @@ class VehicleSettlement(models.Model):
             + self.carry_forward_from_previous
         )
         self.save()
+        return self
+
+    def recalculate_from_trips(self):
+        """
+        Auto-pulls working_days and total_km from APPROVED trips
+        for this vehicle in this month_year. Does NOT overwrite
+        fields that have manual_override=True.
+        """
+        from apps.trips.models import Trip
+        import calendar
+
+        trips = Trip.objects.filter(
+            vehicle=self.vehicle,
+            trip_date__year=self.month_year.year,
+            trip_date__month=self.month_year.month,
+            status='approved',
+        )
+
+        _, last_day = calendar.monthrange(self.month_year.year, self.month_year.month)
+        self.total_days = last_day
+
+        if not self.working_days_manual:
+            self.working_days = trips.values('trip_date').distinct().count()
+
+        if not self.total_km_manual:
+            from django.db.models import Sum
+            result = trips.aggregate(total=Sum('total_km'))
+            self.total_km = result['total'] or 0
+
+        self.save(update_fields=['total_days', 'working_days', 'total_km', 'updated_at'])
+
+        return {
+            'total_days': self.total_days,
+            'working_days': self.working_days,
+            'total_km': float(self.total_km),
+            'trip_count': trips.count(),
+        }
 
     def mark_paid(self, paid_by_user, paid_amount, payment_mode='', transaction_reference=''):
         self.status = 'paid'

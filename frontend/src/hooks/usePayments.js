@@ -121,6 +121,17 @@ export const usePaymentActions = () => {
     },
   });
 
+  const recalculateFromTripsMutation = useMutation({
+    mutationFn: paymentService.recalculateFromTrips,
+    onSuccess: () => {
+      toast.success('Recalculated from approved trips');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to recalculate from trips');
+    },
+  });
+
   return {
     createPayment: createMutation.mutate,
     createSettlement: createMutation.mutate,
@@ -136,5 +147,7 @@ export const usePaymentActions = () => {
     isFinalizing: finalizeMutation.isLoading,
     reopenSettlement: reopenMutation.mutate,
     isReopening: reopenMutation.isLoading,
+    recalculateFromTrips: recalculateFromTripsMutation.mutate,
+    isRecalculating: recalculateFromTripsMutation.isLoading,
   };
 };

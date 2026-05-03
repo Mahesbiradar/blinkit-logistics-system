@@ -19,6 +19,8 @@ const paymentService = {
 
   reopenSettlement: (id) => api.post(`/settlements/${id}/reopen/`),
 
+  recalculateFromTrips: (id) => api.post(`/settlements/${id}/recalculate-from-trips/`),
+
   // Legacy aliases so existing hooks continue to work without changes
   getPayments: (params = {}) => api.get('/settlements/', { params }),
   getPayment: (id) => api.get(`/settlements/${id}/`),

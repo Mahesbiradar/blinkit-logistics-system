@@ -3,6 +3,7 @@ Expenses Views — Expense, FastagRecord, CompanyExpense
 """
 from django.db.models import Sum
 from rest_framework import generics, status
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -219,6 +220,87 @@ class FastagReopenView(APIView):
         record.statement_submitted_at = None
         record.save(update_fields=['status', 'statement_submitted_at', 'updated_at'])
         return Response({'success': True, 'message': 'Fastag record reopened.', 'data': FastagRecordSerializer(record, context={'request': request}).data})
+
+
+# ── Expense breakdown ─────────────────────────────────────────────────────────
+
+class ExpenseBreakdownByVehicleMonthView(generics.GenericAPIView):
+    """
+    GET /api/v1/expenses/breakdown/?vehicle_id=...&month_year=2026-05-01
+    Returns expenses grouped by type for the settlement expense section.
+    """
+    permission_classes = [IsOwner]
+
+    def get(self, request):
+        vehicle_id = request.query_params.get('vehicle_id')
+        month_year = request.query_params.get('month_year')
+
+        if not vehicle_id or not month_year:
+            return Response(
+                {'success': False, 'message': 'vehicle_id and month_year are required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        qs = Expense.objects.filter(vehicle_id=vehicle_id, month_year=month_year)
+        breakdown = (
+            qs.values('expense_type')
+            .annotate(total=Sum('amount'))
+            .order_by('expense_type')
+        )
+        total = qs.aggregate(total=Sum('amount'))['total'] or 0
+
+        return Response({
+            'success': True,
+            'data': {
+                'vehicle_id': vehicle_id,
+                'month_year': month_year,
+                'total_paid': float(total),
+                'breakdown': [
+                    {
+                        'expense_type': row['expense_type'],
+                        'label': row['expense_type'].replace('_', ' ').title(),
+                        'amount': float(row['total']),
+                    }
+                    for row in breakdown
+                ],
+            },
+        })
+
+
+# ── Fastag detail ─────────────────────────────────────────────────────────────
+
+class FastagDetailView(generics.GenericAPIView):
+    """
+    GET /api/v1/expenses/fastag/<pk>/detail/
+    Full breakdown for the View Fastag Details drawer.
+    """
+    permission_classes = [IsOwner]
+
+    def get(self, request, pk):
+        record = get_object_or_404(FastagRecord, pk=pk)
+        recharges = (
+            Expense.objects
+            .filter(
+                vehicle=record.vehicle,
+                month_year=record.month_year,
+                expense_type='fastag_recharge',
+            )
+            .order_by('expense_date')
+            .values('id', 'expense_date', 'amount', 'paid_to_name', 'payment_mode', 'remarks')
+        )
+        return Response({
+            'success': True,
+            'data': {
+                'vehicle': str(record.vehicle_id),
+                'vehicle_number': record.vehicle.vehicle_number,
+                'month_year': str(record.month_year),
+                'previous_remaining': float(record.opening_balance),
+                'recharge_amount': float(record.fastag_recharged_amount),
+                'used_amount': float(record.fastag_debited_amount),
+                'remaining': float(record.closing_balance),
+                'recharge_breakdown': list(recharges),
+            },
+        })
 
 
 # ── CompanyExpense ────────────────────────────────────────────────────────────

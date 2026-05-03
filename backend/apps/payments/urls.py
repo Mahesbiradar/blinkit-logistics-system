@@ -12,4 +12,5 @@ urlpatterns = [
     path('<uuid:pk>/finalize/', views.SettlementFinalizeView.as_view(), name='settlement-finalize'),
     path('<uuid:pk>/mark-paid/', views.SettlementMarkPaidView.as_view(), name='settlement-mark-paid'),
     path('<uuid:pk>/reopen/', views.SettlementReopenView.as_view(), name='settlement-reopen'),
+    path('<uuid:pk>/recalculate-from-trips/', views.SettlementRecalculateFromTripsView.as_view(), name='settlement-recalculate-from-trips'),
 ]

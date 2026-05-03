@@ -2,6 +2,7 @@
 VehicleSettlement Views
 """
 from rest_framework import generics, status
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -143,3 +144,22 @@ class SettlementReopenView(APIView):
         settlement.status = 'draft'
         settlement.save(update_fields=['status', 'updated_at'])
         return Response({'success': True, 'message': 'Settlement reopened.', 'data': VehicleSettlementSerializer(settlement, context={'request': request}).data})
+
+
+class SettlementRecalculateFromTripsView(generics.GenericAPIView):
+    permission_classes = [IsOwner]
+
+    def post(self, request, pk):
+        settlement = get_object_or_404(VehicleSettlement, pk=pk)
+        if settlement.status == 'paid':
+            return Response(
+                {'success': False, 'message': 'Cannot recalculate a paid settlement.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        result = settlement.recalculate_from_trips()
+        settlement.calculate()
+        return Response({
+            'success': True,
+            'data': VehicleSettlementSerializer(settlement, context={'request': request}).data,
+            'message': f"Recalculated from {result['trip_count']} approved trips",
+        })
