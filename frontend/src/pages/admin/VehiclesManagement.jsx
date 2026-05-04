@@ -3,7 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { PlusCircle, Truck, User } from 'lucide-react';
 import { useVehicles } from '../../hooks/useVehicles';
+import { useVehicleCarryForward } from '../../hooks/usePayments';
 import tripService from '../../services/tripService';
+
+const fmt = (v) => Number(v || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const VehicleCarryTag = ({ vehicleId }) => {
+  const { data } = useVehicleCarryForward(vehicleId);
+  const cf = data?.data?.data;
+  if (!cf?.has_pending) return null;
+  return (
+    <div className="flex flex-wrap gap-1 mt-1" onClick={(e) => e.stopPropagation()}>
+      {Number(cf.pending_prev_month) > 0 && (
+        <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-600">
+          Owes ₹{fmt(cf.pending_prev_month)}
+        </span>
+      )}
+      {Number(cf.overpaid_prev_month) > 0 && (
+        <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-600">
+          Credit ₹{fmt(cf.overpaid_prev_month)}
+        </span>
+      )}
+    </div>
+  );
+};
+
+const VehicleCardWithCarry = ({ vehicle, isHovered }) => {
+  if (!isHovered) return null;
+  return <VehicleCarryTag vehicleId={vehicle.id} />;
+};
 
 const fieldClass = 'w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
 
@@ -119,6 +147,7 @@ const AddVehicleForm = ({ onSave, isSaving, onCancel }) => {
 const VehiclesManagement = () => {
   const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
+  const [hoveredVehicleId, setHoveredVehicleId] = useState(null);
 
   const hooks = useVehicles();
   const { vehicles, isLoading, isError, error, refetch } = hooks;
@@ -241,6 +270,8 @@ const VehiclesManagement = () => {
                 key={vehicle.id}
                 className={`cursor-pointer rounded-2xl border bg-white p-5 shadow-sm transition hover:shadow-md ${isOwner ? 'border-blue-100' : 'border-purple-100'}`}
                 onClick={() => navigate(`/admin/vehicles/${vehicle.id}`)}
+                onMouseEnter={() => setHoveredVehicleId(vehicle.id)}
+                onMouseLeave={() => setHoveredVehicleId(null)}
               >
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex flex-wrap items-center gap-3">
@@ -257,6 +288,7 @@ const VehiclesManagement = () => {
                     <span className={`rounded-full px-3 py-1 text-xs font-semibold ${vehicle.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
                       {vehicle.is_active ? 'Active' : 'Inactive'}
                     </span>
+                    <VehicleCardWithCarry vehicle={vehicle} isHovered={hoveredVehicleId === vehicle.id} />
                   </div>
 
                   <div className="flex items-center gap-3 flex-wrap">

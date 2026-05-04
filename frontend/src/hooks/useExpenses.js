@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import expenseService from '../services/expenseService';
+import { getErrorMessage } from '../utils/apiError';
 
 export const useMyExpenses = (params = {}) =>
   useQuery({
@@ -65,7 +66,7 @@ export const useExpenseActions = () => {
       queryClient.invalidateQueries({ queryKey: ['driverDashboard'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to record expense');
+      toast.error(getErrorMessage(error, 'Failed to record expense'));
     },
   });
 
@@ -78,7 +79,7 @@ export const useExpenseActions = () => {
       queryClient.invalidateQueries({ queryKey: ['myExpenses'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to update expense');
+      toast.error(getErrorMessage(error, 'Failed to update expense'));
     },
   });
 
@@ -91,7 +92,7 @@ export const useExpenseActions = () => {
       queryClient.invalidateQueries({ queryKey: ['myExpenses'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to delete expense');
+      toast.error(getErrorMessage(error, 'Failed to delete expense'));
     },
   });
 
@@ -115,7 +116,7 @@ export const useFastagActions = () => {
       toast.success('Fastag record created');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to create Fastag record'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to create Fastag record')),
   });
 
   const updateMutation = useMutation({
@@ -124,7 +125,7 @@ export const useFastagActions = () => {
       toast.success('Fastag statement updated');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to update Fastag record'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to update Fastag record')),
   });
 
   const refreshMutation = useMutation({
@@ -133,7 +134,7 @@ export const useFastagActions = () => {
       toast.success('Recharge amount refreshed');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to refresh Fastag recharge'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to refresh Fastag recharge')),
   });
 
   const closeMutation = useMutation({
@@ -142,7 +143,7 @@ export const useFastagActions = () => {
       toast.success('Fastag record closed');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to close Fastag record'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to close Fastag record')),
   });
 
   const reopenMutation = useMutation({
@@ -151,7 +152,7 @@ export const useFastagActions = () => {
       toast.success('Fastag record reopened');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to reopen Fastag record'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to reopen Fastag record')),
   });
 
   return {
@@ -181,7 +182,7 @@ export const useCompanyExpenseActions = () => {
       toast.success('Company expense recorded');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to record company expense'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to record company expense')),
   });
 
   const updateMutation = useMutation({
@@ -190,7 +191,7 @@ export const useCompanyExpenseActions = () => {
       toast.success('Company expense updated');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to update company expense'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to update company expense')),
   });
 
   const deleteMutation = useMutation({
@@ -199,7 +200,7 @@ export const useCompanyExpenseActions = () => {
       toast.success('Company expense deleted');
       invalidate();
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to delete company expense'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to delete company expense')),
   });
 
   return {

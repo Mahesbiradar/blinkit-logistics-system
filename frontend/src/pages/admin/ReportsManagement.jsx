@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import reportService from '../../services/reportService';
 import vehicleService from '../../services/vehicleService';
 import { EXPENSE_TYPES as VEHICLE_EXPENSE_TYPES } from '../../services/expenseService';
+import { getErrorMessage } from '../../utils/apiError';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const CURRENT_MONTH = new Date().getMonth() + 1;
@@ -99,8 +100,8 @@ const MonthlyMISSection = ({ vehicles }) => {
     try {
       await reportService.downloadMonthlyMIS(Number(year), Number(month), vehicleId || null);
       toast.success('MIS report downloaded');
-    } catch {
-      toast.error('Failed to download MIS report');
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to download MIS report'));
     } finally {
       setLoading(false);
     }
@@ -154,8 +155,8 @@ const ExpenseReportSection = ({ vehicles }) => {
     try {
       await reportService.downloadExpenseReport({ startDate, endDate, vehicleId, expenseType });
       toast.success('Expense report downloaded');
-    } catch {
-      toast.error('Failed to download expense report');
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to download expense report'));
     } finally {
       setLoading(false);
     }
@@ -210,8 +211,8 @@ const PaymentSummarySection = () => {
     try {
       await reportService.downloadPaymentSummary(Number(year), Number(month), format);
       toast.success(`Payment summary ${format.toUpperCase()} downloaded`);
-    } catch {
-      toast.error('Failed to download payment summary');
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to download payment summary'));
     } finally {
       setLoading(false);
     }

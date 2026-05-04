@@ -7,7 +7,14 @@ const currentMonth = () => {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 };
-const monthToDate = (value) => (value ? `${value}-01` : '');
+const toMonthYear = (value) => {
+  if (!value) return '';
+  if (/^\d{4}-\d{2}-01$/.test(value)) return value;
+  if (/^\d{4}-\d{2}$/.test(value)) return `${value}-01`;
+  const d = new Date(value);
+  if (!isNaN(d)) return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
+  return value;
+};
 const fmt = (value) =>
   Number(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtDate = (dateStr) =>
@@ -21,7 +28,7 @@ const fieldClass =
 const CreateForm = ({ vehicles, defaultMonth, onSubmit, isSaving, onCancel }) => {
   const [form, setForm] = useState({
     vehicle_id: '',
-    month_year: monthToDate(defaultMonth),
+    month_year: toMonthYear(defaultMonth),
     opening_balance: '0',
   });
   const set = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
@@ -46,7 +53,7 @@ const CreateForm = ({ vehicles, defaultMonth, onSubmit, isSaving, onCancel }) =>
             type="month"
             required
             value={form.month_year.slice(0, 7)}
-            onChange={(e) => set('month_year', monthToDate(e.target.value))}
+            onChange={(e) => set('month_year', toMonthYear(e.target.value))}
             className={fieldClass}
           />
         </label>
@@ -217,7 +224,7 @@ const FastagManagement = () => {
 
   const params = {
     ...(filters.vehicle_id ? { vehicle_id: filters.vehicle_id } : {}),
-    ...(filters.month ? { month_year: monthToDate(filters.month) } : {}),
+    ...(filters.month ? { month_year: toMonthYear(filters.month) } : {}),
   };
 
   const { data, isLoading } = useFastagRecords(params);

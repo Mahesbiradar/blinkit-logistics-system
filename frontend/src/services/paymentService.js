@@ -21,6 +21,8 @@ const paymentService = {
 
   recalculateFromTrips: (id) => api.post(`/settlements/${id}/recalculate-from-trips/`),
 
+  getCarryForward: (params = {}) => api.get('/settlements/carry-forward/', { params }),
+
   // Legacy aliases so existing hooks continue to work without changes
   getPayments: (params = {}) => api.get('/settlements/', { params }),
   getPayment: (id) => api.get(`/settlements/${id}/`),

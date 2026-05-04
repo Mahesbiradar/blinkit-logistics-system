@@ -86,8 +86,6 @@ class SettlementCalculateView(APIView):
             settlement = VehicleSettlement.objects.select_related('vehicle').get(pk=pk)
         except VehicleSettlement.DoesNotExist:
             return Response({'success': False, 'message': 'Settlement not found.'}, status=status.HTTP_404_NOT_FOUND)
-        if settlement.status == 'paid':
-            return Response({'success': False, 'message': 'Paid settlements cannot be recalculated.'}, status=status.HTTP_400_BAD_REQUEST)
         settlement.calculate()
         return Response({'success': True, 'message': 'Settlement recalculated.', 'data': VehicleSettlementSerializer(settlement, context={'request': request}).data})
 
@@ -125,7 +123,7 @@ class SettlementMarkPaidView(APIView):
         settlement.mark_paid(
             paid_by_user=request.user,
             paid_amount=data['paid_amount'],
-            payment_mode=data['payment_mode'],
+            payment_mode=data.get('payment_mode', ''),
             transaction_reference=data.get('transaction_reference', ''),
         )
         return Response({'success': True, 'message': 'Settlement marked as paid.', 'data': VehicleSettlementSerializer(settlement, context={'request': request}).data})
@@ -162,4 +160,57 @@ class SettlementRecalculateFromTripsView(generics.GenericAPIView):
             'success': True,
             'data': VehicleSettlementSerializer(settlement, context={'request': request}).data,
             'message': f"Recalculated from {result['trip_count']} approved trips",
+        })
+
+
+class VehicleCarryForwardView(generics.GenericAPIView):
+    """
+    GET /api/v1/settlements/carry-forward/?vehicle_id=<id>
+    Returns pending and overpaid carry-forward amounts for a vehicle
+    from its most recent paid settlement.
+    Used to show warning tags on vehicle cards.
+    """
+    permission_classes = [IsOwner]
+
+    def get(self, request):
+        vehicle_id = request.query_params.get('vehicle_id')
+        if not vehicle_id:
+            return Response(
+                {'success': False, 'message': 'vehicle_id is required'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        latest = (
+            VehicleSettlement.objects
+            .filter(vehicle_id=vehicle_id, status='paid')
+            .order_by('-month_year')
+            .first()
+        )
+
+        if not latest:
+            return Response({
+                'success': True,
+                'data': {
+                    'vehicle_id': vehicle_id,
+                    'has_pending': False,
+                    'pending_prev_month': '0.00',
+                    'overpaid_prev_month': '0.00',
+                    'payment_status': None,
+                    'from_month': None,
+                }
+            })
+
+        return Response({
+            'success': True,
+            'data': {
+                'vehicle_id': vehicle_id,
+                'has_pending': (
+                    float(latest.pending_prev_month) > 0 or
+                    float(latest.overpaid_prev_month) > 0
+                ),
+                'pending_prev_month': str(latest.pending_prev_month),
+                'overpaid_prev_month': str(latest.overpaid_prev_month),
+                'payment_status': latest.payment_status,
+                'from_month': str(latest.month_year),
+            }
         })

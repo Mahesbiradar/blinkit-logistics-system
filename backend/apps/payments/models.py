@@ -4,6 +4,7 @@ Monthly closing document per vehicle. Replaces the old Payment model.
 FastagRecord (in expenses app) is completely independent — no FK between them.
 """
 import uuid
+from decimal import Decimal
 from django.db import models
 from django.utils import timezone
 
@@ -19,6 +20,18 @@ class VehicleSettlement(models.Model):
         ('draft', 'Draft'),
         ('finalized', 'Finalized'),
         ('paid', 'Paid'),
+    ]
+
+    BILLING_MODE_CHOICES = [
+        ('full_month', 'Full Month Rate'),
+        ('daily_rate', 'Daily Rate'),
+    ]
+
+    PAYMENT_STATUS_CHOICES = [
+        ('unpaid', 'Unpaid'),
+        ('partial', 'Partial'),
+        ('full', 'Full'),
+        ('overpaid', 'Overpaid'),
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -38,13 +51,32 @@ class VehicleSettlement(models.Model):
     base_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     absent_penalty_days = models.IntegerField(default=0)
     absent_penalty_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # Billing formula selection
+    billing_mode = models.CharField(
+        max_length=20,
+        choices=BILLING_MODE_CHOICES,
+        default='full_month',
+    )
+
+    # Extra KM billing — user inputs
+    km_slab = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    extra_km_units = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    extra_km_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     extra_km_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     # ── System-computed ────────────────────────────────────────────────────────
+    daily_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    rent_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_expenses = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     gross_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    # Legacy carry-forward field — kept for backward compat; superseded by pending/overpaid below
     carry_forward_from_previous = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     balance_payable = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # Carry-forward — two separate directions
+    pending_prev_month = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    overpaid_prev_month = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     # ── Payment ────────────────────────────────────────────────────────────────
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
@@ -60,6 +92,11 @@ class VehicleSettlement(models.Model):
     payment_mode = models.CharField(max_length=20, blank=True)
     transaction_reference = models.CharField(max_length=100, blank=True)
     remarks = models.TextField(blank=True)
+    payment_status = models.CharField(
+        max_length=20,
+        choices=PAYMENT_STATUS_CHOICES,
+        default='unpaid',
+    )
 
     # ── Audit ──────────────────────────────────────────────────────────────────
     created_by = models.ForeignKey(
@@ -88,27 +125,62 @@ class VehicleSettlement(models.Model):
 
     def calculate(self):
         """
-        Aggregate total_expenses from Expense table and recompute derived fields.
-        fastag_recharge rows ARE included (real money JJR paid out).
+        Aggregate total_expenses from Expense table and recompute all derived fields.
+        billing_mode controls whether rent is full base_amount or prorated by working_days.
+        fastag_recharge rows ARE included in total_expenses (real money JJR paid out).
         """
         from apps.expenses.models import Expense
         from django.db.models import Sum
 
+        # Step 1: daily_rate
+        if self.total_days and self.total_days > 0:
+            self.daily_rate = (
+                Decimal(str(self.base_amount)) /
+                Decimal(str(self.total_days))
+            ).quantize(Decimal('0.01'))
+        else:
+            self.daily_rate = Decimal('0')
+
+        # Step 2: rent_total based on billing_mode
+        if self.billing_mode == 'full_month':
+            self.rent_total = Decimal(str(self.base_amount))
+        else:
+            self.rent_total = (
+                Decimal(str(self.working_days)) *
+                self.daily_rate
+            ).quantize(Decimal('0.01'))
+
+        # Step 3: extra KM (units × rate — both user inputs)
+        self.extra_km_amount = (
+            Decimal(str(self.extra_km_units)) *
+            Decimal(str(self.extra_km_rate))
+        ).quantize(Decimal('0.01'))
+
+        # Step 4: gross (rent + extra KM)
+        self.gross_amount = (
+            self.rent_total + self.extra_km_amount
+        ).quantize(Decimal('0.01'))
+
+        # Step 5: total expenses (all money JJR already paid out for this vehicle+month)
         self.total_expenses = (
             Expense.objects
             .filter(vehicle=self.vehicle, month_year=self.month_year)
-            .aggregate(total=Sum('amount'))['total'] or 0
+            .aggregate(total=Sum('amount'))['total'] or Decimal('0')
         )
-        self.gross_amount = (
-            self.base_amount
-            - self.absent_penalty_amount
-            + self.extra_km_amount
-        )
+
+        # Step 6: final balance
+        # + pending_prev_month  → JJR still owes from last month
+        # - overpaid_prev_month → JJR overpaid last month (vehicle owner owes back)
+        # - absent_penalty_amount
+        # - total_expenses      → money already paid this month
         self.balance_payable = (
             self.gross_amount
-            - self.total_expenses
-            + self.carry_forward_from_previous
-        )
+            + Decimal(str(self.pending_prev_month))
+            - Decimal(str(self.overpaid_prev_month))
+            - Decimal(str(self.absent_penalty_amount))
+            - Decimal(str(self.total_expenses))
+        ).quantize(Decimal('0.01'))
+
         self.save()
         return self
 
@@ -148,26 +220,51 @@ class VehicleSettlement(models.Model):
             'trip_count': trips.count(),
         }
 
-    def mark_paid(self, paid_by_user, paid_amount, payment_mode='', transaction_reference=''):
-        self.status = 'paid'
+    def mark_paid(self, paid_by_user, paid_amount,
+                  payment_mode='', transaction_reference=''):
+        paid_amount = Decimal(str(paid_amount))
+
         self.paid_amount = paid_amount
         self.paid_at = timezone.now()
         self.paid_by = paid_by_user
         self.payment_mode = payment_mode
         self.transaction_reference = transaction_reference
+        self.status = 'paid'
+
+        diff = self.balance_payable - paid_amount
+
+        if diff == 0:
+            self.payment_status = 'full'
+        elif diff > 0:
+            self.payment_status = 'partial'   # paid less than owed
+        else:
+            self.payment_status = 'overpaid'  # paid more than owed
+
         self.save()
 
-        unpaid = self.balance_payable - paid_amount
-        if unpaid != 0:
-            next_month = self._next_month()
-            settlement, created = VehicleSettlement.objects.get_or_create(
-                vehicle=self.vehicle,
-                month_year=next_month,
-                defaults={'status': 'draft', 'carry_forward_from_previous': unpaid},
-            )
-            if not created:
-                settlement.carry_forward_from_previous = unpaid
-                settlement.save(update_fields=['carry_forward_from_previous', 'updated_at'])
+        # Push carry-forward to next month
+        next_month = self._next_month()
+        next_settlement, created = VehicleSettlement.objects.get_or_create(
+            vehicle=self.vehicle,
+            month_year=next_month,
+            defaults={'status': 'draft'},
+        )
+
+        if diff > 0:
+            # JJR paid less — next month pending = remaining owed
+            next_settlement.pending_prev_month = diff
+            next_settlement.overpaid_prev_month = Decimal('0')
+        elif diff < 0:
+            # JJR paid more — next month overpaid = excess
+            next_settlement.pending_prev_month = Decimal('0')
+            next_settlement.overpaid_prev_month = abs(diff)
+        else:
+            next_settlement.pending_prev_month = Decimal('0')
+            next_settlement.overpaid_prev_month = Decimal('0')
+
+        next_settlement.save(update_fields=[
+            'pending_prev_month', 'overpaid_prev_month', 'updated_at'
+        ])
 
     def _next_month(self):
         from datetime import date

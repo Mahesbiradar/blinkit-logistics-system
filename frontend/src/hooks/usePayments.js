@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import paymentService from '../services/paymentService';
+import { getErrorMessage } from '../utils/apiError';
 
 export const usePayments = (params = {}) =>
   useQuery({
@@ -17,6 +18,14 @@ export const useSettlementSummary = (params = {}) =>
     enabled: Boolean(params?.month_year),
   });
 
+export const useVehicleCarryForward = (vehicleId) =>
+  useQuery({
+    queryKey: ['carry-forward', vehicleId],
+    queryFn: () => paymentService.getCarryForward({ vehicle_id: vehicleId }),
+    enabled: !!vehicleId,
+    staleTime: 5 * 60 * 1000,
+  });
+
 export const useCalculateSettlement = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -26,7 +35,7 @@ export const useCalculateSettlement = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
       queryClient.invalidateQueries({ queryKey: ['settlement-summary'] });
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to calculate settlement'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to calculate settlement')),
   });
 };
 
@@ -39,7 +48,7 @@ export const useFinalizeSettlement = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
       queryClient.invalidateQueries({ queryKey: ['settlement-summary'] });
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to finalize settlement'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to finalize settlement')),
   });
 };
 
@@ -52,7 +61,7 @@ export const useMarkPaid = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
       queryClient.invalidateQueries({ queryKey: ['settlement-summary'] });
     },
-    onError: (error) => toast.error(error.response?.data?.message || 'Failed to mark settlement as paid'),
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to mark settlement as paid')),
   });
 };
 
@@ -66,25 +75,28 @@ export const usePaymentActions = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create settlement');
+      toast.error(getErrorMessage(error, 'Failed to create settlement'));
     },
   });
 
   const markPaidMutation = useMutation({
     mutationFn: ({ id, ...data }) => paymentService.markPaid(id, data),
     onSuccess: () => {
-      toast.success('Settlement marked as paid');
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to mark settlement as paid');
+      toast.error(getErrorMessage(error, 'Failed to mark settlement as paid'));
     },
   });
 
   const calculateMutation = useMutation({
     mutationFn: paymentService.calculateSettlement,
+    onSuccess: () => {
+      toast.success('Settlement calculated');
+      queryClient.invalidateQueries({ queryKey: ['settlements'] });
+    },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to calculate settlement');
+      toast.error(getErrorMessage(error, 'Failed to calculate settlement'));
     },
   });
 
@@ -95,7 +107,7 @@ export const usePaymentActions = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to update settlement');
+      toast.error(getErrorMessage(error, 'Failed to update settlement'));
     },
   });
 
@@ -106,7 +118,7 @@ export const usePaymentActions = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to finalize settlement');
+      toast.error(getErrorMessage(error, 'Failed to finalize settlement'));
     },
   });
 
@@ -117,7 +129,7 @@ export const usePaymentActions = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to reopen settlement');
+      toast.error(getErrorMessage(error, 'Failed to reopen settlement'));
     },
   });
 
@@ -128,7 +140,7 @@ export const usePaymentActions = () => {
       queryClient.invalidateQueries({ queryKey: ['settlements'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to recalculate from trips');
+      toast.error(getErrorMessage(error, 'Failed to recalculate from trips'));
     },
   });
 
@@ -139,7 +151,9 @@ export const usePaymentActions = () => {
     updateSettlement: updateMutation.mutate,
     isUpdating: updateMutation.isLoading,
     markPaid: markPaidMutation.mutate,
+    markPaidAsync: markPaidMutation.mutateAsync,
     isMarkingPaid: markPaidMutation.isLoading,
+    markPaidData: markPaidMutation.data,
     calculatePayment: calculateMutation.mutateAsync,
     calculateSettlement: calculateMutation.mutate,
     isCalculating: calculateMutation.isLoading,

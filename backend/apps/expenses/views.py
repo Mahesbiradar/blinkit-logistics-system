@@ -180,14 +180,14 @@ class FastagRefreshView(APIView):
     permission_classes = [IsOwner]
 
     def post(self, request, pk):
-        try:
-            record = FastagRecord.objects.get(pk=pk)
-        except FastagRecord.DoesNotExist:
-            return Response({'success': False, 'message': 'Fastag record not found.'}, status=status.HTTP_404_NOT_FOUND)
+        record = get_object_or_404(FastagRecord, pk=pk)
         if record.status == 'closed':
-            return Response({'success': False, 'message': 'Cannot refresh a closed record.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'success': False, 'message': 'This record is closed. Reopen it first before refreshing recharge amounts.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         record.save()
-        return Response({'success': True, 'message': 'Recharged amount refreshed.', 'data': FastagRecordSerializer(record, context={'request': request}).data})
+        return Response({'success': True, 'message': 'Recharge amount refreshed from expenses.', 'data': FastagRecordSerializer(record, context={'request': request}).data})
 
 
 class FastagMarkClosedView(APIView):

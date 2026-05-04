@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path('', views.VehicleSettlementListCreateView.as_view(), name='settlement-list-create'),
     path('summary/', views.VehicleSettlementSummaryView.as_view(), name='settlement-summary'),
+    path('carry-forward/', views.VehicleCarryForwardView.as_view(), name='settlement-carry-forward'),
     path('<uuid:pk>/', views.VehicleSettlementDetailView.as_view(), name='settlement-detail'),
     path('<uuid:pk>/calculate/', views.SettlementCalculateView.as_view(), name='settlement-calculate'),
     path('<uuid:pk>/finalize/', views.SettlementFinalizeView.as_view(), name='settlement-finalize'),
