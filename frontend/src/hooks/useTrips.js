@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import tripService from '../services/tripService';
+import { getErrorMessage } from '../utils/apiError';
 
 const extractTrips = (response) => response?.data?.data?.trips || [];
 const extractSummary = (response) => response?.data?.data?.summary || {};
@@ -27,7 +28,7 @@ export const useTrips = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['driverDashboard'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create trip');
+      toast.error(getErrorMessage(error, 'Failed to create trip'));
     },
   });
 
@@ -39,7 +40,7 @@ export const useTrips = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['pendingTrips'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to approve trip');
+      toast.error(getErrorMessage(error, 'Failed to approve trip'));
     },
   });
 
@@ -51,7 +52,7 @@ export const useTrips = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['pendingTrips'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to reject trip');
+      toast.error(getErrorMessage(error, 'Failed to reject trip'));
     },
   });
 
@@ -63,7 +64,7 @@ export const useTrips = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['pendingTrips'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to update trip');
+      toast.error(getErrorMessage(error, 'Failed to update trip'));
     },
   });
 
@@ -75,7 +76,7 @@ export const useTrips = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['pendingTrips'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to delete trip');
+      toast.error(getErrorMessage(error, 'Failed to delete trip'));
     },
   });
 
@@ -117,7 +118,7 @@ export const useMyTrips = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['myTrips'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to update trip');
+      toast.error(getErrorMessage(error, 'Failed to update trip'));
     },
   });
 
@@ -129,7 +130,7 @@ export const useMyTrips = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['driverDashboard'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to delete trip');
+      toast.error(getErrorMessage(error, 'Failed to delete trip'));
     },
   });
 
@@ -157,7 +158,7 @@ export const useCreateTrip = () => {
       queryClient.invalidateQueries({ queryKey: ['tripStats'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create trip');
+      toast.error(getErrorMessage(error, 'Failed to create trip'));
     },
   });
 

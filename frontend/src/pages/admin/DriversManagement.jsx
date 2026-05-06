@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Phone, PlusCircle, User, Wallet } from 'lucide-react';
 import { useDrivers } from '../../hooks/useDrivers';
 import { useVehicles } from '../../hooks/useVehicles';
+import { getErrorMessage } from '../../utils/apiError';
 
 const initialForm = {
   first_name: '',
@@ -65,7 +66,7 @@ const DriversManagement = () => {
       <div className="rounded-2xl border border-red-200 bg-red-50 p-6">
         <h1 className="text-xl font-bold text-red-900">Unable to load drivers</h1>
         <p className="mt-2 text-sm text-red-700">
-          {error?.response?.data?.message || error?.message || 'Something went wrong while loading drivers.'}
+          {getErrorMessage(error, 'Something went wrong while loading drivers.')}
         </p>
         <button
           onClick={() => refetch()}

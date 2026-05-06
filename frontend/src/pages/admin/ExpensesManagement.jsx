@@ -3,6 +3,7 @@ import { Calendar, Pencil, PlusCircle, Trash2, Truck, Wallet } from 'lucide-reac
 import { EXPENSE_TYPES, PAYMENT_MODES } from '../../services/expenseService';
 import { useExpenseActions, useExpenseSummary, useExpenses } from '../../hooks/useExpenses';
 import { useVehicles } from '../../hooks/useVehicles';
+import { getErrorMessage } from '../../utils/apiError';
 
 const today = new Date().toISOString().split('T')[0];
 const monthValue = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
@@ -140,7 +141,7 @@ const ExpensesManagement = () => {
     return (
       <div className="rounded-xl border border-red-200 bg-red-50 p-6">
         <h1 className="text-xl font-bold text-red-900">Unable to load expenses</h1>
-        <p className="mt-2 text-sm text-red-700">{error?.response?.data?.message || error?.message}</p>
+        <p className="mt-2 text-sm text-red-700">{getErrorMessage(error)}</p>
         <button onClick={() => refetch()} className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white">Retry</button>
       </div>
     );

@@ -23,6 +23,8 @@ const paymentService = {
 
   getCarryForward: (params = {}) => api.get('/settlements/carry-forward/', { params }),
 
+  deleteSettlement: (id) => api.delete(`/settlements/${id}/`),
+
   // Legacy aliases so existing hooks continue to work without changes
   getPayments: (params = {}) => api.get('/settlements/', { params }),
   getPayment: (id) => api.get(`/settlements/${id}/`),

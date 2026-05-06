@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import vehicleService from '../services/vehicleService';
+import { getErrorMessage } from '../utils/apiError';
 
 export const useVehicles = (params = {}) => {
   const queryClient = useQueryClient();
@@ -22,7 +23,7 @@ export const useVehicles = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['vehicles'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create vehicle');
+      toast.error(getErrorMessage(error, 'Failed to create vehicle'));
     },
   });
 
@@ -34,7 +35,7 @@ export const useVehicles = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['drivers'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to assign driver');
+      toast.error(getErrorMessage(error, 'Failed to assign driver'));
     },
   });
 
@@ -45,7 +46,7 @@ export const useVehicles = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['vehicles'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to update vehicle');
+      toast.error(getErrorMessage(error, 'Failed to update vehicle'));
     },
   });
 
@@ -57,7 +58,7 @@ export const useVehicles = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['drivers'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create driver');
+      toast.error(getErrorMessage(error, 'Failed to create driver'));
     },
   });
 
@@ -68,7 +69,7 @@ export const useVehicles = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['vehicles'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to update driver login');
+      toast.error(getErrorMessage(error, 'Failed to update driver login'));
     },
   });
 
@@ -78,7 +79,7 @@ export const useVehicles = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['vendors'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create vendor');
+      toast.error(getErrorMessage(error, 'Failed to create vendor'));
     },
   });
 
@@ -89,7 +90,7 @@ export const useVehicles = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['vehicles'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to delete vehicle');
+      toast.error(getErrorMessage(error, 'Failed to delete vehicle'));
     },
   });
 

@@ -26,6 +26,17 @@ export const useVehicleCarryForward = (vehicleId) =>
     staleTime: 5 * 60 * 1000,
   });
 
+export const useDeleteSettlement = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => paymentService.deleteSettlement(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['settlements']);
+    },
+    onError: (error) => toast.error(getErrorMessage(error, 'Failed to delete settlement')),
+  });
+};
+
 export const useCalculateSettlement = () => {
   const queryClient = useQueryClient();
   return useMutation({

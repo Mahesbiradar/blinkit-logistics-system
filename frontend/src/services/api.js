@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
+import { getErrorMessage } from '../utils/apiError';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
@@ -65,6 +66,16 @@ api.interceptors.response.use(
       }
     }
 
+    return Promise.reject(error);
+  }
+);
+
+// Global error logger — logs real message to console so developers can see it
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const msg = getErrorMessage(error);
+    console.error('[API Error]', error?.config?.url, '→', msg);
     return Promise.reject(error);
   }
 );

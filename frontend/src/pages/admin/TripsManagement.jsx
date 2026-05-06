@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { useTrips } from '../../hooks/useTrips';
 import { useVehicles } from '../../hooks/useVehicles';
 import tripService from '../../services/tripService';
+import { getErrorMessage } from '../../utils/apiError';
 
 const fieldClass = 'w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200';
 
@@ -593,7 +594,7 @@ const TripsManagement = () => {
     return (
       <div className="rounded-2xl border border-red-200 bg-red-50 p-6">
         <h1 className="text-xl font-bold text-red-900">Unable to load trips</h1>
-        <p className="mt-2 text-sm text-red-700">{error?.response?.data?.message || error?.message}</p>
+        <p className="mt-2 text-sm text-red-700">{getErrorMessage(error)}</p>
         <button onClick={() => refetch()} className="mt-4 rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Retry</button>
       </div>
     );

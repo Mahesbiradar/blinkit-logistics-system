@@ -3,10 +3,10 @@ import { useQuery } from 'react-query';
 import toast from 'react-hot-toast';
 import {
   AlertTriangle, Calculator, CheckCircle, CreditCard, RefreshCw,
-  RotateCcw, Truck, X,
+  RotateCcw, Trash2, Truck, X,
 } from 'lucide-react';
 import { useExpenseBreakdown } from '../../hooks/useExpenses';
-import { usePaymentActions, usePayments } from '../../hooks/usePayments';
+import { useDeleteSettlement, usePaymentActions, usePayments } from '../../hooks/usePayments';
 import { useVehicles } from '../../hooks/useVehicles';
 import expenseService, { EXPENSE_TYPES, PAYMENT_MODES } from '../../services/expenseService';
 import { getErrorMessage } from '../../utils/apiError';
@@ -251,7 +251,7 @@ const ExpenseDetailModal = ({ vehicleId, monthYear, vehicleNumber, onClose }) =>
 
 // ── Detail panel ──────────────────────────────────────────────────────────────
 
-const DetailPanel = ({ settlement, actions }) => {
+const DetailPanel = ({ settlement, actions, onDelete }) => {
   const [editForm, setEditForm] = useState(null);
   const [showRecalcModal, setShowRecalcModal] = useState(false);
   const [showExpenseModal, setShowExpenseModal] = useState(false);
@@ -383,15 +383,23 @@ const DetailPanel = ({ settlement, actions }) => {
             )}
           </div>
         </div>
-        {settlement.status === 'finalized' && (
+        <div className="flex items-center gap-2">
+          {settlement.status === 'finalized' && (
+            <button
+              onClick={() => actions.reopenSettlement(settlement.id)}
+              disabled={actions.isReopening}
+              className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white disabled:bg-gray-400"
+            >
+              <RotateCcw className="h-4 w-4" />Re-open
+            </button>
+          )}
           <button
-            onClick={() => actions.reopenSettlement(settlement.id)}
-            disabled={actions.isReopening}
-            className="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white disabled:bg-gray-400"
+            onClick={onDelete}
+            className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
           >
-            <RotateCcw className="h-4 w-4" />Re-open
+            <Trash2 className="h-4 w-4" />Delete
           </button>
-        )}
+        </div>
       </div>
 
       {/* ── Section 1: Trip Summary ─────────────────────────────────────────── */}
@@ -810,7 +818,18 @@ const VehicleSettlements = () => {
 
   const { data, isLoading } = usePayments(params);
   const actions = usePaymentActions();
+  const { mutate: deleteSettlement, isLoading: isDeleting } = useDeleteSettlement();
   const { vehicles } = useVehicles({ is_active: true });
+
+  const handleDelete = (settlement) => {
+    if (!window.confirm(`Delete settlement for ${settlement.vehicle_number} (${fmtLabel(settlement.month_year)})? This cannot be undone.`)) return;
+    deleteSettlement(settlement.id, {
+      onSuccess: () => {
+        toast.success('Settlement deleted');
+        if (selectedId === settlement.id) setSelectedId(null);
+      },
+    });
+  };
 
   const settlements = data?.data?.data || [];
   const selected = useMemo(
@@ -900,14 +919,14 @@ const VehicleSettlements = () => {
             <table className="w-full">
               <thead className="border-b bg-gray-50">
                 <tr>
-                  {['Vehicle', 'Month', 'Gross', 'Expenses', 'Balance', 'Status'].map((h) => (
+                  {['Vehicle', 'Month', 'Gross', 'Expenses', 'Balance', 'Status', ''].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {settlements.length === 0 ? (
-                  <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-500">No settlements found</td></tr>
+                  <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-500">No settlements found</td></tr>
                 ) : settlements.map((s) => (
                   <tr
                     key={s.id}
@@ -949,6 +968,16 @@ const VehicleSettlements = () => {
                         {s.status}
                       </span>
                     </td>
+                    <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => handleDelete(s)}
+                        disabled={isDeleting}
+                        className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-40"
+                        title="Delete settlement"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -958,7 +987,7 @@ const VehicleSettlements = () => {
 
         {/* Detail panel */}
         {selected ? (
-          <DetailPanel key={selected.id} settlement={selected} actions={actions} />
+          <DetailPanel key={selected.id} settlement={selected} actions={actions} onDelete={() => handleDelete(selected)} />
         ) : (
           <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
             Select a settlement to view details.

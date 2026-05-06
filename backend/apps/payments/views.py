@@ -59,7 +59,7 @@ class VehicleSettlementSummaryView(APIView):
         return Response({'success': True, 'data': VehicleSettlementSummarySerializer(qs, many=True, context={'request': request}).data})
 
 
-class VehicleSettlementDetailView(generics.RetrieveUpdateAPIView):
+class VehicleSettlementDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = VehicleSettlement.objects.select_related('vehicle', 'paid_by', 'created_by')
     permission_classes = [IsOwner]
 
@@ -76,6 +76,16 @@ class VehicleSettlementDetailView(generics.RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         settlement = serializer.save()
         return Response({'success': True, 'message': 'Settlement updated.', 'data': VehicleSettlementSerializer(settlement, context={'request': request}).data})
+
+    def destroy(self, request, *args, **kwargs):
+        settlement = self.get_object()
+        vehicle_number = settlement.vehicle.vehicle_number if settlement.vehicle else 'Unknown'
+        month = str(settlement.month_year)
+        settlement.delete()
+        return Response(
+            {'status': 'success', 'message': f'Settlement for {vehicle_number} ({month}) deleted successfully.'},
+            status=status.HTTP_204_NO_CONTENT,
+        )
 
 
 class SettlementCalculateView(APIView):

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
 import driverService from '../services/driverService';
+import { getErrorMessage } from '../utils/apiError';
 
 export const useDrivers = (params = {}) => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ export const useDrivers = (params = {}) => {
       queryClient.invalidateQueries({ queryKey: ['drivers'] });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to create driver');
+      toast.error(getErrorMessage(error, 'Failed to create driver'));
     },
   });
 
